@@ -9,6 +9,9 @@ public:
 
     void cycle();
 
+    uint8_t fetch_byte();
+    uint16_t fetch_word();
+
 private:
     CPU() { }
     CPU(CPU const&);

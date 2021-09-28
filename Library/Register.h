@@ -11,6 +11,8 @@ public:
 
     void increment() { m_value++; }
     void decrement() { m_value--; }
+    void set(T value) { m_value = value; }
+
     T value() { return m_value; }
 
 private:
