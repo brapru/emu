@@ -1,4 +1,4 @@
-add_library (emulator SHARED Gameboy.cpp Cartridge.cpp CPU.cpp MMU.cpp Register.cpp)
+add_library (emulator SHARED Gameboy.cpp Cartridge.cpp CPU.cpp MMU.cpp)
 
 find_package(fmt)
 target_link_libraries (emulator fmt::fmt)
