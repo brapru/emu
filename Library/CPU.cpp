@@ -1,5 +1,6 @@
 #include <CPU.h>
 #include <MMU.h>
+#include <Utils/Bitwise.h>
 #include <Utils/Format.h>
 
 CPU& CPU::the()
@@ -23,6 +24,20 @@ void CPU::cycle()
     case 0x00:
         outln("Instruction: NOP");
         break;
+    case 0xAF: {
+        outln("Instruction: XOR A, PC {:X}", m_pc.value());
+        auto value = fetch_byte();
+        auto result = m_a.value() ^ value & 0xFF;
+
+        m_flags.set_zero_flag(result == 0);
+        m_flags.set_subtraction_flag(false);
+        m_flags.set_half_carry_flag(false);
+        m_flags.set_flag_carry(false);
+
+        m_a.set(result);
+
+        break;
+    }
     case 0xc3: {
         auto address = fetch_word();
         outln("Instruction: JP {:X}, PC {:X}", address, m_pc.value());
