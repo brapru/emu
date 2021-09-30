@@ -20,13 +20,18 @@ void CPU::cycle()
 {
     auto opcode = fetch_byte();
 
+    out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
+        m_pc.value(),
+        opcode);
+
     switch (opcode) {
     case 0x00:
-        outln("Instruction: NOP");
+        out("NOP ");
         break;
     case 0xAF: {
-        outln("Instruction: XOR A, PC {:X}", m_pc.value());
         auto value = fetch_byte();
+        out("XOR A 0x{:02X}", value);
+
         auto result = m_a.value() ^ value & 0xFF;
 
         m_flags.set_zero_flag(result == 0);
@@ -40,14 +45,20 @@ void CPU::cycle()
     }
     case 0xc3: {
         auto address = fetch_word();
-        outln("Instruction: JP {:X}, PC {:X}", address, m_pc.value());
+        out("JP 0x{:04X} ", address);
         m_pc.set(address);
         break;
     }
     default:
-        outln("OPCODE NOT IMPLEMENTED: {0:x}", opcode);
+        outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
         exit(1);
     }
+
+    outln("A: 0x{:02X}, B: 0x{:02X}, C: 0x{:02X}, Flag: {:08B}",
+        m_a.value(),
+        m_b.value(),
+        m_c.value(),
+        m_flags.value());
 }
 
 uint8_t CPU::fetch_byte()
