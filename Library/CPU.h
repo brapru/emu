@@ -17,19 +17,21 @@ private:
     CPU(CPU const&);
     void operator=(CPU const&);
 
-    Register<uint16_t> m_pc = Register<uint16_t>(0x0100);
-    Register<uint16_t> m_sp = Register<uint16_t>(0xFFFE);
-    Register<uint16_t> m_af;
-    Register<uint16_t> m_bc;
-    Register<uint16_t> m_de;
-    Register<uint16_t> m_hl;
-    Register<uint8_t> m_a;
-    Register<uint8_t> m_b;
-    Register<uint8_t> m_c;
-    Register<uint8_t> m_d;
-    Register<uint8_t> m_e;
-    Register<uint8_t> m_h;
-    Register<uint8_t> m_l;
+    WordRegister m_pc = WordRegister(0x0100);
+    WordRegister m_sp = WordRegister(0xFFFE);
+    WordRegister m_af;
+    WordRegister m_bc;
+    WordRegister m_de;
+    WordRegister m_hl;
+    ByteRegister m_a;
+    ByteRegister m_b;
+    ByteRegister m_c;
+    ByteRegister m_d;
+    ByteRegister m_e;
+    ByteRegister m_h;
+    ByteRegister m_l;
+
+    FlagRegister m_flags;
 
     // TODO: Implement Flag Registers
 };
