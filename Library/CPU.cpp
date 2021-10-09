@@ -26,27 +26,14 @@ void CPU::cycle()
 
     switch (opcode) {
     case 0x00:
-        out("NOP ");
+        instruction_nop();
         break;
     case 0xAF: {
-        auto value = fetch_byte();
-        out("XOR A 0x{:02X}", value);
-
-        auto result = m_a.value() ^ value & 0xFF;
-
-        m_flags.set_zero_flag(result == 0);
-        m_flags.set_subtraction_flag(false);
-        m_flags.set_half_carry_flag(false);
-        m_flags.set_flag_carry(false);
-
-        m_a.set(result);
-
+        instruction_xor();
         break;
     }
     case 0xc3: {
-        auto address = fetch_word();
-        out("JP 0x{:04X} ", address);
-        m_pc.set(address);
+        instruction_jp();
         break;
     }
     default:

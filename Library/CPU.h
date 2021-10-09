@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Register.h>
+
 #include <stdint.h>
 
 class CPU {
@@ -31,7 +32,11 @@ private:
     ByteRegister m_h;
     ByteRegister m_l;
 
+    // TODO: Implement Flag Registers
     FlagRegister m_flags;
 
-    // TODO: Implement Flag Registers
+    // Instruction.cpp
+    void instruction_nop(void);
+    void instruction_jp(void);
+    void instruction_xor(void);
 };
