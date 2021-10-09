@@ -21,7 +21,7 @@ void CPU::cycle()
     auto opcode = fetch_byte();
 
     out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
-        m_pc.value(),
+        m_pc.value() - 1,
         opcode);
 
     switch (opcode) {
