@@ -36,6 +36,10 @@ void CPU::cycle()
         instruction_jp();
         break;
     }
+    case 0xF3: {
+        instruction_di();
+        break;
+    }
     default:
         outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
         exit(1);

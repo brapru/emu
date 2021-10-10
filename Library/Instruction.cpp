@@ -6,6 +6,12 @@ void CPU::instruction_nop(void)
     out("NOP ");
 }
 
+void CPU::instruction_di(void)
+{
+    out("DI ");
+    m_interrupt_master_enable = false;
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();

@@ -35,8 +35,11 @@ private:
     // TODO: Implement Flag Registers
     FlagRegister m_flags;
 
+    bool m_interrupt_master_enable;
+
     // Instruction.cpp
     void instruction_nop(void);
+    void instruction_di(void);
     void instruction_jp(void);
     void instruction_xor(void);
 };
