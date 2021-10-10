@@ -28,6 +28,7 @@ public:
     uint8_t read(uint16_t const address);
     void write(uint16_t const address, uint8_t value);
 
+    std::string title() { return std::string((char*)m_header.title); }
     std::string new_license_code() { return m_new_license_code; }
     uint8_t rom_size() { return 32 << m_header.rom_size; }
     std::string ram_size() { return m_ram_size; }
