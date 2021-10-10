@@ -18,6 +18,6 @@ void MMU::write(uint16_t const address, uint8_t const value)
         return;
     }
 
-    outln("MMU read at address not yet implemented.");
+    outln("MMU write at address not yet implemented.");
     exit(1);
 }
