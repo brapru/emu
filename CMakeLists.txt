@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory (Library)
 add_subdirectory (Emulator)
+add_subdirectory (Tests)

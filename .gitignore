@@ -19,5 +19,5 @@
 build/
 cmake-build-debug/
 
-roms/
+Tests/Roms/
 *.gb
