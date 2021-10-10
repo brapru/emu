@@ -12,6 +12,13 @@ void CPU::instruction_di(void)
     m_interrupt_master_enable = false;
 }
 
+void CPU::instruction_ld_sp(void)
+{
+    auto address = CPU::fetch_word();
+    out("LD SP 0x{:04X} ", address);
+    m_sp.set(address);
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();

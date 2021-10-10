@@ -28,6 +28,10 @@ void CPU::cycle()
     case 0x00:
         instruction_nop();
         break;
+    case 0x31: {
+        instruction_ld_sp();
+        break;
+    }
     case 0xAF: {
         instruction_xor();
         break;
@@ -45,7 +49,8 @@ void CPU::cycle()
         exit(1);
     }
 
-    outln("A: 0x{:02X}, B: 0x{:02X}, C: 0x{:02X}, Flag: {:08B}",
+    outln("SP: 0x{:02x}, A: 0x{:02X}, B: 0x{:02X}, C: 0x{:02X}, Flag: {:08B}",
+        m_sp.value(),
         m_a.value(),
         m_b.value(),
         m_c.value(),
