@@ -9,7 +9,7 @@ format() {
     clang-format -i $1
 }
 
-FILES=$(find $BASE_DIR -iname *.h -o -iname *.cpp -path $BUILD_DIR -prune)
+FILES=$(find $BASE_DIR -iname *.h -o -iname *.cpp -o -path $BUILD_DIR -prune)
 for FILE in $FILES
 do
     format "$FILE"
