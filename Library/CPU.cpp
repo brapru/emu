@@ -34,6 +34,10 @@ void CPU::cycle()
         instruction_xor();
         break;
     }
+    case 0xEA: {
+        instruction_ld_reg_to_addr(m_a);
+        break;
+    }
     case 0xc3: {
         instruction_jp();
         break;

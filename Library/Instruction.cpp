@@ -19,6 +19,13 @@ void CPU::instruction_ld_sp(void)
     m_sp.set(address);
 }
 
+void CPU::instruction_ld_reg_to_addr(ByteRegister& reg)
+{
+    auto address = CPU::fetch_word();
+    out("LD NN A 0x{:04X} ", address);
+    CPU::m_mmu.write(address, reg.value());
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
