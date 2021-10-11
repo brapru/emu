@@ -13,6 +13,7 @@ Cartridge::Cartridge(std::string const& filename)
     if (!rom_file) {
         outln("Could not load rom file: {}", filename);
         m_is_loaded = false;
+        exit(1);
     }
 
     rom_file.seekg(0, std::ios::end);
