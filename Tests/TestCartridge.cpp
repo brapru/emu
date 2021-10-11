@@ -2,21 +2,19 @@
 
 #include <Cartridge.h>
 
-TEST(CartridgeTest, TestEmptyCartridge)
+class CartridgeTest : public ::testing::Test {
+protected:
+    Cartridge cart_bad { "Tests/Roms/nonexistent.gb" };
+    Cartridge cart_good { "Tests/Roms/cpu_instrs.gb" };
+};
+
+TEST_F(CartridgeTest, TestLoadCartridgeFail)
 {
-    ASSERT_FALSE(Cartridge::the().is_loaded());
+    ASSERT_FALSE(cart_bad.is_loaded());
 }
 
-TEST(CartridgeTest, TestLoadCartridgeFail)
+TEST_F(CartridgeTest, TestLoadCartridge)
 {
-    Cartridge::the().load_rom_file("Tests/Roms/nonexistent.gb");
-    ASSERT_FALSE(Cartridge::the().is_loaded());
-}
-
-TEST(CartridgeTest, TestLoadCartridge)
-{
-    Cartridge::the().load_rom_file("Tests/Roms/cpu_instrs.gb");
-
-    ASSERT_TRUE(Cartridge::the().is_loaded());
-    EXPECT_EQ("CPU_INSTRS", Cartridge::the().title());
+    ASSERT_TRUE(cart_good.is_loaded());
+    EXPECT_EQ("CPU_INSTRS", cart_good.title());
 }

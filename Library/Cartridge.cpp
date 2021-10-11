@@ -1,16 +1,11 @@
 #include <fstream>
+#include <string>
 
 #include <Cartridge.h>
 #include <Utils/Constants.h>
 #include <Utils/Format.h>
 
-Cartridge& Cartridge::the()
-{
-    static Cartridge s_the;
-    return s_the;
-}
-
-int Cartridge::load_rom_file(std::string const& filename)
+Cartridge::Cartridge(std::string const& filename)
 {
     std::streampos rom_file_size;
     std::ifstream rom_file(filename, std::ios::binary);
@@ -18,7 +13,6 @@ int Cartridge::load_rom_file(std::string const& filename)
     if (!rom_file) {
         outln("Could not load rom file: {}", filename);
         m_is_loaded = false;
-        return GB_ERR;
     }
 
     rom_file.seekg(0, std::ios::end);
@@ -33,8 +27,6 @@ int Cartridge::load_rom_file(std::string const& filename)
     m_is_loaded = true;
 
     initialize_header();
-
-    return GB_OK;
 }
 
 void Cartridge::initialize_header()

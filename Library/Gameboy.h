@@ -1,5 +1,6 @@
 #pragma once
 
+#include <CPU.h>
 #include <Cartridge.h>
 #include <MMU.h>
 
@@ -11,8 +12,10 @@ public:
 
     void run();
 
-    Cartridge& cartridge() { return Cartridge::the(); }
-
 private:
     void main_cycle();
+
+    Cartridge m_cartridge;
+    MMU m_mmu;
+    CPU m_cpu;
 };

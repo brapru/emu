@@ -20,9 +20,8 @@ struct CartridgeHeader {
 
 class Cartridge {
 public:
-    static Cartridge& the();
+    Cartridge(std::string const& filename);
 
-    int load_rom_file(std::string const& filename);
     bool is_loaded() { return m_is_loaded; }
 
     uint8_t read(uint16_t const address);
@@ -34,10 +33,6 @@ public:
     std::string ram_size() { return m_ram_size; }
 
 private:
-    Cartridge() { }
-    Cartridge(Cartridge const&);
-    void operator=(Cartridge const&);
-
     bool m_is_loaded;
     char* m_data = nullptr;
 

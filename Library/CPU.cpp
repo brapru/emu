@@ -1,12 +1,10 @@
 #include <CPU.h>
-#include <MMU.h>
 #include <Utils/Bitwise.h>
 #include <Utils/Format.h>
 
-CPU& CPU::the()
+CPU::CPU(MMU& mmu)
+    : m_mmu(mmu)
 {
-    static CPU s_the;
-    return s_the;
 }
 
 /*
@@ -59,7 +57,7 @@ void CPU::cycle()
 
 uint8_t CPU::fetch_byte()
 {
-    uint8_t byte = MMU::read(m_pc.value());
+    uint8_t byte = m_mmu.read(m_pc.value());
     m_pc.increment();
 
     return byte;

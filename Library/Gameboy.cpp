@@ -4,9 +4,11 @@
 #include <Utils/Format.h>
 
 Gameboy::Gameboy(std::string rom_file)
+    : m_cartridge(rom_file)
+    , m_mmu(m_cartridge)
+    , m_cpu(m_mmu)
 {
-    Cartridge::the().load_rom_file(rom_file);
-    if (!Cartridge::the().is_loaded()) {
+    if (!m_cartridge.is_loaded()) {
         outln("Failed to load rom file: {}", rom_file);
         exit(1);
     }
@@ -21,5 +23,5 @@ void Gameboy::run(void)
 
 void Gameboy::main_cycle(void)
 {
-    CPU::the().cycle();
+    m_cpu.cycle();
 }

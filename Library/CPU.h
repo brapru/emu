@@ -1,12 +1,13 @@
 #pragma once
 
+#include <MMU.h>
 #include <Register.h>
 
 #include <stdint.h>
 
 class CPU {
 public:
-    static CPU& the();
+    CPU(MMU& mmu);
 
     void cycle();
 
@@ -14,9 +15,7 @@ public:
     uint16_t fetch_word();
 
 private:
-    CPU() { }
-    CPU(CPU const&);
-    void operator=(CPU const&);
+    MMU& m_mmu;
 
     WordRegister m_pc = WordRegister(0x0100);
     WordRegister m_sp = WordRegister(0xFFFE);
