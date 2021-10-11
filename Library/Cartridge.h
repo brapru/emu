@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 struct CartridgeHeader {
     uint8_t entry[4];
@@ -20,7 +21,7 @@ struct CartridgeHeader {
 
 class Cartridge {
 public:
-    Cartridge(std::string const& filename);
+    Cartridge(std::vector<uint8_t> rom_data);
 
     bool is_loaded() { return m_is_loaded; }
 
@@ -34,7 +35,7 @@ public:
 
 private:
     bool m_is_loaded;
-    char* m_data = nullptr;
+    std::vector<uint8_t> m_data;
 
     CartridgeHeader m_header;
     std::string m_new_license_code;

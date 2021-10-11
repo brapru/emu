@@ -1,4 +1,5 @@
 #include <Gameboy.h>
+#include <Utils/File.h>
 #include <Utils/Format.h>
 
 #include <iostream>
@@ -19,7 +20,13 @@ int main(int argc, char** argv)
 
     std::string rom_file = argv[1];
 
-    auto vm = std::make_unique<Gameboy>(rom_file);
+    auto rom_data = read_rom_into_vector(rom_file);
+    if (rom_data.empty()) {
+        outln("Failed to load the rom data from file: {}", rom_file);
+        exit(1);
+    }
+
+    auto vm = std::make_unique<Gameboy>(rom_data);
     if (!vm) {
         outln("Failed to initialize the Gameboy.");
         exit(1);

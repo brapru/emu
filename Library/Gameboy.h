@@ -8,7 +8,7 @@
 
 class Gameboy {
 public:
-    Gameboy(std::string rom_file);
+    Gameboy(std::vector<uint8_t> rom_data);
 
     void run();
 

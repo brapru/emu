@@ -5,28 +5,10 @@
 #include <Utils/Constants.h>
 #include <Utils/Format.h>
 
-Cartridge::Cartridge(std::string const& filename)
+Cartridge::Cartridge(std::vector<uint8_t> rom_data)
+    : m_data(rom_data)
 {
-    std::streampos rom_file_size;
-    std::ifstream rom_file(filename, std::ios::binary);
-
-    if (!rom_file) {
-        outln("Could not load rom file: {}", filename);
-        m_is_loaded = false;
-        exit(1);
-    }
-
-    rom_file.seekg(0, std::ios::end);
-    rom_file_size = rom_file.tellg();
-    rom_file.seekg(0, std::ios::beg);
-
-    m_data = new char[rom_file_size];
-    rom_file.read(m_data, rom_file_size);
-    rom_file.close();
-
-    outln("Loaded {} bytes from ROM file: {}", rom_file_size, filename);
     m_is_loaded = true;
-
     initialize_header();
 }
 
