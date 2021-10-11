@@ -1,3 +1,3 @@
-add_executable (gbc++ main.cpp)
+add_executable (emu main.cpp)
 
-target_link_libraries (gbc++ LINK_PUBLIC emulator)
+target_link_libraries (emu LINK_PUBLIC libemu)
