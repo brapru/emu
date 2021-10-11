@@ -12,7 +12,7 @@ file(COPY Roms/cpu_instrs.gb DESTINATION Roms)
 
 enable_testing()
 
-add_executable (test-gbc++ TestCartridge.cpp TestRegister.cpp)
+add_executable (test-gbc++ TestCartridge.cpp)
 target_link_libraries (test-gbc++ LINK_PUBLIC emulator gtest_main)
 
 include(GoogleTest)
