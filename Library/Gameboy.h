@@ -3,6 +3,8 @@
 #include <Cartridge.h>
 #include <MMU.h>
 
+#include <memory>
+
 class Gameboy {
 public:
     Gameboy() {};
