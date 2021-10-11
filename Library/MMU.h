@@ -2,6 +2,8 @@
 
 #include <Cartridge.h>
 
+#include <vector>
+
 class MMU {
 public:
     MMU(Cartridge& cartridge);
@@ -10,5 +12,9 @@ public:
     void write(uint16_t const address, uint8_t const value);
 
 private:
+    uint8_t memory_read(uint16_t const address);
+    void memory_write(uint16_t const address, uint8_t const value);
+
     Cartridge& m_cartridge;
+    std::vector<uint8_t> m_memory = std::vector<uint8_t>(0x10000);
 };
