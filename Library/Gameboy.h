@@ -7,8 +7,7 @@
 
 class Gameboy {
 public:
-    Gameboy() {};
-    static std::unique_ptr<Gameboy> initialize(std::string rom_file);
+    Gameboy(std::string rom_file);
 
     void run();
 

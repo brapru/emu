@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 
     std::string rom_file = argv[1];
 
-    auto vm = Gameboy::initialize(rom_file);
+    auto vm = std::make_unique<Gameboy>(rom_file);
     if (!vm) {
         outln("Failed to initialize the Gameboy.");
         exit(1);
