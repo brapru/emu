@@ -12,6 +12,12 @@ void CPU::instruction_di(void)
     m_interrupt_master_enable = false;
 }
 
+void CPU::instruction_ld(WordRegister& reg)
+{
+    auto value = CPU::fetch_word();
+    reg.set(value);
+}
+
 void CPU::instruction_ld_sp(void)
 {
     auto address = CPU::fetch_word();
@@ -62,6 +68,10 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x00:
         instruction_nop();
         break;
+    case 0x21: {
+        instruction_ld(m_hl);
+        break;
+    }
     case 0x31: {
         instruction_ld_sp();
         break;
