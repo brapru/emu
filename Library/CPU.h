@@ -15,6 +15,8 @@ public:
     uint16_t fetch_word();
 
 private:
+    void execute_instruction(uint8_t opcode);
+
     MMU& m_mmu;
 
     WordRegister m_pc = WordRegister(0x0100);

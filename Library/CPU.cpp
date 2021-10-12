@@ -22,38 +22,7 @@ void CPU::cycle()
         m_pc.value() - 1,
         opcode);
 
-    switch (opcode) {
-    case 0x00:
-        instruction_nop();
-        break;
-    case 0x31: {
-        instruction_ld_sp();
-        break;
-    }
-    case 0xAF: {
-        instruction_xor();
-        break;
-    }
-    case 0x3E: {
-        instruction_ld_reg(m_a);
-        break;
-    }
-    case 0xEA: {
-        instruction_ld_reg_to_addr(m_a);
-        break;
-    }
-    case 0xc3: {
-        instruction_jp();
-        break;
-    }
-    case 0xF3: {
-        instruction_di();
-        break;
-    }
-    default:
-        outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
-        exit(1);
-    }
+    execute_instruction(opcode);
 
     outln("SP: 0x{:02x}, AB: 0x{:02X}{:02X}, CD: 0x{:02X}{:02X}, HL: 0x{:02X}{:02X}, Flag: {:08B}",
         m_sp.value(),
