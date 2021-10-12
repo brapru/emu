@@ -19,6 +19,13 @@ void CPU::instruction_ld_sp(void)
     m_sp.set(address);
 }
 
+void CPU::instruction_ld_reg(ByteRegister& reg)
+{
+    auto value = CPU::fetch_byte();
+    out("LD A, 0x{:02X} ", value);
+    reg.set(value);
+}
+
 void CPU::instruction_ld_reg_to_addr(ByteRegister& reg)
 {
     auto address = CPU::fetch_word();

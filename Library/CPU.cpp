@@ -34,6 +34,10 @@ void CPU::cycle()
         instruction_xor();
         break;
     }
+    case 0x3E: {
+        instruction_ld_reg(m_a);
+        break;
+    }
     case 0xEA: {
         instruction_ld_reg_to_addr(m_a);
         break;
@@ -51,11 +55,14 @@ void CPU::cycle()
         exit(1);
     }
 
-    outln("SP: 0x{:02x}, A: 0x{:02X}, B: 0x{:02X}, C: 0x{:02X}, Flag: {:08B}",
+    outln("SP: 0x{:02x}, AB: 0x{:02X}{:02X}, CD: 0x{:02X}{:02X}, HL: 0x{:02X}{:02X}, Flag: {:08B}",
         m_sp.value(),
         m_a.value(),
         m_b.value(),
         m_c.value(),
+        m_d.value(),
+        m_h.value(),
+        m_l.value(),
         m_flags.value());
 }
 

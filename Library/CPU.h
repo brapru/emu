@@ -39,6 +39,7 @@ private:
     // Instruction.cpp
     void instruction_nop(void);
     void instruction_ld_sp(void);
+    void instruction_ld_reg(ByteRegister& reg);
     void instruction_ld_reg_to_addr(ByteRegister& reg);
     void instruction_di(void);
     void instruction_jp(void);
