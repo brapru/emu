@@ -72,6 +72,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x00:
         instruction_nop();
         break;
+    case 0x0E:
+        instruction_ld(m_c);
+        break;
     case 0x11:
         instruction_ld(m_de);
         break;
