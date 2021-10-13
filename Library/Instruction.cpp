@@ -18,14 +18,7 @@ void CPU::instruction_ld(WordRegister& reg)
     reg.set(value);
 }
 
-void CPU::instruction_ld_sp(void)
-{
-    auto address = CPU::fetch_word();
-    out("LD SP 0x{:04X} ", address);
-    m_sp.set(address);
-}
-
-void CPU::instruction_ld_reg(ByteRegister& reg)
+void CPU::instruction_ld(ByteRegister& reg)
 {
     auto value = CPU::fetch_byte();
     out("LD A, 0x{:02X} ", value);
@@ -73,7 +66,7 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     }
     case 0x31: {
-        instruction_ld_sp();
+        instruction_ld(m_sp);
         break;
     }
     case 0xAF: {
@@ -81,7 +74,7 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     }
     case 0x3E: {
-        instruction_ld_reg(m_a);
+        instruction_ld(m_a);
         break;
     }
     case 0xEA: {
