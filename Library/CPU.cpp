@@ -4,6 +4,10 @@
 
 CPU::CPU(MMU& mmu)
     : m_mmu(mmu)
+    , m_af(m_a, m_f)
+    , m_bc(m_b, m_c)
+    , m_de(m_d, m_e)
+    , m_hl(m_h, m_l)
 {
 }
 
@@ -24,12 +28,11 @@ void CPU::cycle()
 
     execute_instruction(opcode);
 
-    outln("SP: 0x{:02x}, AB: 0x{:02X}{:02X}, CD: 0x{:02X}{:02X}, HL: 0x{:02X}, Flag: {:08B}",
+    outln("SP: 0x{:02x}, AF: 0x{:02X}, BC: 0x{:02X}, DE: 0x{:02X}, HL: 0x{:02X}, Flag: {:08B}",
         m_sp.value(),
-        m_a.value(),
-        m_b.value(),
-        m_c.value(),
-        m_d.value(),
+        m_af.value(),
+        m_bc.value(),
+        m_de.value(),
         m_hl.value(),
         m_f.value());
 }

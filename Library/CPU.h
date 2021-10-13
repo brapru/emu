@@ -21,10 +21,12 @@ private:
 
     WordRegister m_pc = WordRegister(0x0100);
     WordRegister m_sp = WordRegister(0xFFFE);
-    WordRegister m_af;
-    WordRegister m_bc;
-    WordRegister m_de;
-    WordRegister m_hl;
+
+    WholeRegister m_af;
+    WholeRegister m_bc;
+    WholeRegister m_de;
+    WholeRegister m_hl;
+
     ByteRegister m_a;
     ByteRegister m_b;
     ByteRegister m_c;
@@ -41,6 +43,7 @@ private:
     // Instruction.cpp
     void instruction_nop(void);
     void instruction_ld(WordRegister& reg);
+    void instruction_ld(WholeRegister& reg);
     void instruction_ld(ByteRegister& reg);
     void instruction_ld(ByteRegister& reg, ByteRegister& from_reg);
     void instruction_ld_reg_to_addr(ByteRegister& reg);
