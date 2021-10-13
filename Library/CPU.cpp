@@ -9,6 +9,11 @@ CPU::CPU(MMU& mmu)
     , m_de(m_d, m_e)
     , m_hl(m_h, m_l)
 {
+    m_f.set_zero_flag(true);
+    if (m_mmu.valid_cartridge()) {
+        m_f.set_flag_carry(true);
+        m_f.set_half_carry_flag(true);
+    }
 }
 
 /*

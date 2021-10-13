@@ -33,6 +33,8 @@ public:
     uint8_t rom_size() { return 32 << m_header.rom_size; }
     std::string ram_size() { return m_ram_size; }
 
+    bool is_valid_checksum() { return m_is_valid_checksum; }
+
 private:
     bool m_is_loaded;
     std::vector<uint8_t> m_data;
@@ -41,6 +43,8 @@ private:
     std::string m_new_license_code;
     std::string m_type;
     std::string m_ram_size;
+
+    bool m_is_valid_checksum;
 
     void initialize_header();
 };

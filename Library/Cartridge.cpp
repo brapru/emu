@@ -48,6 +48,9 @@ void Cartridge::initialize_header()
         checksum = checksum - m_data[i] - 1;
     }
 
+    if (checksum & 0xFF)
+        m_is_valid_checksum = true;
+
     outln("Cartridge Header Information:");
     outln("\t title: {}", m_header.title);
     outln("\t new_license_code: {} - {}", m_header.new_license_code, new_license_code());
