@@ -20,3 +20,4 @@ build/
 cmake-build-debug/
 
 Build/
+Tests/BGB
