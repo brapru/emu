@@ -18,6 +18,12 @@ void CPU::instruction_ld(WordRegister& reg)
     reg.set(value);
 }
 
+void CPU::instruction_ld(WholeRegister& reg)
+{
+    auto value = CPU::fetch_word();
+    reg.set(value);
+}
+
 void CPU::instruction_ld(ByteRegister& reg)
 {
     auto value = CPU::fetch_byte();
