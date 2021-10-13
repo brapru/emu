@@ -49,6 +49,7 @@ private:
     void instruction_ld(ByteRegister& reg, ByteRegister& from_reg);
     void instruction_ld_reg_to_addr(ByteRegister& reg);
     void instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg);
+    void instruction_inc(ByteRegister& reg);
     void instruction_di(void);
     void instruction_jp(void);
     void instruction_xor(void);
