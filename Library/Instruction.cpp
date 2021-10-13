@@ -66,38 +66,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x00:
         instruction_nop();
         break;
-    case 0x21: {
+    case 0x21:
         instruction_ld(m_hl);
         break;
-    }
-    case 0x31: {
+    case 0x31:
         instruction_ld(m_sp);
         break;
-    }
-    case 0x47: {
+    case 0x47:
         instruction_ld(m_b, m_a);
         break;
-    }
-    case 0xAF: {
+    case 0xAF:
         instruction_xor();
         break;
-    }
-    case 0x3E: {
+    case 0x3E:
         instruction_ld(m_a);
         break;
-    }
-    case 0xEA: {
+    case 0xEA:
         instruction_ld_reg_to_addr(m_a);
         break;
-    }
-    case 0xc3: {
+    case 0xc3:
         instruction_jp();
         break;
-    }
-    case 0xF3: {
+    case 0xF3:
         instruction_di();
         break;
-    }
     default:
         outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
         exit(1);
