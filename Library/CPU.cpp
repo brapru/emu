@@ -31,7 +31,7 @@ void CPU::cycle()
         m_c.value(),
         m_d.value(),
         m_hl.value(),
-        m_flags.value());
+        m_f.value());
 }
 
 uint8_t CPU::fetch_byte()

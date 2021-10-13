@@ -34,7 +34,7 @@ private:
     ByteRegister m_l;
 
     // TODO: Implement Flag Registers
-    FlagRegister m_flags;
+    FlagRegister m_f;
 
     bool m_interrupt_master_enable;
 
