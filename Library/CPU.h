@@ -27,13 +27,13 @@ private:
     WholeRegister m_de;
     WholeRegister m_hl;
 
-    ByteRegister m_a;
-    ByteRegister m_b;
-    ByteRegister m_c;
-    ByteRegister m_d;
-    ByteRegister m_e;
-    ByteRegister m_h;
-    ByteRegister m_l;
+    ByteRegister m_a = ByteRegister(0x01);
+    ByteRegister m_b = ByteRegister(0x00);
+    ByteRegister m_c = ByteRegister(0x13);
+    ByteRegister m_d = ByteRegister(0x00);
+    ByteRegister m_e = ByteRegister(0xD8);
+    ByteRegister m_h = ByteRegister(0x01);
+    ByteRegister m_l = ByteRegister(0x4D);
 
     // TODO: Implement Flag Registers
     FlagRegister m_f;
