@@ -24,6 +24,13 @@ void CPU::instruction_ld(WholeRegister& reg)
     reg.set(value);
 }
 
+void CPU::instruction_ld_inc(WholeRegister& reg)
+{
+    auto value = m_mmu.read(reg.value());
+    m_a.set(value);
+    reg.increment();
+}
+
 void CPU::instruction_ld(ByteRegister& reg)
 {
     auto value = CPU::fetch_byte();
@@ -80,6 +87,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x21:
         instruction_ld(m_hl);
+        break;
+    case 0x2A:
+        instruction_ld_inc(m_hl);
         break;
     case 0x31:
         instruction_ld(m_sp);
