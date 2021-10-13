@@ -66,6 +66,8 @@ public:
         m_hi = ((value >> 8) & 0xFF);
     }
 
+    void increment() { set(value() + 0x1); }
+
 private:
     ByteRegister& m_hi;
     ByteRegister& m_lo;
