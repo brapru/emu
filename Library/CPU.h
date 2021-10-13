@@ -42,6 +42,7 @@ private:
     void instruction_nop(void);
     void instruction_ld(WordRegister& reg);
     void instruction_ld(ByteRegister& reg);
+    void instruction_ld(ByteRegister& reg, ByteRegister& from_reg);
     void instruction_ld_reg_to_addr(ByteRegister& reg);
     void instruction_di(void);
     void instruction_jp(void);
