@@ -3,21 +3,20 @@
 
 void FlagRegister::set_zero_flag(bool set)
 {
-    if (set)
-        bitset(m_value, 7);
+    set ? bitset(m_value, 7) : bitclear(m_value, 7);
 }
 
 void FlagRegister::set_subtraction_flag(bool set)
 {
-    // TODO: Implement
+    set ? bitset(m_value, 6) : bitclear(m_value, 6);
 }
 
 void FlagRegister::set_half_carry_flag(bool set)
 {
-    // TODO: Implement
+    set ? bitset(m_value, 5) : bitclear(m_value, 5);
 }
 
 void FlagRegister::set_flag_carry(bool set)
 {
-    // TODO: Implement
+    set ? bitset(m_value, 4) : bitclear(m_value, 4);
 }
