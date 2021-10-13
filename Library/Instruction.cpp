@@ -50,6 +50,12 @@ void CPU::instruction_ld_reg_to_addr(ByteRegister& reg)
     CPU::m_mmu.write(address, reg.value());
 }
 
+void CPU::instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg)
+{
+    auto address = whole_reg.value();
+    CPU::m_mmu.write(address, reg.value());
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
@@ -84,6 +90,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x11:
         instruction_ld(m_de);
+        break;
+    case 0x12:
+        instruction_ld_reg_to_addr(m_de, m_a);
         break;
     case 0x21:
         instruction_ld(m_hl);
