@@ -78,7 +78,7 @@ void CPU::instruction_jr(uint8_t const& opcode)
 
     switch (opcode) {
     case 0x20: // NZ
-        should_jp = m_f.zero_flag();
+        should_jp = !m_f.zero_flag();
         break;
     }
 
