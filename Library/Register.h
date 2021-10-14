@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Utils/Bitwise.h>
+
 #include <stdint.h>
 
 class ByteRegister {
@@ -23,6 +25,11 @@ protected:
 class FlagRegister : public ByteRegister {
 public:
     FlagRegister() = default;
+
+    bool zero_flag() { return checkbit(m_value, 7); }
+    bool subtraction_flag() { return checkbit(m_value, 6); }
+    bool half_carry_flag() { return checkbit(m_value, 5); }
+    bool flag_carry() { return checkbit(m_value, 4); }
 
     void set_zero_flag(bool set);
     void set_subtraction_flag(bool set);
