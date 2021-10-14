@@ -68,6 +68,24 @@ void CPU::instruction_jp(void)
     m_pc.set(address);
 }
 
+void CPU::instruction_jr(uint8_t const& opcode)
+{
+    bool should_jp;
+
+    switch (opcode) {
+    case 0x20: // NZ
+        should_jp = m_f.zero_flag();
+        break;
+    }
+
+    if (should_jp) {
+        auto jumps = static_cast<int8_t>(fetch_byte());
+        m_pc.set(m_pc.value() + static_cast<uint16_t>(jumps));
+    } else {
+        fetch_byte();
+    }
+}
+
 void CPU::instruction_xor(void)
 {
     auto value = fetch_byte();
@@ -101,6 +119,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x1C:
         instruction_inc(m_e);
+        break;
+    case 0x20:
+        instruction_jr(opcode);
         break;
     case 0x21:
         instruction_ld(m_hl);
