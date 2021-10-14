@@ -59,6 +59,10 @@ void CPU::instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg
 void CPU::instruction_inc(ByteRegister& reg)
 {
     reg.increment();
+
+    (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
 void CPU::instruction_jp(void)
