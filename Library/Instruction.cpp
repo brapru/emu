@@ -65,6 +65,15 @@ void CPU::instruction_inc(ByteRegister& reg)
     ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
+void CPU::instruction_dec(ByteRegister& reg)
+{
+    reg.decrement();
+
+    (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(true);
+    ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
@@ -111,6 +120,9 @@ void CPU::execute_instruction(uint8_t opcode)
     switch (opcode) {
     case 0x00:
         instruction_nop();
+        break;
+    case 0x0D:
+        instruction_dec(m_c);
         break;
     case 0x0E:
         instruction_ld(m_c);
