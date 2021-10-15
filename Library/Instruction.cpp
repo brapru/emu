@@ -121,6 +121,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x12:
         instruction_ld_reg_to_addr(m_de, m_a);
         break;
+    case 0x14:
+        instruction_inc(m_d);
+        break;
     case 0x1C:
         instruction_inc(m_e);
         break;
