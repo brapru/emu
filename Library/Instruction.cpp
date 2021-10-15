@@ -154,6 +154,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x47:
         instruction_ld(m_b, m_a);
         break;
+    case 0x78:
+        instruction_ld(m_a, m_b);
+        break;
     case 0xAF:
         instruction_xor();
         break;
