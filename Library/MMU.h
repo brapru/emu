@@ -18,6 +18,8 @@ private:
     uint8_t memory_read(uint16_t const address);
     void memory_write(uint16_t const address, uint8_t const value);
 
+    void io_write(uint16_t const address, uint8_t const value);
+
     Cartridge& m_cartridge;
     Timer& m_timer;
     std::vector<uint8_t> m_memory = std::vector<uint8_t>(0x10000);

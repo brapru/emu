@@ -1,5 +1,6 @@
 #include <Cartridge.h>
 #include <MMU.h>
+#include <Utils/Address.h>
 #include <Utils/Format.h>
 
 MMU::MMU(Cartridge& cartridge, Timer& timer)
@@ -29,6 +30,10 @@ void MMU::write(uint16_t const address, uint8_t const value)
         memory_write(address, value);
         return;
     }
+    if (address < 0xFF80) {
+        io_write(address, value);
+        return;
+    }
 
     outln("MMU write at address 0x:{:2X} not yet implemented", address);
     exit(1);
@@ -42,4 +47,14 @@ uint8_t MMU::memory_read(uint16_t const address)
 void MMU::memory_write(uint16_t const address, uint8_t const value)
 {
     m_memory.at(address) = value;
+}
+
+void MMU::io_write(uint16_t const address, uint8_t const value)
+{
+    if (address_in_range(address, 0xFF04, 0xFF07)) {
+        m_timer.write(address, value);
+    } else {
+        outln("MMU write at address 0x:{:2X} not yet implemented", address);
+        exit(1);
+    }
 }
