@@ -5,7 +5,7 @@
 
 Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     : m_cartridge(rom_data)
-    , m_mmu(m_cartridge)
+    , m_mmu(m_cartridge, m_timer)
     , m_cpu(m_mmu)
 {
     if (!m_cartridge.is_loaded()) {
