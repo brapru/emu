@@ -3,8 +3,9 @@
 #include <Utils/Address.h>
 #include <Utils/Format.h>
 
-MMU::MMU(Cartridge& cartridge, Timer& timer)
+MMU::MMU(Cartridge& cartridge, CPU& cpu, Timer& timer)
     : m_cartridge(cartridge)
+    , m_cpu(cpu)
     , m_timer(timer)
 {
 }

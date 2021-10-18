@@ -5,6 +5,8 @@
 
 #include <stdint.h>
 
+class MMU;
+
 class CPU {
 public:
     CPU(MMU& mmu);

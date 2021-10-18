@@ -1,13 +1,16 @@
 #pragma once
 
+#include <CPU.h>
 #include <Cartridge.h>
 #include <Timer.h>
 
 #include <vector>
 
+class CPU;
+
 class MMU {
 public:
-    MMU(Cartridge& cartridge, Timer& timer);
+    MMU(Cartridge& cartridge, CPU& cpu, Timer& timer);
 
     uint8_t read(uint16_t const address);
     void write(uint16_t const address, uint8_t const value);
@@ -21,6 +24,7 @@ private:
     void io_write(uint16_t const address, uint8_t const value);
 
     Cartridge& m_cartridge;
+    CPU& m_cpu;
     Timer& m_timer;
     std::vector<uint8_t> m_memory = std::vector<uint8_t>(0x10000);
 };
