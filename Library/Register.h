@@ -49,6 +49,9 @@ public:
     void increment() { m_value++; }
     void decrement() { m_value--; }
 
+    uint8_t lo() { return ((m_value >> 0) & 0xFF); }
+    uint8_t hi() { return ((m_value >> 8) & 0xFF); }
+
     uint16_t value() { return m_value; }
 
 private:
