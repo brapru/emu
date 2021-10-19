@@ -43,6 +43,12 @@ void CPU::instruction_ld(ByteRegister& reg, ByteRegister& from_reg)
     reg.set(from_reg.value());
 }
 
+void CPU::instruction_ld(ByteRegister& reg, WholeRegister& from_reg)
+{
+    auto value = m_mmu.read(from_reg.value());
+    reg.set(from_reg.value());
+}
+
 void CPU::instruction_ld_reg_to_addr(ByteRegister& reg)
 {
     auto address = CPU::fetch_word();
@@ -168,8 +174,20 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x47:
         instruction_ld(m_b, m_a);
         break;
+    case 0x7C:
+        instruction_ld(m_a, m_h);
+        break;
+    case 0x7D:
+        instruction_ld(m_a, m_l);
+        break;
     case 0x78:
         instruction_ld(m_a, m_b);
+        break;
+    case 0x7E:
+        instruction_ld(m_a, m_hl);
+        break;
+    case 0x7F:
+        instruction_ld(m_a, m_a);
         break;
     case 0xAF:
         instruction_xor();
