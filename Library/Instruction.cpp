@@ -81,6 +81,13 @@ void CPU::instruction_dec(ByteRegister& reg)
     ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
+void CPU::instruction_call(void)
+{
+    auto address = CPU::fetch_word();
+    stack_push();
+    m_pc.set(address);
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
@@ -169,6 +176,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x3E:
         instruction_ld(m_a);
+        break;
+    case 0xCD:
+        instruction_call();
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
