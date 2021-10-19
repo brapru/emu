@@ -66,6 +66,7 @@ private:
     void instruction_di(void);
     void instruction_call(void);
     void instruction_jp(void);
+    void instruction_jr(void);
     void instruction_jr(uint8_t const& opcode);
     void instruction_xor(void);
 };

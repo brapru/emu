@@ -101,6 +101,12 @@ void CPU::instruction_jp(void)
     m_pc.set(address);
 }
 
+void CPU::instruction_jr(void)
+{
+    auto jumps = static_cast<int8_t>(fetch_byte());
+    m_pc.set(m_pc.value() + static_cast<uint16_t>(jumps));
+}
+
 void CPU::instruction_jr(uint8_t const& opcode)
 {
     bool should_jp;
@@ -167,6 +173,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x16:
         instruction_ld(m_d);
+        break;
+    case 0x18:
+        instruction_jr();
         break;
     case 0x1A:
         instruction_ld(m_a, m_de);
