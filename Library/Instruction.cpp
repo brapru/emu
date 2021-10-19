@@ -174,14 +174,14 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x47:
         instruction_ld(m_b, m_a);
         break;
+    case 0x78:
+        instruction_ld(m_a, m_b);
+        break;
     case 0x7C:
         instruction_ld(m_a, m_h);
         break;
     case 0x7D:
         instruction_ld(m_a, m_l);
-        break;
-    case 0x78:
-        instruction_ld(m_a, m_b);
         break;
     case 0x7E:
         instruction_ld(m_a, m_hl);
