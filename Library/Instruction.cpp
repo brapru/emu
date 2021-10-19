@@ -174,8 +174,38 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x47:
         instruction_ld(m_b, m_a);
         break;
+    case 0x70:
+        instruction_ld_reg_to_addr(m_hl, m_b);
+        break;
+    case 0x71:
+        instruction_ld_reg_to_addr(m_hl, m_c);
+        break;
+    case 0x72:
+        instruction_ld_reg_to_addr(m_hl, m_d);
+        break;
+    case 0x73:
+        instruction_ld_reg_to_addr(m_hl, m_e);
+        break;
+    case 0x74:
+        instruction_ld_reg_to_addr(m_hl, m_h);
+        break;
+    case 0x75:
+        instruction_ld_reg_to_addr(m_hl, m_l);
+        break;
+    case 0x77:
+        instruction_ld_reg_to_addr(m_hl, m_a);
+        break;
     case 0x78:
         instruction_ld(m_a, m_b);
+        break;
+    case 0x79:
+        instruction_ld(m_a, m_c);
+        break;
+    case 0x7A:
+        instruction_ld(m_a, m_d);
+        break;
+    case 0x7B:
+        instruction_ld(m_a, m_e);
         break;
     case 0x7C:
         instruction_ld(m_a, m_h);
