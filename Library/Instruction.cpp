@@ -174,6 +174,54 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x47:
         instruction_ld(m_b, m_a);
         break;
+    case 0x50:
+        instruction_ld(m_d, m_b);
+        break;
+    case 0x51:
+        instruction_ld(m_d, m_c);
+        break;
+    case 0x52:
+        instruction_ld(m_d, m_d);
+        break;
+    case 0x53:
+        instruction_ld(m_d, m_e);
+        break;
+    case 0x54:
+        instruction_ld(m_d, m_h);
+        break;
+    case 0x55:
+        instruction_ld(m_d, m_l);
+        break;
+    case 0x56:
+        instruction_ld(m_d, m_hl);
+        break;
+    case 0x57:
+        instruction_ld(m_d, m_a);
+        break;
+    case 0x58:
+        instruction_ld(m_e, m_b);
+        break;
+    case 0x59:
+        instruction_ld(m_e, m_c);
+        break;
+    case 0x5A:
+        instruction_ld(m_e, m_d);
+        break;
+    case 0x5B:
+        instruction_ld(m_e, m_e);
+        break;
+    case 0x5C:
+        instruction_ld(m_e, m_h);
+        break;
+    case 0x5D:
+        instruction_ld(m_e, m_l);
+        break;
+    case 0x5E:
+        instruction_ld(m_e, m_hl);
+        break;
+    case 0x5F:
+        instruction_ld(m_e, m_a);
+        break;
     case 0x60:
         instruction_ld(m_h, m_b);
         break;
