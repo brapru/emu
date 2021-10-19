@@ -141,6 +141,15 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x00:
         instruction_nop();
         break;
+    case 0x02:
+        instruction_ld_reg_to_addr(m_bc, m_a);
+        break;
+    case 0x06:
+        instruction_ld(m_b);
+        break;
+    case 0x0A:
+        instruction_ld(m_a, m_bc);
+        break;
     case 0x0D:
         instruction_dec(m_c);
         break;
@@ -156,8 +165,17 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x14:
         instruction_inc(m_d);
         break;
+    case 0x16:
+        instruction_ld(m_d);
+        break;
+    case 0x1A:
+        instruction_ld(m_a, m_de);
+        break;
     case 0x1C:
         instruction_inc(m_e);
+        break;
+    case 0x1E:
+        instruction_ld(m_e);
         break;
     case 0x20:
         instruction_jr(opcode);
@@ -165,11 +183,20 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x21:
         instruction_ld(m_hl);
         break;
+    case 0x26:
+        instruction_ld(m_h);
+        break;
     case 0x2A:
         instruction_ld_inc(m_hl);
         break;
+    case 0x2E:
+        instruction_ld(m_l);
+        break;
     case 0x31:
         instruction_ld(m_sp);
+        break;
+    case 0x3E:
+        instruction_ld(m_a);
         break;
     case 0x40:
         instruction_ld(m_b, m_b);
@@ -362,9 +389,6 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xAF:
         instruction_xor();
-        break;
-    case 0x3E:
-        instruction_ld(m_a);
         break;
     case 0xCD:
         instruction_call();
