@@ -35,6 +35,10 @@ void MMU::write(uint16_t const address, uint8_t const value)
         io_write(address, value);
         return;
     }
+    if (address == 0xFFFF) {
+        m_cpu.interrupt_enable().set(value);
+        return;
+    }
 
     outln("MMU write at address 0x:{:2X} not yet implemented", address);
     exit(1);

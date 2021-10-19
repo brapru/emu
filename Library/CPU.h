@@ -17,6 +17,7 @@ public:
     uint16_t fetch_word();
 
     ByteRegister interrupt_flag(void) { return m_interrupt_flag; }
+    ByteRegister interrupt_enable(void) { return m_interrupt_enable; }
 
 private:
     void execute_instruction(uint8_t opcode);
@@ -44,6 +45,7 @@ private:
 
     bool m_interrupt_master_enable;
     ByteRegister m_interrupt_flag;
+    ByteRegister m_interrupt_enable;
 
     // Instruction.cpp
     void instruction_nop(void);
