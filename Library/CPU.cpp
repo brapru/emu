@@ -57,3 +57,22 @@ uint16_t CPU::fetch_word()
 
     return (hi << 8) | lo;
 }
+
+void CPU::stack_push()
+{
+    m_sp.decrement();
+    m_mmu.write(m_sp.value(), m_pc.hi());
+    m_sp.decrement();
+    m_mmu.write(m_sp.value(), m_pc.lo());
+}
+
+void CPU::stack_pop()
+{
+    m_sp.increment();
+    auto lo = m_mmu.read(m_sp.value());
+    m_sp.increment();
+    auto hi = m_mmu.read(m_sp.value());
+
+    auto value = (hi << 8) | (lo & 0xFF);
+    m_pc.set(value);
+}
