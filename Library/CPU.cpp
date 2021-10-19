@@ -66,13 +66,12 @@ void CPU::stack_push()
     m_mmu.write(m_sp.value(), m_pc.lo());
 }
 
-void CPU::stack_pop()
+uint16_t CPU::stack_pop()
 {
-    m_sp.increment();
     auto lo = m_mmu.read(m_sp.value());
     m_sp.increment();
     auto hi = m_mmu.read(m_sp.value());
+    m_sp.increment();
 
-    auto value = (hi << 8) | (lo & 0xFF);
-    m_pc.set(value);
+    return (hi << 8) | (lo & 0xFF);
 }

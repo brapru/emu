@@ -20,7 +20,7 @@ public:
     ByteRegister interrupt_enable(void) { return m_interrupt_enable; }
 
     void stack_push();
-    void stack_pop();
+    uint16_t stack_pop();
 
 private:
     void execute_instruction(uint8_t opcode);
