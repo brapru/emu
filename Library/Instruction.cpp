@@ -94,6 +94,12 @@ void CPU::instruction_call(void)
     m_pc.set(address);
 }
 
+void CPU::instruction_ret(void)
+{
+    auto address = stack_pop();
+    m_pc.set(address);
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
@@ -401,6 +407,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xCD:
         instruction_call();
+        break;
+    case 0xC9:
+        instruction_ret();
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
