@@ -410,11 +410,17 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xAF:
         instruction_xor();
         break;
+    case 0xC5:
+        instruction_push(m_bc);
+        break;
     case 0xCD:
         instruction_call();
         break;
     case 0xC9:
         instruction_ret();
+        break;
+    case 0xD5:
+        instruction_push(m_de);
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
@@ -430,6 +436,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xF3:
         instruction_di();
+        break;
+    case 0xF5:
+        instruction_push(m_af);
         break;
     default:
         outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
