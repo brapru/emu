@@ -78,6 +78,16 @@ void CPU::instruction_inc(ByteRegister& reg)
     ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
+void CPU::instruction_inc(WholeRegister& reg)
+{
+    reg.increment();
+}
+
+void CPU::instruction_inc(WordRegister& reg)
+{
+    reg.increment();
+}
+
 void CPU::instruction_dec(ByteRegister& reg)
 {
     reg.decrement();
@@ -167,6 +177,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x02:
         instruction_ld_reg_to_addr(m_bc, m_a);
         break;
+    case 0x03:
+        instruction_inc(m_bc);
+        break;
     case 0x06:
         instruction_ld(m_b);
         break;
@@ -184,6 +197,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x12:
         instruction_ld_reg_to_addr(m_de, m_a);
+        break;
+    case 0x13:
+        instruction_inc(m_de);
         break;
     case 0x14:
         instruction_inc(m_d);
@@ -209,6 +225,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x21:
         instruction_ld(m_hl);
         break;
+    case 0x23:
+        instruction_inc(m_hl);
+        break;
     case 0x26:
         instruction_ld(m_h);
         break;
@@ -220,6 +239,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x31:
         instruction_ld(m_sp);
+        break;
+    case 0x33:
+        instruction_inc(m_sp);
         break;
     case 0x3E:
         instruction_ld(m_a);
