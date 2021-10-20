@@ -90,8 +90,13 @@ void CPU::instruction_dec(ByteRegister& reg)
 void CPU::instruction_call(void)
 {
     auto address = CPU::fetch_word();
-    stack_push();
+    stack_push(m_pc);
     m_pc.set(address);
+}
+
+void CPU::instruction_push(WholeRegister& reg)
+{
+    stack_push(reg);
 }
 
 void CPU::instruction_ret(void)
@@ -413,6 +418,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
+        break;
+    case 0xE5:
+        instruction_push(m_hl);
         break;
     case 0xEA:
         instruction_ld_reg_to_addr(m_a);
