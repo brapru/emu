@@ -441,6 +441,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xC1:
         instruction_pop(m_bc);
         break;
+    case 0xC3:
+        instruction_jp();
+        break;
     case 0xC5:
         instruction_push(m_bc);
         break;
@@ -467,9 +470,6 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xEA:
         instruction_ld_reg_to_addr(m_a);
-        break;
-    case 0xc3:
-        instruction_jp();
         break;
     case 0xF1:
         instruction_pop(m_af);
