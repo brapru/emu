@@ -35,6 +35,10 @@ void MMU::write(uint16_t const address, uint8_t const value)
         io_write(address, value);
         return;
     }
+    if (address_in_range(address, 0xFF80, 0xFFFE)) {
+        memory_write(address, value);
+        return;
+    }
     if (address == 0xFFFF) {
         m_cpu.interrupt_enable().set(value);
         return;
