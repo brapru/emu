@@ -174,6 +174,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x00:
         instruction_nop();
         break;
+    case 0x01:
+        instruction_ld(m_bc);
+        break;
     case 0x02:
         instruction_ld_reg_to_addr(m_bc, m_a);
         break;
