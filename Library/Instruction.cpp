@@ -99,6 +99,12 @@ void CPU::instruction_push(WholeRegister& reg)
     stack_push(reg);
 }
 
+void CPU::instruction_pop(WholeRegister& reg)
+{
+    auto value = stack_pop();
+    reg.set(value);
+}
+
 void CPU::instruction_ret(void)
 {
     auto address = stack_pop();
@@ -424,6 +430,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
+        break;
+    case 0xE1:
+        instruction_pop(m_hl);
         break;
     case 0xE5:
         instruction_push(m_hl);

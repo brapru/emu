@@ -68,6 +68,7 @@ private:
     void instruction_call(void);
     void instruction_ret(void);
     void instruction_push(WholeRegister& reg);
+    void instruction_pop(WholeRegister& reg);
     void instruction_jp(void);
     void instruction_jr(void);
     void instruction_jr(uint8_t const& opcode);
