@@ -58,12 +58,20 @@ uint16_t CPU::fetch_word()
     return (hi << 8) | lo;
 }
 
-void CPU::stack_push()
+void CPU::stack_push(WholeRegister& reg)
 {
     m_sp.decrement();
-    m_mmu.write(m_sp.value(), m_pc.hi());
+    m_mmu.write(m_sp.value(), reg.hi());
     m_sp.decrement();
-    m_mmu.write(m_sp.value(), m_pc.lo());
+    m_mmu.write(m_sp.value(), reg.lo());
+}
+
+void CPU::stack_push(WordRegister& reg)
+{
+    m_sp.decrement();
+    m_mmu.write(m_sp.value(), reg.hi());
+    m_sp.decrement();
+    m_mmu.write(m_sp.value(), reg.lo());
 }
 
 uint16_t CPU::stack_pop()

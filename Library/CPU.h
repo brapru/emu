@@ -19,7 +19,8 @@ public:
     ByteRegister interrupt_flag(void) { return m_interrupt_flag; }
     ByteRegister interrupt_enable(void) { return m_interrupt_enable; }
 
-    void stack_push();
+    void stack_push(WordRegister& reg);
+    void stack_push(WholeRegister& reg);
     uint16_t stack_pop();
 
 private:
