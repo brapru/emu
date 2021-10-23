@@ -1,4 +1,5 @@
 #include <CPU.h>
+#include <Utils/Bitwise.h>
 #include <Utils/Format.h>
 
 void CPU::instruction_nop(void)
@@ -150,6 +151,25 @@ void CPU::instruction_jr(uint8_t const& opcode)
     } else {
         fetch_byte();
     }
+}
+
+void CPU::instruction_or(ByteRegister& reg)
+{
+    auto value = reg.value() | m_a.value();
+
+    m_a.set(value);
+
+    (value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+}
+
+void CPU::instruction_or(WholeRegister& reg)
+{
+    auto value = m_mmu.read(reg.value());
+    auto or_value = value | m_a.value();
+
+    m_a.set(or_value);
+
+    (or_value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
 }
 
 void CPU::instruction_xor(void)
@@ -440,6 +460,30 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xAF:
         instruction_xor();
+        break;
+    case 0xB0:
+        instruction_or(m_b);
+        break;
+    case 0xB1:
+        instruction_or(m_c);
+        break;
+    case 0xB2:
+        instruction_or(m_d);
+        break;
+    case 0xB3:
+        instruction_or(m_e);
+        break;
+    case 0xB4:
+        instruction_or(m_h);
+        break;
+    case 0xB5:
+        instruction_or(m_l);
+        break;
+    case 0xB6:
+        instruction_or(m_hl);
+        break;
+    case 0xB7:
+        instruction_or(m_a);
         break;
     case 0xC1:
         instruction_pop(m_bc);

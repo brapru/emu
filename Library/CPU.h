@@ -75,4 +75,6 @@ private:
     void instruction_jr(void);
     void instruction_jr(uint8_t const& opcode);
     void instruction_xor(void);
+    void instruction_or(ByteRegister& reg);
+    void instruction_or(WholeRegister& reg);
 };
