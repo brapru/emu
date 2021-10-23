@@ -73,6 +73,7 @@ private:
     void instruction_cp(WholeRegister& reg);
     void instruction_di(void);
     void instruction_call(void);
+    void instruction_conditional_call(uint8_t const& opcode);
     void instruction_ret(void);
     void instruction_push(WholeRegister& reg);
     void instruction_pop(WholeRegister& reg);

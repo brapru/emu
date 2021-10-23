@@ -147,13 +147,6 @@ void CPU::instruction_cp(WholeRegister& reg)
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
-void CPU::instruction_call(void)
-{
-    auto address = CPU::fetch_word();
-    stack_push(m_pc);
-    m_pc.set(address);
-}
-
 void CPU::instruction_push(WholeRegister& reg)
 {
     stack_push(reg);
@@ -207,8 +200,30 @@ void CPU::instruction_jr(uint8_t const& opcode)
         auto jumps = static_cast<int8_t>(fetch_byte());
         m_pc.set(m_pc.value() + static_cast<uint16_t>(jumps));
     } else {
-        fetch_byte();
+        CPU::fetch_byte();
     }
+}
+void CPU::instruction_call(void)
+{
+    auto address = CPU::fetch_word();
+    stack_push(m_pc);
+    m_pc.set(address);
+}
+
+void CPU::instruction_conditional_call(uint8_t const& opcode)
+{
+    bool should_call;
+
+    switch (opcode) {
+    case 0xC4: // NZ
+        should_call = !m_f.zero_flag();
+        break;
+    }
+
+    if (should_call)
+        instruction_call();
+    else
+        CPU::fetch_word();
 }
 
 void CPU::instruction_or(ByteRegister& reg)
@@ -649,6 +664,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xC3:
         instruction_jp();
+        break;
+    case 0xC4:
+        instruction_conditional_call(opcode);
         break;
     case 0xC5:
         instruction_push(m_bc);
