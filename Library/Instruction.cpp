@@ -93,7 +93,19 @@ void CPU::instruction_inc(ByteRegister& reg)
 
     (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
-    ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((reg.value() & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+}
+
+void CPU::instruction_inc_hl_address()
+{
+    auto value = m_mmu.read(m_hl.value());
+    auto increased = value++;
+
+    m_mmu.write(m_hl.value(), increased);
+
+    (increased == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    ((increased & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
 void CPU::instruction_inc(WholeRegister& reg)
@@ -112,7 +124,7 @@ void CPU::instruction_dec(ByteRegister& reg)
 
     (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((reg.value() & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
 void CPU::instruction_cp()
@@ -122,7 +134,7 @@ void CPU::instruction_cp()
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((result & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
@@ -132,7 +144,7 @@ void CPU::instruction_cp(ByteRegister& reg)
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((result & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
@@ -143,7 +155,7 @@ void CPU::instruction_cp(WholeRegister& reg)
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((result & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
@@ -320,11 +332,17 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x03:
         instruction_inc(m_bc);
         break;
+    case 0x04:
+        instruction_inc(m_b);
+        break;
     case 0x06:
         instruction_ld(m_b);
         break;
     case 0x0A:
         instruction_ld(m_a, m_bc);
+        break;
+    case 0x0C:
+        instruction_inc(m_c);
         break;
     case 0x0D:
         instruction_dec(m_c);
@@ -368,6 +386,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x23:
         instruction_inc(m_hl);
         break;
+    case 0x24:
+        instruction_inc(m_h);
+        break;
     case 0x26:
         instruction_ld(m_h);
         break;
@@ -376,6 +397,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x2A:
         instruction_ld_inc(m_hl);
+        break;
+    case 0x2C:
+        instruction_inc(m_l);
         break;
     case 0x2E:
         instruction_ld(m_l);
@@ -389,8 +413,14 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x33:
         instruction_inc(m_sp);
         break;
+    case 0x34:
+        instruction_inc_hl_address();
+        break;
     case 0x38:
         instruction_jr(opcode);
+        break;
+    case 0x3C:
+        instruction_inc(m_a);
         break;
     case 0x3E:
         instruction_ld(m_a);
