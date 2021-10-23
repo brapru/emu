@@ -70,6 +70,15 @@ void CPU::instruction_ldh_a_to_memory()
     CPU::m_mmu.write(address, m_a.value());
 }
 
+void CPU::instruction_ldh_memory_to_a()
+{
+    auto lo = fetch_byte();
+    auto address = ((uint16_t)0xFF << 8) | lo;
+
+    auto value = CPU::m_mmu.read(address);
+    m_a.set(value);
+}
+
 void CPU::instruction_inc(ByteRegister& reg)
 {
     reg.increment();
@@ -541,6 +550,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xEA:
         instruction_ld_reg_to_addr(m_a);
+        break;
+    case 0xF0:
+        instruction_ldh_memory_to_a();
         break;
     case 0xF1:
         instruction_pop(m_af);

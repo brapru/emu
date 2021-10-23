@@ -62,6 +62,7 @@ private:
     void instruction_ld_reg_to_addr(ByteRegister& reg);
     void instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg);
     void instruction_ldh_a_to_memory();
+    void instruction_ldh_memory_to_a();
     void instruction_inc(ByteRegister& reg);
     void instruction_inc(WholeRegister& reg);
     void instruction_inc(WordRegister& reg);
