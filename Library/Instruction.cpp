@@ -169,6 +169,9 @@ void CPU::instruction_or(ByteRegister& reg)
     m_a.set(value);
 
     (value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
 }
 
 void CPU::instruction_or(WholeRegister& reg)
@@ -179,6 +182,9 @@ void CPU::instruction_or(WholeRegister& reg)
     m_a.set(or_value);
 
     (or_value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
 }
 
 void CPU::instruction_xor(void)
