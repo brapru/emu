@@ -143,6 +143,15 @@ void CPU::instruction_jr(uint8_t const& opcode)
     case 0x20: // NZ
         should_jp = !m_f.zero_flag();
         break;
+    case 0x28: // Z
+        should_jp = m_f.zero_flag();
+        break;
+    case 0x30: // NC
+        should_jp = !m_f.flag_carry();
+        break;
+    case 0x38: // C
+        should_jp = m_f.flag_carry();
+        break;
     }
 
     if (should_jp) {
@@ -254,17 +263,26 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x26:
         instruction_ld(m_h);
         break;
+    case 0x28:
+        instruction_jr(opcode);
+        break;
     case 0x2A:
         instruction_ld_inc(m_hl);
         break;
     case 0x2E:
         instruction_ld(m_l);
         break;
+    case 0x30:
+        instruction_jr(opcode);
+        break;
     case 0x31:
         instruction_ld(m_sp);
         break;
     case 0x33:
         instruction_inc(m_sp);
+        break;
+    case 0x38:
+        instruction_jr(opcode);
         break;
     case 0x3E:
         instruction_ld(m_a);
