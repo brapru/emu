@@ -7,6 +7,7 @@ public:
     Timer() {};
 
     void write(uint16_t address, uint8_t value);
+    uint8_t read(uint16_t address);
 
     ByteRegister divider() { return m_divider; }
     ByteRegister counter() { return m_counter; }
