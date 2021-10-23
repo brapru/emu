@@ -22,6 +22,7 @@ private:
     void memory_write(uint16_t const address, uint8_t const value);
 
     void io_write(uint16_t const address, uint8_t const value);
+    uint8_t io_read(uint16_t const address);
 
     Cartridge& m_cartridge;
     CPU& m_cpu;
