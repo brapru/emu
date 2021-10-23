@@ -50,6 +50,14 @@ void CPU::instruction_ld(ByteRegister& reg, WholeRegister& from_reg)
     reg.set(from_reg.value());
 }
 
+void CPU::instruction_ld_addr_to_reg(ByteRegister& reg)
+{
+    auto address = CPU::fetch_word();
+    auto value = m_mmu.read(address);
+
+    reg.set(value);
+}
+
 void CPU::instruction_ld_reg_to_addr(ByteRegister& reg)
 {
     auto address = CPU::fetch_word();
@@ -618,6 +626,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xF5:
         instruction_push(m_af);
+        break;
+    case 0xFA:
+        instruction_ld_addr_to_reg(m_a);
         break;
     case 0xFE:
         instruction_cp();
