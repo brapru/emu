@@ -67,6 +67,9 @@ private:
     void instruction_inc(WholeRegister& reg);
     void instruction_inc(WordRegister& reg);
     void instruction_dec(ByteRegister& reg);
+    void instruction_cp();
+    void instruction_cp(ByteRegister& reg);
+    void instruction_cp(WholeRegister& reg);
     void instruction_di(void);
     void instruction_call(void);
     void instruction_ret(void);

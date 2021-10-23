@@ -107,6 +107,38 @@ void CPU::instruction_dec(ByteRegister& reg)
     ((reg.value() & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
+void CPU::instruction_cp()
+{
+    auto operand = fetch_byte();
+    auto result = static_cast<int8_t>(m_a.value() - operand);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(true);
+    ((result & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_cp(ByteRegister& reg)
+{
+    auto result = static_cast<int8_t>(m_a.value() - reg.value());
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(true);
+    ((result & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_cp(WholeRegister& reg)
+{
+    auto value = m_mmu.read(reg.value());
+    auto result = static_cast<int8_t>(m_a.value() - value);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(true);
+    ((result & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
 void CPU::instruction_call(void)
 {
     auto address = CPU::fetch_word();
@@ -518,6 +550,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xB7:
         instruction_or(m_a);
         break;
+    case 0xB8:
+        instruction_cp(m_b);
+        break;
+    case 0xB9:
+        instruction_cp(m_c);
+        break;
+    case 0xBA:
+        instruction_cp(m_d);
+        break;
+    case 0xBB:
+        instruction_cp(m_e);
+        break;
+    case 0xBC:
+        instruction_cp(m_h);
+        break;
+    case 0xBD:
+        instruction_cp(m_l);
+        break;
+    case 0xBE:
+        instruction_cp(m_hl);
+        break;
+    case 0xBF:
+        instruction_cp(m_a);
+        break;
     case 0xC1:
         instruction_pop(m_bc);
         break;
@@ -562,6 +618,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xF5:
         instruction_push(m_af);
+        break;
+    case 0xFE:
+        instruction_cp();
         break;
     default:
         outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
