@@ -251,6 +251,44 @@ void CPU::instruction_xor(void)
     m_a.set(result);
 }
 
+void CPU::instruction_and(void)
+{
+    auto value = fetch_byte();
+    auto result = value & m_a.value();
+
+    m_a.set(result);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(true);
+    m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_and(ByteRegister& reg)
+{
+    auto result = reg.value() & m_a.value();
+
+    m_a.set(result);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(true);
+    m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_and(WholeRegister& reg)
+{
+    auto value = m_mmu.read(reg.value());
+    auto and_value = value | m_a.value();
+
+    m_a.set(and_value);
+
+    (and_value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(true);
+    m_f.set_flag_carry(false);
+}
+
 void CPU::execute_instruction(uint8_t opcode)
 {
 
@@ -531,6 +569,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x7F:
         instruction_ld(m_a, m_a);
         break;
+    case 0xA0:
+        instruction_and(m_b);
+        break;
+    case 0xA1:
+        instruction_and(m_c);
+        break;
+    case 0xA2:
+        instruction_and(m_d);
+        break;
+    case 0xA3:
+        instruction_and(m_e);
+        break;
+    case 0xA4:
+        instruction_and(m_h);
+        break;
+    case 0xA5:
+        instruction_and(m_l);
+        break;
+    case 0xA6:
+        instruction_and(m_hl);
+        break;
+    case 0xA7:
+        instruction_and(m_a);
+        break;
     case 0xAF:
         instruction_xor();
         break;
@@ -611,6 +673,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xE5:
         instruction_push(m_hl);
+        break;
+    case 0xE6:
+        instruction_and();
         break;
     case 0xEA:
         instruction_ld_reg_to_addr(m_a);

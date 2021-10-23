@@ -82,4 +82,7 @@ private:
     void instruction_xor(void);
     void instruction_or(ByteRegister& reg);
     void instruction_or(WholeRegister& reg);
+    void instruction_and(void);
+    void instruction_and(ByteRegister& reg);
+    void instruction_and(WholeRegister& reg);
 };
