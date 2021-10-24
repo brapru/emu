@@ -77,6 +77,7 @@ public:
     }
 
     void increment() { set(value() + 0x1); }
+    void decrement() { set(value() - 0x1); }
 
 private:
     ByteRegister& m_hi;
