@@ -29,9 +29,9 @@ void CPU::instruction_ld(WholeRegister& reg, RegisterOperation update)
 {
     auto value = m_mmu.read(reg.value());
     m_a.set(value);
-    if (update == RegisterOperation::Increase)
+    if (update == RegisterOperation::Increment)
         reg.increment();
-    if (update == RegisterOperation::Decrease)
+    if (update == RegisterOperation::Decrement)
         reg.decrement();
 }
 
@@ -72,6 +72,17 @@ void CPU::instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg
 {
     auto address = whole_reg.value();
     CPU::m_mmu.write(address, reg.value());
+}
+
+void CPU::instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg, RegisterOperation update)
+{
+    auto address = whole_reg.value();
+    CPU::m_mmu.write(address, reg.value());
+
+    if (update == RegisterOperation::Increment)
+        whole_reg.increment();
+    if (update == RegisterOperation::Decrement)
+        whole_reg.decrement();
 }
 
 void CPU::instruction_ldh_a_to_memory()
@@ -445,6 +456,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x21:
         instruction_ld(m_hl);
         break;
+    case 0x22:
+        instruction_ld_reg_to_addr(m_hl, m_a, RegisterOperation::Increment);
+        break;
     case 0x23:
         instruction_inc(m_hl);
         break;
@@ -461,7 +475,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_jr(opcode);
         break;
     case 0x2A:
-        instruction_ld(m_hl, RegisterOperation::Increase);
+        instruction_ld(m_hl, RegisterOperation::Increment);
         break;
     case 0x2B:
         instruction_dec(m_hl);
@@ -481,6 +495,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x31:
         instruction_ld(m_sp);
         break;
+    case 0x32:
+        instruction_ld(m_hl, RegisterOperation::Decrement);
+        break;
     case 0x33:
         instruction_inc(m_sp);
         break;
@@ -494,7 +511,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_jr(opcode);
         break;
     case 0x3A:
-        instruction_ld(m_hl, RegisterOperation::Decrease);
+        instruction_ld(m_hl, RegisterOperation::Decrement);
         break;
     case 0x3B:
         instruction_dec(m_sp);
