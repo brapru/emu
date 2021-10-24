@@ -285,16 +285,42 @@ void CPU::instruction_or(WholeRegister& reg)
     m_f.set_flag_carry(false);
 }
 
-void CPU::instruction_xor(ByteRegister& reg)
+void CPU::instruction_xor()
 {
-    auto result = m_a.value() ^ reg.value();
+    auto value = fetch_byte();
+    auto result = m_a.value() ^ value;
+
+    m_a.set(result);
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_xor(ByteRegister& reg)
+{
+    auto result = m_a.value() ^ reg.value();
 
     m_a.set(result);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_xor_hl_address()
+{
+    auto value = m_mmu.read(m_hl.value());
+    auto result = m_a.value() ^ value;
+
+    m_a.set(result);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
 }
 
 void CPU::instruction_and(void)
@@ -689,6 +715,27 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xA7:
         instruction_and(m_a);
         break;
+    case 0xA8:
+        instruction_xor(m_b);
+        break;
+    case 0xA9:
+        instruction_xor(m_c);
+        break;
+    case 0xAA:
+        instruction_xor(m_d);
+        break;
+    case 0xAB:
+        instruction_xor(m_e);
+        break;
+    case 0xAC:
+        instruction_xor(m_h);
+        break;
+    case 0xAD:
+        instruction_xor(m_l);
+        break;
+    case 0xAE:
+        instruction_xor_hl_address();
+        break;
     case 0xAF:
         instruction_xor(m_a);
         break;
@@ -778,6 +825,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xEA:
         instruction_ld_reg_to_addr(m_a);
+        break;
+    case 0xEE:
+        instruction_xor();
         break;
     case 0xF0:
         instruction_ldh_memory_to_a();
