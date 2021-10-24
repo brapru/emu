@@ -47,7 +47,7 @@ void CPU::instruction_ld(ByteRegister& reg, ByteRegister& from_reg)
 void CPU::instruction_ld(ByteRegister& reg, WholeRegister& from_reg)
 {
     auto value = m_mmu.read(from_reg.value());
-    reg.set(from_reg.value());
+    reg.set(value);
 }
 
 void CPU::instruction_ld_addr_to_reg(ByteRegister& reg)
