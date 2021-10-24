@@ -375,6 +375,44 @@ void CPU::instruction_and(WholeRegister& reg)
     m_f.set_flag_carry(false);
 }
 
+void CPU::instruction_add(ByteRegister& reg)
+{
+    auto add = fetch_byte();
+    auto result = reg.value() + add;
+
+    reg.set(static_cast<uint8_t>(result));
+
+    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_add(ByteRegister& reg, ByteRegister& from_reg)
+{
+    auto result = reg.value() + from_reg.value();
+
+    reg.set(static_cast<uint8_t>(result));
+
+    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
+{
+    auto value = m_mmu.read(from_reg.value());
+    auto result = reg.value() + value;
+
+    reg.set(static_cast<uint8_t>(result));
+
+    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
 void CPU::execute_instruction(uint8_t opcode)
 {
 
@@ -714,6 +752,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x7F:
         instruction_ld(m_a, m_a);
         break;
+    case 0x80:
+        instruction_add(m_a, m_b);
+        break;
+    case 0x81:
+        instruction_add(m_a, m_c);
+        break;
+    case 0x82:
+        instruction_add(m_a, m_d);
+        break;
+    case 0x83:
+        instruction_add(m_a, m_e);
+        break;
+    case 0x84:
+        instruction_add(m_a, m_h);
+        break;
+    case 0x85:
+        instruction_add(m_a, m_l);
+        break;
+    case 0x86:
+        instruction_add(m_a, m_hl);
+        break;
+    case 0x87:
+        instruction_add(m_a, m_a);
+        break;
     case 0xA0:
         instruction_and(m_b);
         break;
@@ -821,6 +883,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xC5:
         instruction_push(m_bc);
+        break;
+    case 0xC6:
+        instruction_add(m_a);
         break;
     case 0xCD:
         instruction_call();
