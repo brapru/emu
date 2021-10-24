@@ -7,6 +7,11 @@
 
 class MMU;
 
+enum class RegisterOperation {
+    Increase,
+    Decrease
+};
+
 class CPU {
 public:
     CPU(MMU& mmu);
@@ -55,7 +60,7 @@ private:
     void instruction_nop(void);
     void instruction_ld(WordRegister& reg);
     void instruction_ld(WholeRegister& reg);
-    void instruction_ld_inc(WholeRegister& reg);
+    void instruction_ld(WholeRegister& reg, RegisterOperation update);
     void instruction_ld(ByteRegister& reg);
     void instruction_ld(ByteRegister& reg, ByteRegister& from_reg);
     void instruction_ld(ByteRegister& reg, WholeRegister& from_reg);

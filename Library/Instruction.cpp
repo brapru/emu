@@ -25,11 +25,14 @@ void CPU::instruction_ld(WholeRegister& reg)
     reg.set(value);
 }
 
-void CPU::instruction_ld_inc(WholeRegister& reg)
+void CPU::instruction_ld(WholeRegister& reg, RegisterOperation update)
 {
     auto value = m_mmu.read(reg.value());
     m_a.set(value);
-    reg.increment();
+    if (update == RegisterOperation::Increase)
+        reg.increment();
+    if (update == RegisterOperation::Decrease)
+        reg.decrement();
 }
 
 void CPU::instruction_ld(ByteRegister& reg)
@@ -458,7 +461,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_jr(opcode);
         break;
     case 0x2A:
-        instruction_ld_inc(m_hl);
+        instruction_ld(m_hl, RegisterOperation::Increase);
         break;
     case 0x2B:
         instruction_dec(m_hl);
@@ -489,6 +492,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x38:
         instruction_jr(opcode);
+        break;
+    case 0x3A:
+        instruction_ld(m_hl, RegisterOperation::Decrease);
         break;
     case 0x3B:
         instruction_dec(m_sp);
