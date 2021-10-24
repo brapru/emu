@@ -124,7 +124,29 @@ void CPU::instruction_dec(ByteRegister& reg)
 
     (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((reg.value() & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((reg.value() & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+}
+
+void CPU::instruction_dec_hl_address()
+{
+    auto value = m_mmu.read(m_hl.value());
+    auto decreased = value--;
+
+    m_mmu.write(m_hl.value(), decreased);
+
+    (decreased == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    ((decreased & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+}
+
+void CPU::instruction_dec(WholeRegister& reg)
+{
+    reg.decrement();
+}
+
+void CPU::instruction_dec(WordRegister& reg)
+{
+    reg.decrement();
 }
 
 void CPU::instruction_cp()
@@ -335,12 +357,17 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x04:
         instruction_inc(m_b);
         break;
+    case 0x05:
+        instruction_dec(m_b);
+        break;
     case 0x06:
         instruction_ld(m_b);
         break;
     case 0x0A:
         instruction_ld(m_a, m_bc);
         break;
+    case 0x0B:
+        instruction_dec(m_bc);
     case 0x0C:
         instruction_inc(m_c);
         break;
@@ -362,6 +389,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x14:
         instruction_inc(m_d);
         break;
+    case 0x15:
+        instruction_dec(m_d);
+        break;
     case 0x16:
         instruction_ld(m_d);
         break;
@@ -371,8 +401,14 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x1A:
         instruction_ld(m_a, m_de);
         break;
+    case 0x1B:
+        instruction_dec(m_de);
+        break;
     case 0x1C:
         instruction_inc(m_e);
+        break;
+    case 0x1D:
+        instruction_dec(m_e);
         break;
     case 0x1E:
         instruction_ld(m_e);
@@ -389,6 +425,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x24:
         instruction_inc(m_h);
         break;
+    case 0x25:
+        instruction_dec(m_h);
+        break;
     case 0x26:
         instruction_ld(m_h);
         break;
@@ -398,8 +437,14 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x2A:
         instruction_ld_inc(m_hl);
         break;
+    case 0x2B:
+        instruction_dec(m_hl);
+        break;
     case 0x2C:
         instruction_inc(m_l);
+        break;
+    case 0x2D:
+        instruction_dec(m_l);
         break;
     case 0x2E:
         instruction_ld(m_l);
@@ -416,11 +461,20 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x34:
         instruction_inc_hl_address();
         break;
+    case 0x35:
+        instruction_dec_hl_address();
+        break;
     case 0x38:
         instruction_jr(opcode);
         break;
+    case 0x3B:
+        instruction_dec(m_sp);
+        break;
     case 0x3C:
         instruction_inc(m_a);
+        break;
+    case 0x3D:
+        instruction_dec(m_a);
         break;
     case 0x3E:
         instruction_ld(m_a);
