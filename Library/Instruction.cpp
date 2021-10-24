@@ -285,14 +285,11 @@ void CPU::instruction_or(WholeRegister& reg)
     m_f.set_flag_carry(false);
 }
 
-void CPU::instruction_xor(void)
+void CPU::instruction_xor(ByteRegister& reg)
 {
-    auto value = fetch_byte();
-    out("XOR A 0x{:02X}", value);
+    auto result = m_a.value() ^ reg.value();
 
-    auto result = m_a.value() ^ value & 0xFF;
-
-    m_f.set_zero_flag(result == 0);
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
@@ -693,7 +690,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_and(m_a);
         break;
     case 0xAF:
-        instruction_xor();
+        instruction_xor(m_a);
         break;
     case 0xB0:
         instruction_or(m_b);
