@@ -363,6 +363,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x87:
         instruction_add(m_a, m_a);
         break;
+    case 0x90:
+        instruction_sub(m_b);
+        break;
+    case 0x91:
+        instruction_sub(m_c);
+        break;
+    case 0x92:
+        instruction_sub(m_d);
+        break;
+    case 0x93:
+        instruction_sub(m_e);
+        break;
+    case 0x94:
+        instruction_sub(m_h);
+        break;
+    case 0x95:
+        instruction_sub(m_l);
+        break;
+    case 0x96:
+        instruction_sub(m_hl);
+        break;
+    case 0x97:
+        instruction_sub(m_a);
+        break;
     case 0xA0:
         instruction_and(m_b);
         break;
@@ -485,6 +509,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xD5:
         instruction_push(m_de);
+        break;
+    case 0xD6:
+        instruction_sub();
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();

@@ -81,6 +81,10 @@ private:
     void instruction_add(ByteRegister& reg, ByteRegister& from_reg);
     void instruction_add(ByteRegister& reg, WholeRegister& from_reg);
 
+    void instruction_sub();
+    void instruction_sub(ByteRegister& reg);
+    void instruction_sub(WholeRegister& reg);
+
     void instruction_and(void);
     void instruction_and(ByteRegister& reg);
     void instruction_and(WholeRegister& reg);
