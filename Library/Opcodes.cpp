@@ -557,3 +557,38 @@ void CPU::execute_instruction(uint8_t opcode)
         exit(1);
     }
 }
+
+void CPU::instruction_cb()
+{
+    auto instruction = CPU::fetch_byte();
+
+    switch (instruction) {
+    case 0x38:
+        instruction_srl(m_b);
+        break;
+    case 0x39:
+        instruction_srl(m_c);
+        break;
+    case 0x3A:
+        instruction_srl(m_d);
+        break;
+    case 0x3B:
+        instruction_srl(m_e);
+        break;
+    case 0x3C:
+        instruction_srl(m_h);
+        break;
+    case 0x3D:
+        instruction_srl(m_l);
+        break;
+    case 0x3E:
+        instruction_srl(m_hl);
+        break;
+    case 0x3F:
+        instruction_srl(m_a);
+        break;
+    default:
+        outln("EXTERNAL OPCODE NOT IMPLEMENTED: 0xCB {:X}", instruction);
+        exit(1);
+    }
+}
