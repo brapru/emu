@@ -123,4 +123,9 @@ private:
     // CPU Control Instructions - Instructions/Control.cpp
     void instruction_nop(void);
     void instruction_di(void);
+
+    // External Instructions
+    void instruction_cb();
+    void instruction_srl(ByteRegister& byte);
+    void instruction_srl(WholeRegister& byte);
 };

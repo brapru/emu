@@ -498,11 +498,14 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xC6:
         instruction_add(m_a);
         break;
-    case 0xCD:
-        instruction_call();
-        break;
     case 0xC9:
         instruction_ret();
+        break;
+    case 0xCB:
+        instruction_cb();
+        break;
+    case 0xCD:
+        instruction_call();
         break;
     case 0xD1:
         instruction_pop(m_de);
