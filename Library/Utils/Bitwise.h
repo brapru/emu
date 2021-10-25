@@ -13,7 +13,7 @@ inline void bitclear(T& byte, int bit)
 }
 
 template<typename T>
-inline bool checkbit(T& byte, int bit)
+inline bool checkbit(T byte, int bit)
 {
     return (byte & (1 << bit)) != 0;
 }
