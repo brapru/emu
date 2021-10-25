@@ -563,6 +563,30 @@ void CPU::instruction_cb()
     auto instruction = CPU::fetch_byte();
 
     switch (instruction) {
+    case 0x18:
+        instruction_rr(m_b);
+        break;
+    case 0x19:
+        instruction_rr(m_c);
+        break;
+    case 0x1A:
+        instruction_rr(m_d);
+        break;
+    case 0x1B:
+        instruction_rr(m_e);
+        break;
+    case 0x1C:
+        instruction_rr(m_h);
+        break;
+    case 0x1D:
+        instruction_rr(m_l);
+        break;
+    case 0x1E:
+        instruction_rr(m_hl);
+        break;
+    case 0x1F:
+        instruction_rr(m_f);
+        break;
     case 0x38:
         instruction_srl(m_b);
         break;
