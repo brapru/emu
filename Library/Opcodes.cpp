@@ -75,6 +75,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x1E:
         instruction_ld(m_e);
         break;
+    case 0x1F:
+        instruction_rra();
+        break;
     case 0x20:
         instruction_jr(opcode);
         break;

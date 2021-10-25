@@ -126,6 +126,7 @@ private:
 
     // External Instructions
     void instruction_cb();
+    void instruction_rra();
     void instruction_rr(ByteRegister& byte);
     void instruction_rr(WholeRegister& byte);
     void instruction_srl(ByteRegister& byte);

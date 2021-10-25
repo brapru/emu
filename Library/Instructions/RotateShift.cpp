@@ -40,6 +40,12 @@ void CPU::instruction_rr(WholeRegister& reg)
     m_f.set_half_carry_flag(false);
 }
 
+void CPU::instruction_rra(void)
+{
+    instruction_rr(m_a);
+    m_f.set_zero_flag(false);
+}
+
 void CPU::instruction_srl(ByteRegister& reg)
 {
     auto result = reg.value() >> 1;
