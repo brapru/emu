@@ -119,34 +119,41 @@ void CPU::instruction_and(WholeRegister& reg)
 
 void CPU::instruction_cp()
 {
-    auto operand = fetch_byte();
-    auto result = static_cast<int8_t>(m_a.value() - operand);
+    auto sub = fetch_byte();
+    auto orig = m_a.value();
+
+    auto result = static_cast<int8_t>(orig - sub);
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
 void CPU::instruction_cp(ByteRegister& reg)
 {
-    auto result = static_cast<int8_t>(m_a.value() - reg.value());
+    auto sub = reg.value();
+    auto orig = m_a.value();
+
+    auto result = static_cast<int8_t>(orig - sub);
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
 void CPU::instruction_cp(WholeRegister& reg)
 {
-    auto value = m_mmu.read(reg.value());
-    auto result = static_cast<int8_t>(m_a.value() - value);
+    auto sub = m_mmu.read(reg.value());
+    auto orig = m_a.value();
+
+    auto result = static_cast<int8_t>(orig - sub);
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
 void CPU::instruction_inc(ByteRegister& reg)
