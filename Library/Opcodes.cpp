@@ -367,6 +367,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x87:
         instruction_add(m_a, m_a);
         break;
+    case 0x88:
+        instruction_adc(m_b);
+        break;
+    case 0x89:
+        instruction_adc(m_c);
+        break;
+    case 0x8A:
+        instruction_adc(m_d);
+        break;
+    case 0x8B:
+        instruction_adc(m_e);
+        break;
+    case 0x8C:
+        instruction_adc(m_h);
+        break;
+    case 0x8D:
+        instruction_adc(m_l);
+        break;
+    case 0x8E:
+        instruction_adc(m_hl);
+        break;
+    case 0x8F:
+        instruction_adc(m_a);
+        break;
     case 0x90:
         instruction_sub(m_b);
         break;
@@ -510,6 +534,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xCD:
         instruction_call();
+        break;
+    case 0xCE:
+        instruction_adc();
         break;
     case 0xD1:
         instruction_pop(m_de);
