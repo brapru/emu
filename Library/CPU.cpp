@@ -2,8 +2,9 @@
 #include <Utils/Bitwise.h>
 #include <Utils/Format.h>
 
-CPU::CPU(MMU& mmu)
+CPU::CPU(MMU& mmu, Serial& serial)
     : m_mmu(mmu)
+    , m_serial(serial)
     , m_af(m_a, m_f)
     , m_bc(m_b, m_c)
     , m_de(m_d, m_e)
@@ -40,6 +41,9 @@ void CPU::cycle()
         m_de.value(),
         m_hl.value(),
         m_f.value());
+
+    m_serial.update();
+    m_serial.print();
 }
 
 uint8_t CPU::fetch_byte()

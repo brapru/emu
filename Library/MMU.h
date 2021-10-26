@@ -2,15 +2,17 @@
 
 #include <CPU.h>
 #include <Cartridge.h>
+#include <Serial.h>
 #include <Timer.h>
 
 #include <vector>
 
 class CPU;
+class Serial;
 
 class MMU {
 public:
-    MMU(Cartridge& cartridge, CPU& cpu, Timer& timer);
+    MMU(Cartridge& cartridge, CPU& cpu, Timer& timer, Serial& serial);
 
     uint8_t read(uint16_t const address);
     void write(uint16_t const address, uint8_t const value);
@@ -27,5 +29,6 @@ private:
     Cartridge& m_cartridge;
     CPU& m_cpu;
     Timer& m_timer;
+    Serial& m_serial;
     std::vector<uint8_t> m_memory = std::vector<uint8_t>(0x10000);
 };

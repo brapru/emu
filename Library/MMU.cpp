@@ -3,10 +3,11 @@
 #include <Utils/Address.h>
 #include <Utils/Format.h>
 
-MMU::MMU(Cartridge& cartridge, CPU& cpu, Timer& timer)
+MMU::MMU(Cartridge& cartridge, CPU& cpu, Timer& timer, Serial& serial)
     : m_cartridge(cartridge)
     , m_cpu(cpu)
     , m_timer(timer)
+    , m_serial(serial)
 {
 }
 
@@ -66,6 +67,10 @@ void MMU::memory_write(uint16_t const address, uint8_t const value)
 
 uint8_t MMU::io_read(uint16_t const address)
 {
+    if (address == 0xFF01)
+        return m_serial.read_data();
+    if (address == 0xFF02)
+        return m_serial.read_control();
     if (address_in_range(address, 0xFF04, 0xFF07)) {
         return m_timer.read(address);
     } else if (address_in_range(address, 0xFF24, 0xFF26)) {
@@ -84,6 +89,12 @@ uint8_t MMU::io_read(uint16_t const address)
 
 void MMU::io_write(uint16_t const address, uint8_t const value)
 {
+    if (address == 0xFF01)
+        m_serial.write_data(value);
+    return;
+    if (address == 0xFF02)
+        m_serial.write_control(value);
+    return;
     if (address_in_range(address, 0xFF04, 0xFF07)) {
         m_timer.write(address, value);
         return;

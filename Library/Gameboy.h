@@ -3,6 +3,7 @@
 #include <CPU.h>
 #include <Cartridge.h>
 #include <MMU.h>
+#include <Serial.h>
 #include <Timer.h>
 
 #include <memory>
@@ -20,4 +21,5 @@ private:
     MMU m_mmu;
     CPU m_cpu;
     Timer m_timer;
+    Serial m_serial;
 };

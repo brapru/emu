@@ -2,10 +2,12 @@
 
 #include <MMU.h>
 #include <Register.h>
+#include <Serial.h>
 
 #include <stdint.h>
 
 class MMU;
+class Serial;
 
 enum class RegisterOperation {
     Increment,
@@ -14,7 +16,7 @@ enum class RegisterOperation {
 
 class CPU {
 public:
-    CPU(MMU& mmu);
+    CPU(MMU& mmu, Serial& m_serial);
 
     void cycle();
 
@@ -30,6 +32,7 @@ public:
 
 private:
     MMU& m_mmu;
+    Serial& m_serial;
 
     WordRegister m_pc = WordRegister(0x0100);
     WordRegister m_sp = WordRegister(0xFFFE);
