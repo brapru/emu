@@ -30,6 +30,7 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x0B:
         instruction_dec(m_bc);
+        break;
     case 0x0C:
         instruction_inc(m_c);
         break;
