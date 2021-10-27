@@ -29,6 +29,29 @@ void CPU::instruction_ret(void)
     m_pc.set(address);
 }
 
+void CPU::instruction_ret(uint8_t const& opcode)
+{
+    bool should_ret;
+
+    switch (opcode) {
+    case 0xC0: // NZ
+        should_ret = !m_f.zero_flag();
+        break;
+    case 0xC8: // Z
+        should_ret = m_f.zero_flag();
+        break;
+    case 0xD0: // NC
+        should_ret = !m_f.flag_carry();
+        break;
+    case 0xD8:
+        should_ret = m_f.flag_carry();
+        break;
+    }
+
+    if (should_ret)
+        instruction_ret();
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();

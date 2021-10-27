@@ -122,6 +122,7 @@ private:
     void instruction_conditional_call(uint8_t const& opcode);
 
     void instruction_ret(void);
+    void instruction_ret(uint8_t const& opcode);
 
     void instruction_jp(void);
     void instruction_jr(void);

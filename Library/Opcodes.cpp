@@ -511,6 +511,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xBF:
         instruction_cp(m_a);
         break;
+    case 0xC0:
+        instruction_ret(opcode);
+        break;
     case 0xC1:
         instruction_pop(m_bc);
         break;
@@ -526,6 +529,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xC6:
         instruction_add(m_a);
         break;
+    case 0xC8:
+        instruction_ret(opcode);
+        break;
     case 0xC9:
         instruction_ret();
         break;
@@ -538,6 +544,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xCE:
         instruction_adc();
         break;
+    case 0xD0:
+        instruction_ret(opcode);
+        break;
     case 0xD1:
         instruction_pop(m_de);
         break;
@@ -546,6 +555,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xD6:
         instruction_sub();
+        break;
+    case 0xD8:
+        instruction_ret(opcode);
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
