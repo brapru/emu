@@ -243,7 +243,7 @@ void CPU::instruction_dec_hl_address()
     m_mmu.write(m_hl.value(), decreased);
 
     (decreased == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
-    m_f.set_subtraction_flag(false);
+    m_f.set_subtraction_flag(true);
     ((decreased & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
