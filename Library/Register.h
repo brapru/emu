@@ -12,7 +12,7 @@ public:
     {
     }
 
-    void set(uint8_t value) { m_value = value; }
+    virtual void set(uint8_t value) { m_value = value; }
     void increment() { m_value++; }
     void decrement() { m_value--; }
 
@@ -25,6 +25,8 @@ protected:
 class FlagRegister : public ByteRegister {
 public:
     FlagRegister() = default;
+
+    void set(uint8_t value) { m_value = value & 0xF0; }
 
     bool zero_flag() { return checkbit(m_value, 7); }
     bool subtraction_flag() { return checkbit(m_value, 6); }
@@ -72,8 +74,8 @@ public:
 
     void set(uint16_t value)
     {
-        m_lo = ((value >> 0) & 0xFF);
-        m_hi = ((value >> 8) & 0xFF);
+        m_lo.set(((value >> 0) & 0xFF));
+        m_hi.set(((value >> 8) & 0xFF));
     }
 
     void increment() { set(value() + 0x1); }
