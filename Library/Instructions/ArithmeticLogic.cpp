@@ -69,6 +69,20 @@ void CPU::instruction_add_hl(WordRegister& reg)
     ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
+void CPU::instruction_add_sp()
+{
+    auto add = static_cast<int8_t>(fetch_byte());
+    auto orig = m_sp.value();
+    auto result = add + orig;
+
+    m_sp.set(static_cast<int8_t>(result));
+
+    m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    (((add ^ orig ^ (result & 0XFFFF)) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (((add ^ orig ^ (result & 0XFFFF)) & 0x100) == 0x100) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
 void CPU::instruction_adc()
 {
     auto add = fetch_byte();

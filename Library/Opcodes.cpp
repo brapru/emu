@@ -622,6 +622,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xE6:
         instruction_and();
         break;
+    case 0xE8:
+        instruction_add_sp();
+        break;
     case 0xE9:
         instruction_jp(m_hl);
         break;

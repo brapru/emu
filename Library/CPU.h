@@ -97,6 +97,8 @@ private:
     void instruction_add_hl(WholeRegister& reg);
     void instruction_add_hl(WordRegister& reg);
 
+    void instruction_add_sp();
+
     void instruction_adc();
     void instruction_adc(ByteRegister& reg);
     void instruction_adc(WholeRegister& reg);
