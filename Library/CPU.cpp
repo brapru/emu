@@ -26,13 +26,12 @@ CPU::CPU(MMU& mmu, Serial& serial)
 */
 void CPU::cycle()
 {
+    auto opcode_pc = m_pc.value();
     auto opcode = fetch_byte();
 
     out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
-        m_pc.value() - 1,
+        opcode_pc,
         opcode);
-
-    execute_instruction(opcode);
 
     outln("SP: 0x{:02x}, AF: 0x{:02X}, BC: 0x{:02X}, DE: 0x{:02X}, HL: 0x{:02X}, Flag: {:08B}",
         m_sp.value(),
@@ -41,6 +40,8 @@ void CPU::cycle()
         m_de.value(),
         m_hl.value(),
         m_f.value());
+
+    execute_instruction(opcode);
 
     m_serial.update();
     m_serial.print();
