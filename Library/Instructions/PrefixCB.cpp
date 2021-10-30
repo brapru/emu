@@ -69,7 +69,7 @@ void CPU::instruction_srl(WholeRegister& reg)
 
     reg.set(result);
 
-    (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
