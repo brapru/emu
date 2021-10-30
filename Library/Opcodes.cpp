@@ -619,6 +619,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xFA:
         instruction_ld_addr_to_reg(m_a);
         break;
+    case 0xFB:
+        instruction_ei();
+        break;
     case 0xFE:
         instruction_cp();
         break;

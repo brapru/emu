@@ -8,3 +8,8 @@ void CPU::instruction_di(void)
 {
     m_interrupt_master_enable = false;
 }
+
+void CPU::instruction_ei(void)
+{
+    m_interrupt_master_enable = true;
+}

@@ -144,6 +144,7 @@ private:
     // CPU Control Instructions - Instructions/Control.cpp
     void instruction_nop(void);
     void instruction_di(void);
+    void instruction_ei(void);
 
     // Prefix CB Instructions - Instructions/PrefixCB.cpp
     void instruction_cb();
