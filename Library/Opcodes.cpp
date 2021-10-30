@@ -25,6 +25,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x06:
         instruction_ld(m_b);
         break;
+    case 0x09:
+        instruction_add_hl(m_bc);
+        break;
     case 0x0A:
         instruction_ld(m_a, m_bc);
         break;
@@ -60,6 +63,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x18:
         instruction_jr();
+        break;
+    case 0x19:
+        instruction_add_hl(m_de);
         break;
     case 0x1A:
         instruction_ld(m_a, m_de);
@@ -103,6 +109,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x28:
         instruction_jr(opcode);
         break;
+    case 0x29:
+        instruction_add_hl(m_hl);
+        break;
     case 0x2A:
         instruction_ld(m_hl, RegisterOperation::Increment);
         break;
@@ -138,6 +147,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0x38:
         instruction_jr(opcode);
+        break;
+    case 0x39:
+        instruction_add_hl(m_sp);
         break;
     case 0x3A:
         instruction_ld(m_hl, RegisterOperation::Decrement);

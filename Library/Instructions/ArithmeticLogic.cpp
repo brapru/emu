@@ -39,6 +39,32 @@ void CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
     (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
+void CPU::instruction_add_hl(WholeRegister& reg)
+{
+    auto value = reg.value();
+    auto orig = m_hl.value();
+    auto result = orig + value;
+
+    reg.set(result);
+
+    m_f.set_subtraction_flag(false);
+    ((orig & 0xFFFF) + (value & 0xFFFF) > 0xFFFF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_add_hl(WordRegister& reg)
+{
+    auto value = reg.value();
+    auto orig = m_hl.value();
+    auto result = orig + value;
+
+    reg.set(result);
+
+    m_f.set_subtraction_flag(false);
+    ((orig & 0xFFFF) + (value & 0xFFFF) > 0xFFFF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
 void CPU::instruction_adc()
 {
     auto add = fetch_byte();

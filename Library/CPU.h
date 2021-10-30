@@ -84,6 +84,9 @@ private:
     void instruction_add(ByteRegister& reg, ByteRegister& from_reg);
     void instruction_add(ByteRegister& reg, WholeRegister& from_reg);
 
+    void instruction_add_hl(WholeRegister& reg);
+    void instruction_add_hl(WordRegister& reg);
+
     void instruction_adc();
     void instruction_adc(ByteRegister& reg);
     void instruction_adc(WholeRegister& reg);
