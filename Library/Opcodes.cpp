@@ -622,6 +622,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xF8:
         instruction_ld_hl_sp();
         break;
+    case 0xF9:
+        instruction_ld_sp_hl();
+        break;
     case 0xFA:
         instruction_ld_addr_to_reg(m_a);
         break;

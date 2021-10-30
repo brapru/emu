@@ -107,6 +107,11 @@ void CPU::instruction_ld_hl_sp()
     (((add ^ value ^ (result & 0xFFFF)) & 0x100) == 0x100) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
+void CPU::instruction_ld_sp_hl()
+{
+    m_sp.set(m_hl.value());
+}
+
 void CPU::instruction_push(WholeRegister& reg)
 {
     stack_push(reg);
