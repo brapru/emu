@@ -649,6 +649,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xF5:
         instruction_push(m_af);
         break;
+    case 0xF6:
+        instruction_or();
+        break;
     case 0xF8:
         instruction_ld_hl_sp();
         break;

@@ -131,6 +131,7 @@ private:
     void instruction_dec(WordRegister& reg);
     void instruction_dec_hl_address();
 
+    void instruction_or();
     void instruction_or(ByteRegister& reg);
     void instruction_or(WholeRegister& reg);
 

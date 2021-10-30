@@ -352,6 +352,20 @@ void CPU::instruction_dec(WordRegister& reg)
     reg.decrement();
 }
 
+void CPU::instruction_or()
+{
+    auto value = fetch_byte();
+
+    auto result = value | m_a.value();
+
+    m_a.set(value);
+
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
+}
+
 void CPU::instruction_or(ByteRegister& reg)
 {
     auto value = reg.value() | m_a.value();
