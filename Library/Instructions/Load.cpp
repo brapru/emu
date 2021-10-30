@@ -45,6 +45,12 @@ void CPU::instruction_ld_reg_to_addr(ByteRegister& reg)
     CPU::m_mmu.write(address, reg.value());
 }
 
+void CPU::instruction_ld_reg_to_addr(WordRegister& reg)
+{
+    auto address = CPU::fetch_word();
+    CPU::m_mmu.write(address, reg.value());
+}
+
 void CPU::instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg)
 {
     auto address = whole_reg.value();
@@ -69,6 +75,7 @@ void CPU::instruction_ld_addr_to_reg(ByteRegister& reg)
 
     reg.set(value);
 }
+
 void CPU::instruction_ldh_a_to_memory()
 {
     auto lo = fetch_byte();

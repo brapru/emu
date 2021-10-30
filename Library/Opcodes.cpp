@@ -25,6 +25,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x06:
         instruction_ld(m_b);
         break;
+    case 0x08:
+        instruction_ld_reg_to_addr(m_sp);
+        break;
     case 0x09:
         instruction_add_hl(m_bc);
         break;
