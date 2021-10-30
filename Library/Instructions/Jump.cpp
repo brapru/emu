@@ -63,6 +63,31 @@ void CPU::instruction_jp(WholeRegister& reg)
     m_pc.set(reg.value());
 }
 
+void CPU::instruction_jp(Condition condition)
+{
+    bool should_jp;
+
+    switch (condition) {
+    case Condition::NZ:
+        should_jp = !m_f.zero_flag();
+        break;
+    case Condition::Z:
+        should_jp = m_f.zero_flag();
+        break;
+    case Condition::NC:
+        should_jp = !m_f.flag_carry();
+        break;
+    case Condition::C:
+        should_jp = m_f.flag_carry();
+        break;
+    }
+
+    if (should_jp)
+        instruction_jp();
+    else
+        CPU::fetch_word();
+}
+
 void CPU::instruction_jr(void)
 {
     auto jumps = static_cast<int8_t>(fetch_byte());

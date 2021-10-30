@@ -14,6 +14,13 @@ enum class RegisterOperation {
     Decrement
 };
 
+enum class Condition {
+    NZ,
+    Z,
+    NC,
+    C
+};
+
 class CPU {
 public:
     CPU(MMU& mmu, Serial& m_serial);
@@ -129,6 +136,8 @@ private:
 
     void instruction_jp(void);
     void instruction_jp(WholeRegister& reg);
+    void instruction_jp(Condition condition);
+
     void instruction_jr(void);
     void instruction_jr(uint8_t const& opcode);
 

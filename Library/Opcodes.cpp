@@ -529,6 +529,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xC1:
         instruction_pop(m_bc);
         break;
+    case 0xC2:
+        instruction_jp(Condition::NZ);
+        break;
     case 0xC3:
         instruction_jp();
         break;
@@ -547,6 +550,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xC9:
         instruction_ret();
         break;
+    case 0xCA:
+        instruction_jp(Condition::Z);
+        break;
     case 0xCB:
         instruction_cb();
         break;
@@ -562,6 +568,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xD1:
         instruction_pop(m_de);
         break;
+    case 0xD2:
+        instruction_jp(Condition::NC);
+        break;
     case 0xD5:
         instruction_push(m_de);
         break;
@@ -570,6 +579,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xD8:
         instruction_ret(opcode);
+        break;
+    case 0xDA:
+        instruction_jp(Condition::C);
         break;
     case 0xE0:
         instruction_ldh_a_to_memory();
