@@ -128,6 +128,7 @@ private:
     void instruction_ret(uint8_t const& opcode);
 
     void instruction_jp(void);
+    void instruction_jp(WholeRegister& reg);
     void instruction_jr(void);
     void instruction_jr(uint8_t const& opcode);
 

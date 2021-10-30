@@ -583,6 +583,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xE6:
         instruction_and();
         break;
+    case 0xE9:
+        instruction_jp(m_hl);
+        break;
     case 0xEA:
         instruction_ld_reg_to_addr(m_a);
         break;

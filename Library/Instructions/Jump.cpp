@@ -58,6 +58,11 @@ void CPU::instruction_jp(void)
     m_pc.set(address);
 }
 
+void CPU::instruction_jp(WholeRegister& reg)
+{
+    m_pc.set(reg.value());
+}
+
 void CPU::instruction_jr(void)
 {
     auto jumps = static_cast<int8_t>(fetch_byte());
