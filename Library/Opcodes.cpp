@@ -430,6 +430,30 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x97:
         instruction_sub(m_a);
         break;
+    case 0x98:
+        instruction_sbc(m_b);
+        break;
+    case 0x99:
+        instruction_sbc(m_c);
+        break;
+    case 0x9A:
+        instruction_sbc(m_d);
+        break;
+    case 0x9B:
+        instruction_sbc(m_e);
+        break;
+    case 0x9C:
+        instruction_sbc(m_h);
+        break;
+    case 0x9D:
+        instruction_sbc(m_l);
+        break;
+    case 0x9E:
+        instruction_sbc(m_hl);
+        break;
+    case 0x9F:
+        instruction_sbc(m_a);
+        break;
     case 0xA0:
         instruction_and(m_b);
         break;

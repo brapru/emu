@@ -105,6 +105,10 @@ private:
     void instruction_sub(ByteRegister& reg);
     void instruction_sub(WholeRegister& reg);
 
+    void instruction_sbc();
+    void instruction_sbc(ByteRegister& reg);
+    void instruction_sbc(WholeRegister& reg);
+
     void instruction_and(void);
     void instruction_and(ByteRegister& reg);
     void instruction_and(WholeRegister& reg);
