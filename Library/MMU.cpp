@@ -89,12 +89,14 @@ uint8_t MMU::io_read(uint16_t const address)
 
 void MMU::io_write(uint16_t const address, uint8_t const value)
 {
-    if (address == 0xFF01)
+    if (address == 0xFF01) {
         m_serial.write_data(value);
-    return;
-    if (address == 0xFF02)
+        return;
+    }
+    if (address == 0xFF02) {
         m_serial.write_control(value);
-    return;
+        return;
+    }
     if (address_in_range(address, 0xFF04, 0xFF07)) {
         m_timer.write(address, value);
         return;
