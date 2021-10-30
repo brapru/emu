@@ -85,6 +85,21 @@ void CPU::instruction_ldh_memory_to_a()
     m_a.set(value);
 }
 
+void CPU::instruction_ld_hl_sp()
+{
+    auto add = static_cast<int8_t>(fetch_byte());
+    auto value = m_sp.value();
+
+    auto result = static_cast<int>(value + add);
+
+    m_hl.set(result);
+
+    m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    (((add ^ value ^ (result & 0xFFFF)) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (((add ^ value ^ (result & 0xFFFF)) & 0x100) == 0x100) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
 void CPU::instruction_push(WholeRegister& reg)
 {
     stack_push(reg);
