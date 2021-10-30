@@ -143,4 +143,6 @@ private:
     void instruction_rr(WholeRegister& byte);
     void instruction_srl(ByteRegister& byte);
     void instruction_srl(WholeRegister& byte);
+    void instruction_swap(ByteRegister& reg);
+    void instruction_swap(WholeRegister& reg);
 };

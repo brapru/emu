@@ -74,3 +74,29 @@ void CPU::instruction_srl(WholeRegister& reg)
     m_f.set_half_carry_flag(false);
     (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
+
+void CPU::instruction_swap(ByteRegister& reg)
+{
+    auto lo = ((reg.value() >> 0) & 0xF);
+    auto hi = ((reg.value() >> 4) & 0xF);
+
+    auto result = (hi << 8) | (lo & 0xF);
+
+    reg.set(result);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+}
+
+void CPU::instruction_swap(WholeRegister& reg)
+{
+    auto address = reg.value();
+    auto value = m_mmu.read(address);
+    auto lo = ((value >> 0) & 0xF);
+    auto hi = ((value >> 4) & 0xF);
+
+    auto result = (hi << 8) | (lo & 0xF);
+
+    m_mmu.write(address, value);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+}

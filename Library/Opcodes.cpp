@@ -645,6 +645,30 @@ void CPU::instruction_cb()
     case 0x1F:
         instruction_rr(m_f);
         break;
+    case 0x30:
+        instruction_swap(m_b);
+        break;
+    case 0x31:
+        instruction_swap(m_c);
+        break;
+    case 0x32:
+        instruction_swap(m_d);
+        break;
+    case 0x33:
+        instruction_swap(m_e);
+        break;
+    case 0x34:
+        instruction_swap(m_h);
+        break;
+    case 0x35:
+        instruction_swap(m_l);
+        break;
+    case 0x36:
+        instruction_swap(m_hl);
+        break;
+    case 0x37:
+        instruction_swap(m_a);
+        break;
     case 0x38:
         instruction_srl(m_b);
         break;
