@@ -69,6 +69,12 @@ void CPU::instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg
         whole_reg.decrement();
 }
 
+void CPU::instruction_ld_hl()
+{
+    auto value = CPU::fetch_byte();
+    m_mmu.write(m_hl.value(), value);
+}
+
 void CPU::instruction_ld_addr_to_reg(ByteRegister& reg)
 {
     auto address = CPU::fetch_word();

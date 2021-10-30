@@ -148,6 +148,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x35:
         instruction_dec_hl_address();
         break;
+    case 0x36:
+        instruction_ld_hl();
+        break;
     case 0x38:
         instruction_jr(opcode);
         break;
