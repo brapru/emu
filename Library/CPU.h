@@ -136,7 +136,7 @@ private:
     void instruction_nop(void);
     void instruction_di(void);
 
-    // External Instructions
+    // Prefix CB Instructions - Instructions/PrefixCB.cpp
     void instruction_cb();
     void instruction_rra();
     void instruction_rr(ByteRegister& byte);
