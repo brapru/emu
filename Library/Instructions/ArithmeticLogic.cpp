@@ -243,13 +243,13 @@ void CPU::instruction_inc(ByteRegister& reg)
 void CPU::instruction_inc_hl_address()
 {
     auto value = m_mmu.read(m_hl.value());
-    auto increased = value++;
+    auto result = static_cast<uint8_t>(value + 1);
 
-    m_mmu.write(m_hl.value(), increased);
+    m_mmu.write(m_hl.value(), result);
 
-    (increased == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
-    ((increased & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
 void CPU::instruction_inc(WholeRegister& reg)
@@ -274,13 +274,13 @@ void CPU::instruction_dec(ByteRegister& reg)
 void CPU::instruction_dec_hl_address()
 {
     auto value = m_mmu.read(m_hl.value());
-    auto decreased = value--;
+    auto result = static_cast<uint8_t>(value - 1);
 
-    m_mmu.write(m_hl.value(), decreased);
+    m_mmu.write(m_hl.value(), result);
 
-    (decreased == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
-    ((decreased & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    ((result & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 }
 
 void CPU::instruction_dec(WholeRegister& reg)
