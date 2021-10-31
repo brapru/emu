@@ -741,6 +741,30 @@ void CPU::instruction_cb()
     auto instruction = CPU::fetch_byte();
 
     switch (instruction) {
+    case 0x00:
+        instruction_rlc(m_b);
+        break;
+    case 0x01:
+        instruction_rlc(m_c);
+        break;
+    case 0x02:
+        instruction_rlc(m_d);
+        break;
+    case 0x03:
+        instruction_rlc(m_e);
+        break;
+    case 0x04:
+        instruction_rlc(m_h);
+        break;
+    case 0x05:
+        instruction_rlc(m_l);
+        break;
+    case 0x06:
+        instruction_rlc(m_hl);
+        break;
+    case 0x07:
+        instruction_rlc(m_a);
+        break;
     case 0x18:
         instruction_rr(m_b);
         break;
