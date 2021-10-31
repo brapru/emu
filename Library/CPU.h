@@ -195,6 +195,9 @@ private:
     void instruction_rlc(WholeRegister& reg);
     void instruction_rlca();
 
+    void instruction_sra(ByteRegister& byte);
+    void instruction_sra(WholeRegister& byte);
+
     void instruction_srl(ByteRegister& byte);
     void instruction_srl(WholeRegister& byte);
 
