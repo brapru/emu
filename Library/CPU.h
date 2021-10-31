@@ -176,6 +176,7 @@ private:
     void instruction_ei(void);
     void instruction_cpl(void);
     void instruction_scf(void);
+    void instruction_ccf(void);
 
     // Prefix CB Instructions - Instructions/PrefixCB.cpp
     void instruction_cb();

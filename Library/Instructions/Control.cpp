@@ -29,3 +29,10 @@ void CPU::instruction_scf(void)
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(true);
 }
+
+void CPU::instruction_ccf(void)
+{
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(!m_f.flag_carry());
+}

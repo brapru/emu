@@ -178,6 +178,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x3E:
         instruction_ld(m_a);
         break;
+    case 0x3F:
+        instruction_ccf();
+        break;
     case 0x40:
         instruction_ld(m_b, m_b);
         break;
