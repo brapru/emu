@@ -145,6 +145,7 @@ private:
 
     void instruction_ret(void);
     void instruction_ret(Condition condition);
+    void instruction_reti(void);
 
     void instruction_jp(void);
     void instruction_jp(WholeRegister& reg);

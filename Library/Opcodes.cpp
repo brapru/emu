@@ -616,6 +616,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xD8:
         instruction_ret(Condition::C);
         break;
+    case 0xD9:
+        instruction_reti();
+        break;
     case 0xDA:
         instruction_jp(Condition::C);
         break;

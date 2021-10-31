@@ -61,6 +61,12 @@ void CPU::instruction_ret(Condition condition)
         instruction_ret();
 }
 
+void CPU::instruction_reti()
+{
+    instruction_ret();
+    instruction_ei();
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
