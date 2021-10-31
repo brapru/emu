@@ -191,7 +191,7 @@ void CPU::instruction_srl(WholeRegister& reg)
 
     bool flag_carry = checkbit(value, 0);
 
-    reg.set(result);
+    m_mmu.write(reg.value(), result);
 
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
