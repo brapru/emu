@@ -33,7 +33,7 @@ void CPU::instruction_rr(WholeRegister& reg)
 
     (orig_carry) ? bitset(result, 7) : bitclear(result, 7);
 
-    reg.set(result);
+    m_mmu.write(reg.value(), result);
 
     (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
