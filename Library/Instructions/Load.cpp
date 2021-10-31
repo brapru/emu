@@ -87,6 +87,7 @@ void CPU::instruction_ldh_a_to_memory()
 {
     auto lo = fetch_byte();
     auto address = ((uint16_t)0xFF << 8) | lo;
+
     CPU::m_mmu.write(address, m_a.value());
 }
 
@@ -117,6 +118,23 @@ void CPU::instruction_ld_hl_sp()
 void CPU::instruction_ld_sp_hl()
 {
     m_sp.set(m_hl.value());
+}
+
+void CPU::instruction_ldh_c_to_a()
+{
+    auto lo = m_c.value();
+    auto address = ((uint16_t)0xFF << 8) | lo;
+
+    auto value = m_mmu.read(address);
+    m_a.set(value);
+}
+
+void CPU::instruction_ldh_a_to_c()
+{
+    auto lo = m_c.value();
+    auto address = ((uint16_t)0xFF << 8) | lo;
+
+    m_mmu.write(address, m_a.value());
 }
 
 void CPU::instruction_push(WholeRegister& reg)

@@ -99,6 +99,9 @@ private:
     void instruction_ld_hl_sp();
     void instruction_ld_sp_hl();
 
+    void instruction_ldh_c_to_a();
+    void instruction_ldh_a_to_c();
+
     void instruction_push(WholeRegister& reg);
     void instruction_pop(WholeRegister& reg);
 

@@ -646,6 +646,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xE1:
         instruction_pop(m_hl);
         break;
+    case 0xE2:
+        instruction_ldh_a_to_c();
+        break;
     case 0xE5:
         instruction_push(m_hl);
         break;
@@ -675,6 +678,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xF1:
         instruction_pop(m_af);
+        break;
+    case 0xF2:
+        instruction_ldh_c_to_a();
         break;
     case 0xF3:
         instruction_di();
