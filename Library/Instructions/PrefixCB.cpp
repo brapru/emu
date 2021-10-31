@@ -172,9 +172,10 @@ void CPU::instruction_rlca()
 
 void CPU::instruction_srl(ByteRegister& reg)
 {
-    auto result = reg.value() >> 1;
-
     bool flag_carry = checkbit(reg.value(), 0);
+
+    uint8_t result = reg.value() >> 1;
+    bitclear(result, 7);
 
     reg.set(result);
 
@@ -187,9 +188,11 @@ void CPU::instruction_srl(ByteRegister& reg)
 void CPU::instruction_srl(WholeRegister& reg)
 {
     auto value = m_mmu.read(reg.value());
-    auto result = value >> 1;
 
     bool flag_carry = checkbit(value, 0);
+
+    uint8_t result = value >> 1;
+    bitclear(result, 7);
 
     m_mmu.write(reg.value(), result);
 
