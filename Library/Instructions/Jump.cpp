@@ -67,6 +67,12 @@ void CPU::instruction_reti()
     instruction_ei();
 }
 
+void CPU::instruction_rst(uint16_t offset)
+{
+    stack_push(m_pc);
+    m_pc.set(offset);
+}
+
 void CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();

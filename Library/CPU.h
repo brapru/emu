@@ -21,6 +21,17 @@ enum class Condition {
     C
 };
 
+namespace RST {
+constexpr uint16_t RST0 = 0x00;
+constexpr uint16_t RST1 = 0x08;
+constexpr uint16_t RST2 = 0x10;
+constexpr uint16_t RST3 = 0x18;
+constexpr uint16_t RST4 = 0x20;
+constexpr uint16_t RST5 = 0x28;
+constexpr uint16_t RST6 = 0x30;
+constexpr uint16_t RST7 = 0x38;
+}
+
 class CPU {
 public:
     CPU(MMU& mmu, Serial& m_serial);
@@ -146,6 +157,8 @@ private:
     void instruction_ret(void);
     void instruction_ret(Condition condition);
     void instruction_reti(void);
+
+    void instruction_rst(uint16_t offset);
 
     void instruction_jp(void);
     void instruction_jp(WholeRegister& reg);

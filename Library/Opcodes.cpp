@@ -574,6 +574,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xC6:
         instruction_add(m_a);
         break;
+    case 0xC7:
+        instruction_rst(RST::RST0);
+        break;
     case 0xC8:
         instruction_ret(Condition::Z);
         break;
@@ -595,6 +598,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xCE:
         instruction_adc();
         break;
+    case 0xCF:
+        instruction_rst(RST::RST1);
+        break;
     case 0xD0:
         instruction_ret(Condition::NC);
         break;
@@ -613,6 +619,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xD6:
         instruction_sub();
         break;
+    case 0xD7:
+        instruction_rst(RST::RST2);
+        break;
     case 0xD8:
         instruction_ret(Condition::C);
         break;
@@ -628,6 +637,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xDE:
         instruction_sbc();
         break;
+    case 0xDF:
+        instruction_rst(RST::RST3);
+        break;
     case 0xE0:
         instruction_ldh_a_to_memory();
         break;
@@ -640,6 +652,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xE6:
         instruction_and();
         break;
+    case 0xE7:
+        instruction_rst(RST::RST4);
+        break;
     case 0xE8:
         instruction_add_sp();
         break;
@@ -651,6 +666,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xEE:
         instruction_xor();
+        break;
+    case 0xEF:
+        instruction_rst(RST::RST5);
         break;
     case 0xF0:
         instruction_ldh_memory_to_a();
@@ -667,6 +685,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xF6:
         instruction_or();
         break;
+    case 0xF7:
+        instruction_rst(RST::RST6);
+        break;
     case 0xF8:
         instruction_ld_hl_sp();
         break;
@@ -681,6 +702,9 @@ void CPU::execute_instruction(uint8_t opcode)
         break;
     case 0xFE:
         instruction_cp();
+        break;
+    case 0xFF:
+        instruction_rst(RST::RST7);
         break;
     default:
         outln("OPCODE NOT IMPLEMENTED: {:X}", opcode);
