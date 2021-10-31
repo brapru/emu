@@ -9,7 +9,7 @@ void CPU::instruction_rr(ByteRegister& reg)
     bool flag_carry = checkbit(reg.value(), 0);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = reg.value() >> 1;
+    uint8_t result = reg.value() >> 1;
 
     (orig_carry) ? bitset(result, 7) : bitclear(result, 7);
 
@@ -22,14 +22,14 @@ void CPU::instruction_rr(ByteRegister& reg)
 
 void CPU::instruction_rr(WholeRegister& reg)
 {
-    auto value = m_mmu.read(reg.value());
+    uint8_t value = m_mmu.read(reg.value());
 
     bool orig_carry = m_f.flag_carry();
 
     bool flag_carry = checkbit(value, 0);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = value >> 1;
+    uint8_t result = value >> 1;
 
     (orig_carry) ? bitset(result, 7) : bitclear(result, 7);
 
@@ -51,7 +51,7 @@ void CPU::instruction_rrc(ByteRegister& reg)
     bool flag_carry = checkbit(reg.value(), 0);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = reg.value() >> 1;
+    uint8_t result = reg.value() >> 1;
 
     (flag_carry) ? bitset(result, 7) : bitclear(result, 7);
 
@@ -64,12 +64,12 @@ void CPU::instruction_rrc(ByteRegister& reg)
 
 void CPU::instruction_rrc(WholeRegister& reg)
 {
-    auto value = m_mmu.read(reg.value());
+    uint8_t value = m_mmu.read(reg.value());
 
     bool flag_carry = checkbit(value, 0);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = value >> 1;
+    uint8_t result = value >> 1;
 
     (flag_carry) ? bitset(result, 7) : bitclear(result, 7);
 
@@ -93,7 +93,7 @@ void CPU::instruction_rl(ByteRegister& reg)
     bool flag_carry = checkbit(reg.value(), 7);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = reg.value() << 1;
+    uint8_t result = reg.value() << 1;
 
     (orig_carry) ? bitset(result, 0) : bitclear(result, 0);
 
@@ -106,14 +106,14 @@ void CPU::instruction_rl(ByteRegister& reg)
 
 void CPU::instruction_rl(WholeRegister& reg)
 {
-    auto value = m_mmu.read(reg.value());
+    uint8_t value = m_mmu.read(reg.value());
 
     bool orig_carry = m_f.flag_carry();
 
     bool flag_carry = checkbit(value, 7);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = value << 1;
+    uint8_t result = value << 1;
 
     (orig_carry) ? bitset(result, 0) : bitclear(result, 0);
 
@@ -135,7 +135,7 @@ void CPU::instruction_rlc(ByteRegister& reg)
     bool flag_carry = checkbit(reg.value(), 7);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = reg.value() << 1;
+    uint8_t result = reg.value() << 1;
 
     (flag_carry) ? bitset(result, 0) : bitclear(result, 0);
 
@@ -148,12 +148,12 @@ void CPU::instruction_rlc(ByteRegister& reg)
 
 void CPU::instruction_rlc(WholeRegister& reg)
 {
-    auto value = m_mmu.read(reg.value());
+    uint8_t value = m_mmu.read(reg.value());
 
     bool flag_carry = checkbit(value, 7);
     m_f.set_flag_carry(flag_carry);
 
-    auto result = value << 1;
+    uint8_t result = value << 1;
 
     (flag_carry) ? bitset(result, 0) : bitclear(result, 0);
 
@@ -187,7 +187,7 @@ void CPU::instruction_srl(ByteRegister& reg)
 
 void CPU::instruction_srl(WholeRegister& reg)
 {
-    auto value = m_mmu.read(reg.value());
+    uint8_t value = m_mmu.read(reg.value());
 
     bool flag_carry = checkbit(value, 0);
 
