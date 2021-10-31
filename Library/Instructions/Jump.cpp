@@ -7,13 +7,22 @@ void CPU::instruction_call(void)
     m_pc.set(address);
 }
 
-void CPU::instruction_conditional_call(uint8_t const& opcode)
+void CPU::instruction_conditional_call(Condition condition)
 {
     bool should_call;
 
-    switch (opcode) {
-    case 0xC4: // NZ
+    switch (condition) {
+    case Condition::NZ:
         should_call = !m_f.zero_flag();
+        break;
+    case Condition::Z:
+        should_call = m_f.zero_flag();
+        break;
+    case Condition::NC:
+        should_call = !m_f.flag_carry();
+        break;
+    case Condition::C:
+        should_call = m_f.flag_carry();
         break;
     }
 

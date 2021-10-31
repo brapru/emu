@@ -141,7 +141,7 @@ private:
 
     // Jump Instructions - Instructions/Jump.cpp
     void instruction_call(void);
-    void instruction_conditional_call(uint8_t const& opcode);
+    void instruction_conditional_call(Condition condition);
 
     void instruction_ret(void);
     void instruction_ret(uint8_t const& opcode);
