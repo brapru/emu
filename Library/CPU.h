@@ -185,6 +185,7 @@ private:
     void instruction_rr(WholeRegister& byte);
     void instruction_rra();
     void instruction_rrc(ByteRegister& reg);
+    void instruction_rrc(WholeRegister& reg);
     void instruction_rrca();
 
     void instruction_rl(ByteRegister& reg);

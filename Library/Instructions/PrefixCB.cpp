@@ -62,6 +62,24 @@ void CPU::instruction_rrc(ByteRegister& reg)
     m_f.set_half_carry_flag(false);
 }
 
+void CPU::instruction_rrc(WholeRegister& reg)
+{
+    auto value = m_mmu.read(reg.value());
+
+    bool flag_carry = checkbit(value, 0);
+    m_f.set_flag_carry(flag_carry);
+
+    auto result = value >> 1;
+
+    (flag_carry) ? bitset(result, 7) : bitclear(result, 7);
+
+    m_mmu.write(reg.value(), result);
+
+    (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+}
+
 void CPU::instruction_rrca()
 {
     instruction_rrc(m_a);
