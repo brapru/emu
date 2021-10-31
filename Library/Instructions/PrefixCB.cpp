@@ -50,7 +50,7 @@ void CPU::instruction_rl(ByteRegister& reg)
 {
     bool orig_carry = m_f.flag_carry();
 
-    bool flag_carry = checkbit(reg.value(), 0);
+    bool flag_carry = checkbit(reg.value(), 7);
     m_f.set_flag_carry(flag_carry);
 
     auto result = reg.value() << 1;
