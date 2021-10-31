@@ -181,17 +181,17 @@ private:
     // Prefix CB Instructions - Instructions/PrefixCB.cpp
     void instruction_cb();
 
-    void instruction_rl(ByteRegister& reg);
-    void instruction_rla();
-    void instruction_rlc(ByteRegister& reg);
-    void instruction_rlc(WholeRegister& reg);
-    void instruction_rlca();
-
     void instruction_rr(ByteRegister& byte);
     void instruction_rr(WholeRegister& byte);
     void instruction_rra();
     void instruction_rrc(ByteRegister& reg);
     void instruction_rrca();
+
+    void instruction_rl(ByteRegister& reg);
+    void instruction_rla();
+    void instruction_rlc(ByteRegister& reg);
+    void instruction_rlc(WholeRegister& reg);
+    void instruction_rlca();
 
     void instruction_srl(ByteRegister& byte);
     void instruction_srl(WholeRegister& byte);
