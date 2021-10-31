@@ -15,7 +15,7 @@ void CPU::instruction_rr(ByteRegister& reg)
 
     reg.set(result);
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -35,7 +35,7 @@ void CPU::instruction_rr(WholeRegister& reg)
 
     m_mmu.write(reg.value(), result);
 
-    (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -57,7 +57,7 @@ void CPU::instruction_rrc(ByteRegister& reg)
 
     reg.set(result);
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -75,7 +75,7 @@ void CPU::instruction_rrc(WholeRegister& reg)
 
     m_mmu.write(reg.value(), result);
 
-    (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -99,7 +99,7 @@ void CPU::instruction_rl(ByteRegister& reg)
 
     reg.set(result);
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -119,7 +119,7 @@ void CPU::instruction_rl(WholeRegister& reg)
 
     m_mmu.write(reg.value(), result);
 
-    (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -141,7 +141,7 @@ void CPU::instruction_rlc(ByteRegister& reg)
 
     reg.set(result);
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -159,7 +159,7 @@ void CPU::instruction_rlc(WholeRegister& reg)
 
     m_mmu.write(reg.value(), result);
 
-    (value == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 }
@@ -178,7 +178,7 @@ void CPU::instruction_sra(ByteRegister& reg)
 
     reg.set(result);
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
@@ -209,7 +209,7 @@ void CPU::instruction_srl(ByteRegister& reg)
 
     reg.set(result);
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
