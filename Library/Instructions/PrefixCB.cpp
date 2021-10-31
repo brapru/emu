@@ -232,6 +232,36 @@ void CPU::instruction_srl(WholeRegister& reg)
     (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 }
 
+void CPU::instruction_sla(ByteRegister& reg)
+{
+    bool flag_carry = checkbit(reg.value(), 7);
+
+    uint8_t result = static_cast<uint8_t>(reg.value() << 1);
+
+    reg.set(result);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
+void CPU::instruction_sla(WholeRegister& reg)
+{
+    uint8_t value = m_mmu.read(reg.value());
+
+    bool flag_carry = checkbit(reg.value(), 7);
+
+    uint8_t result = static_cast<uint8_t>(value << 1);
+
+    m_mmu.write(reg.value(), result);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    (flag_carry) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+}
+
 void CPU::instruction_swap(ByteRegister& reg)
 {
     auto lo = ((reg.value() >> 0) & 0xF);

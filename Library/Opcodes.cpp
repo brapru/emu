@@ -837,6 +837,30 @@ void CPU::instruction_cb()
     case 0x1F:
         instruction_rr(m_f);
         break;
+    case 0x20:
+        instruction_sla(m_b);
+        break;
+    case 0x21:
+        instruction_sla(m_c);
+        break;
+    case 0x22:
+        instruction_sla(m_d);
+        break;
+    case 0x23:
+        instruction_sla(m_e);
+        break;
+    case 0x24:
+        instruction_sla(m_h);
+        break;
+    case 0x25:
+        instruction_sla(m_l);
+        break;
+    case 0x26:
+        instruction_sla(m_hl);
+        break;
+    case 0x27:
+        instruction_sla(m_a);
+        break;
     case 0x28:
         instruction_sra(m_b);
         break;

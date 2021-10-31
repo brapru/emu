@@ -201,6 +201,9 @@ private:
     void instruction_srl(ByteRegister& reg);
     void instruction_srl(WholeRegister& reg);
 
+    void instruction_sla(ByteRegister& reg);
+    void instruction_sla(WholeRegister& reg);
+
     void instruction_swap(ByteRegister& reg);
     void instruction_swap(WholeRegister& reg);
 };
