@@ -70,6 +70,28 @@ void CPU::instruction_rla(void)
     m_f.set_zero_flag(false);
 }
 
+void CPU::instruction_rlc(ByteRegister& reg)
+{
+    bool flag_carry = checkbit(reg.value(), 7);
+    m_f.set_flag_carry(flag_carry);
+
+    auto result = reg.value() << 1;
+
+    (flag_carry) ? bitset(result, 0) : bitclear(result, 0);
+
+    reg.set(result);
+
+    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+}
+
+void CPU::instruction_rlca()
+{
+    instruction_rlc(m_a);
+    m_f.set_zero_flag(false);
+}
+
 void CPU::instruction_srl(ByteRegister& reg)
 {
     auto result = reg.value() >> 1;
