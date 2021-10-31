@@ -64,6 +64,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x16:
         instruction_ld(m_d);
         break;
+    case 0x17:
+        instruction_rla();
+        break;
     case 0x18:
         instruction_jr();
         break;

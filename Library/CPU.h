@@ -180,6 +180,8 @@ private:
 
     // Prefix CB Instructions - Instructions/PrefixCB.cpp
     void instruction_cb();
+    void instruction_rla();
+    void instruction_rl(ByteRegister& reg);
     void instruction_rra();
     void instruction_rr(ByteRegister& byte);
     void instruction_rr(WholeRegister& byte);
