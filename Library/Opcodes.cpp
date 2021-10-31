@@ -613,6 +613,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0xDA:
         instruction_jp(Condition::C);
         break;
+    case 0xDE:
+        instruction_sbc();
+        break;
     case 0xE0:
         instruction_ldh_a_to_memory();
         break;
