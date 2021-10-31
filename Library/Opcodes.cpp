@@ -89,7 +89,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_rra();
         break;
     case 0x20:
-        instruction_jr(opcode);
+        instruction_jr(Condition::NZ);
         break;
     case 0x21:
         instruction_ld(m_hl);
@@ -110,7 +110,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_ld(m_h);
         break;
     case 0x28:
-        instruction_jr(opcode);
+        instruction_jr(Condition::Z);
         break;
     case 0x29:
         instruction_add_hl(m_hl);
@@ -131,7 +131,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_ld(m_l);
         break;
     case 0x30:
-        instruction_jr(opcode);
+        instruction_jr(Condition::NC);
         break;
     case 0x31:
         instruction_ld(m_sp);
@@ -152,7 +152,7 @@ void CPU::execute_instruction(uint8_t opcode)
         instruction_ld_hl();
         break;
     case 0x38:
-        instruction_jr(opcode);
+        instruction_jr(Condition::C);
         break;
     case 0x39:
         instruction_add_hl(m_sp);

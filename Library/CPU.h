@@ -151,7 +151,7 @@ private:
     void instruction_jp(Condition condition);
 
     void instruction_jr(void);
-    void instruction_jr(uint8_t const& opcode);
+    void instruction_jr(Condition condition);
 
     // CPU Control Instructions - Instructions/Control.cpp
     void instruction_nop(void);

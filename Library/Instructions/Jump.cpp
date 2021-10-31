@@ -103,21 +103,21 @@ void CPU::instruction_jr(void)
     m_pc.set(m_pc.value() + static_cast<uint16_t>(jumps));
 }
 
-void CPU::instruction_jr(uint8_t const& opcode)
+void CPU::instruction_jr(Condition condition)
 {
     bool should_jp;
 
-    switch (opcode) {
-    case 0x20: // NZ
+    switch (condition) {
+    case Condition::NZ:
         should_jp = !m_f.zero_flag();
         break;
-    case 0x28: // Z
+    case Condition::Z:
         should_jp = m_f.zero_flag();
         break;
-    case 0x30: // NC
+    case Condition::NC:
         should_jp = !m_f.flag_carry();
         break;
-    case 0x38: // C
+    case Condition::C:
         should_jp = m_f.flag_carry();
         break;
     }
