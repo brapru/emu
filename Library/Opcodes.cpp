@@ -789,6 +789,30 @@ void CPU::instruction_cb()
     case 0x0F:
         instruction_rrc(m_a);
         break;
+    case 0x10:
+        instruction_rl(m_b);
+        break;
+    case 0x11:
+        instruction_rl(m_c);
+        break;
+    case 0x12:
+        instruction_rl(m_d);
+        break;
+    case 0x13:
+        instruction_rl(m_e);
+        break;
+    case 0x14:
+        instruction_rl(m_h);
+        break;
+    case 0x15:
+        instruction_rl(m_l);
+        break;
+    case 0x16:
+        instruction_rl(m_hl);
+        break;
+    case 0x17:
+        instruction_rl(m_a);
+        break;
     case 0x18:
         instruction_rr(m_b);
         break;
