@@ -130,6 +130,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x2E:
         instruction_ld(m_l);
         break;
+    case 0x2F:
+        instruction_cpl();
+        break;
     case 0x30:
         instruction_jr(Condition::NC);
         break;
