@@ -154,6 +154,9 @@ void CPU::execute_instruction(uint8_t opcode)
     case 0x36:
         instruction_ld_hl();
         break;
+    case 0x37:
+        instruction_scf();
+        break;
     case 0x38:
         instruction_jr(Condition::C);
         break;

@@ -22,3 +22,10 @@ void CPU::instruction_cpl(void)
     m_f.set_subtraction_flag(true);
     m_f.set_half_carry_flag(true);
 }
+
+void CPU::instruction_scf(void)
+{
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(true);
+}
