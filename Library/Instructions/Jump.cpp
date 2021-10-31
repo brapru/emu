@@ -38,21 +38,21 @@ void CPU::instruction_ret(void)
     m_pc.set(address);
 }
 
-void CPU::instruction_ret(uint8_t const& opcode)
+void CPU::instruction_ret(Condition condition)
 {
     bool should_ret;
 
-    switch (opcode) {
-    case 0xC0: // NZ
+    switch (condition) {
+    case Condition::NZ:
         should_ret = !m_f.zero_flag();
         break;
-    case 0xC8: // Z
+    case Condition::Z:
         should_ret = m_f.zero_flag();
         break;
-    case 0xD0: // NC
+    case Condition::NC:
         should_ret = !m_f.flag_carry();
         break;
-    case 0xD8:
+    case Condition::C:
         should_ret = m_f.flag_carry();
         break;
     }

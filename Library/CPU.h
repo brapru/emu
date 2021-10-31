@@ -144,7 +144,7 @@ private:
     void instruction_conditional_call(Condition condition);
 
     void instruction_ret(void);
-    void instruction_ret(uint8_t const& opcode);
+    void instruction_ret(Condition condition);
 
     void instruction_jp(void);
     void instruction_jp(WholeRegister& reg);
