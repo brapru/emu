@@ -26,6 +26,10 @@ CPU::CPU(MMU& mmu, Serial& serial)
 */
 void CPU::cycle()
 {
+
+    if (m_is_halted)
+        instruction_nop();
+
     auto opcode_pc = m_pc.value();
     auto opcode = fetch_byte();
 
@@ -45,6 +49,52 @@ void CPU::cycle()
 
     m_serial.update();
     m_serial.print();
+
+    if (m_interrupt_master_enable) {
+        handle_interrupts();
+    }
+}
+
+void CPU::handle_interrupts()
+{
+    uint8_t active_interrupt = has_interrupts();
+    if (!active_interrupt)
+        return;
+
+    m_interrupt_master_enable = false;
+    m_is_halted = false;
+
+    stack_push(m_pc);
+
+    if (checkbit(active_interrupt, 0)) {
+        m_pc.set(Interrupts::VBLANK);
+        bitclear(active_interrupt, 0);
+        return;
+    }
+
+    if (checkbit(active_interrupt, 1)) {
+        m_pc.set(Interrupts::LCD_STATUS);
+        bitclear(active_interrupt, 1);
+        return;
+    }
+
+    if (checkbit(active_interrupt, 2)) {
+        m_pc.set(Interrupts::TIMER);
+        bitclear(active_interrupt, 2);
+        return;
+    }
+
+    if (checkbit(active_interrupt, 3)) {
+        m_pc.set(Interrupts::SERIAL);
+        bitclear(active_interrupt, 3);
+        return;
+    }
+
+    if (checkbit(active_interrupt, 4)) {
+        m_pc.set(Interrupts::JOYPAD);
+        bitclear(active_interrupt, 4);
+        return;
+    }
 }
 
 uint8_t CPU::fetch_byte()

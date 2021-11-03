@@ -8,6 +8,7 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     , m_mmu(m_cartridge, m_cpu, m_timer, m_serial)
     , m_cpu(m_mmu, m_serial)
     , m_serial(m_mmu)
+    , m_timer(m_cpu)
 {
     if (!m_cartridge.is_loaded()) {
         outln("Failed to load rom data");

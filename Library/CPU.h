@@ -32,6 +32,14 @@ constexpr uint16_t RST6 = 0x30;
 constexpr uint16_t RST7 = 0x38;
 }
 
+namespace Interrupts {
+constexpr uint16_t VBLANK = 0x40;
+constexpr uint16_t LCD_STATUS = 0x48;
+constexpr uint16_t TIMER = 0x50;
+constexpr uint16_t SERIAL = 0x58;
+constexpr uint16_t JOYPAD = 0x60;
+}
+
 class CPU {
 public:
     CPU(MMU& mmu, Serial& m_serial);
@@ -43,6 +51,10 @@ public:
 
     ByteRegister interrupt_flag(void) { return m_interrupt_flag; }
     ByteRegister interrupt_enable(void) { return m_interrupt_enable; }
+
+    void request_interrupt(uint16_t const& interrupt) { m_interrupt_flag.set(interrupt); }
+    void handle_interrupts();
+    uint8_t has_interrupts() { return m_interrupt_flag.value() & m_interrupt_enable.value(); }
 
     void stack_push(WordRegister& reg);
     void stack_push(WholeRegister& reg);
@@ -70,7 +82,9 @@ private:
 
     FlagRegister m_f;
 
-    bool m_interrupt_master_enable;
+    bool m_is_halted = false;
+    bool m_interrupt_master_enable = false;
+
     ByteRegister m_interrupt_flag;
     ByteRegister m_interrupt_enable;
 

@@ -2,9 +2,13 @@
 
 #include <Register.h>
 
+class CPU;
+
 class Timer {
 public:
-    Timer() {};
+    Timer(CPU& cpu);
+
+    void tick();
 
     void write(uint16_t address, uint8_t value);
     uint8_t read(uint16_t address);
@@ -15,6 +19,8 @@ public:
     ByteRegister control() { return m_control; }
 
 private:
+    CPU& m_cpu;
+
     ByteRegister m_divider;
     ByteRegister m_counter;
     ByteRegister m_modulo;
