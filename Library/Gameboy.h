@@ -2,6 +2,7 @@
 
 #include <CPU.h>
 #include <Cartridge.h>
+#include <Interface.h>
 #include <MMU.h>
 #include <Serial.h>
 #include <Timer.h>
@@ -16,6 +17,8 @@ public:
 
 private:
     void main_cycle();
+
+    std::unique_ptr<Interface> m_interface;
 
     Cartridge m_cartridge;
     MMU m_mmu;

@@ -14,10 +14,18 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
         outln("Failed to load rom data");
         exit(1);
     }
+
+    m_interface = std::make_unique<Interface>();
+    if (m_interface == nullptr) {
+        outln("Failed to inititalize the interface");
+        exit(1);
+    }
 }
 
 void Gameboy::run(void)
 {
+    m_interface->initialize();
+
     while (true) {
         main_cycle();
     }
@@ -26,4 +34,6 @@ void Gameboy::run(void)
 void Gameboy::main_cycle(void)
 {
     m_cpu.cycle();
+
+    m_interface->event_handler();
 }
