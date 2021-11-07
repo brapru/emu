@@ -36,7 +36,7 @@ public:
     bool is_valid_checksum() { return m_is_valid_checksum; }
 
 private:
-    bool m_is_loaded;
+    bool m_is_loaded = false;
     std::vector<uint8_t> m_data;
 
     CartridgeHeader m_header;

@@ -13,6 +13,8 @@ class Gameboy {
 public:
     Gameboy(std::vector<uint8_t> rom_data);
 
+    bool has_cartridge() { return m_cartridge.is_loaded(); }
+
     void main_cycle();
     void run();
 

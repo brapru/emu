@@ -15,8 +15,7 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     , m_timer(m_cpu)
 {
     if (!m_cartridge.is_loaded()) {
-        outln("Failed to load rom data");
-        exit(1);
+        outln("No rom data loaded");
     }
 
     m_interface = std::make_unique<Interface>();
@@ -28,6 +27,9 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
 
 void main_cycle_wasm(void* arg)
 {
+    if (!static_cast<Gameboy*>(arg)->has_cartridge())
+        return;
+
     static_cast<Gameboy*>(arg)->main_cycle();
 }
 

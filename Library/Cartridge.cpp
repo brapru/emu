@@ -8,12 +8,14 @@
 Cartridge::Cartridge(std::vector<uint8_t> rom_data)
     : m_data(rom_data)
 {
-    m_is_loaded = true;
     initialize_header();
 }
 
 void Cartridge::initialize_header()
 {
+    if (m_data.empty())
+        return;
+
     std::memcpy(&m_header, &m_data[0x0100], sizeof(CartridgeHeader));
 
     switch (m_header.new_license_code) {
@@ -48,8 +50,10 @@ void Cartridge::initialize_header()
         checksum = checksum - m_data[i] - 1;
     }
 
-    if (checksum & 0xFF)
+    if (checksum & 0xFF) {
         m_is_valid_checksum = true;
+        m_is_loaded = true;
+    }
 
     outln("Cartridge Header Information:");
     outln("\t title: {}", m_header.title);
