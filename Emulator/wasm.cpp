@@ -13,20 +13,8 @@ void usage(void)
 
 int main(int argc, char** argv)
 {
-    if (argc != 2) {
-        usage();
-        exit(1);
-    }
-
-    std::string rom_file = argv[1];
-
-    auto rom_data = read_rom_into_vector(rom_file);
-    if (rom_data.empty()) {
-        outln("Failed to load the rom data from file: {}", rom_file);
-        exit(1);
-    }
-
-    auto vm = std::make_unique<Gameboy>(rom_data);
+    std::vector<uint8_t> empty;
+    auto vm = std::make_unique<Gameboy>(empty);
     if (!vm) {
         outln("Failed to initialize the Gameboy.");
         exit(1);
