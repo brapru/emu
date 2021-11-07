@@ -44,7 +44,7 @@ void Cartridge::initialize_header()
     }
 
     uint16_t checksum = 0;
-    for (u_int16_t i = 0x0134; i < 0x014C; i++) {
+    for (uint16_t i = 0x0134; i < 0x014C; i++) {
         checksum = checksum - m_data[i] - 1;
     }
 

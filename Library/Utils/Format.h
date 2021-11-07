@@ -1,6 +1,12 @@
 #pragma once
 
-#include <fmt/format.h>
+#ifndef __EMSCRIPTEN__
+#    include <fmt/format.h>
+#else
+#    define FMT_HEADER_ONLY
+#    include "fmt/format.h"
+#endif
+
 #include <iostream>
 #include <string>
 

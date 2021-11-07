@@ -13,11 +13,10 @@ class Gameboy {
 public:
     Gameboy(std::vector<uint8_t> rom_data);
 
+    void main_cycle();
     void run();
 
 private:
-    void main_cycle();
-
     std::unique_ptr<Interface> m_interface;
 
     Cartridge m_cartridge;
