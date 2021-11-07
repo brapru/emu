@@ -3,12 +3,13 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 BASE_DIR="$( dirname "$SCRIPT_DIR" )"
 BUILD_DIR="$BASE_DIR/Build"
+TOOLS_DIR="$BASE_DIR/Tools"
 
-EMSDK_DIR="$BASE_DIR/Tools/emsdk"
+EMSDK_DIR="$TOOLS_DIR/emsdk"
 EMSCRIPTEN_DIR="$EMSDK_DIR/upstream/emscripten"
 
 clang_format() {
-    FILES=$(find $BASE_DIR -iname *.h -o -iname *.cpp -o -path $BUILD_DIR -prune)
+    FILES=$(find $BASE_DIR -iname *.h -o -iname *.cpp -o -path $BUILD_DIR -prune -o -path $TOOLS_DIR -prune)
     for FILE in $FILES
     do
         echo "Running clang-format on: $(basename $FILE)"
