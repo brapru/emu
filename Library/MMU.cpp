@@ -15,14 +15,14 @@ uint8_t MMU::read(uint16_t const address)
 {
     if (address < 0x8000)
         return m_cartridge.read(address);
-    if (address < 0xE000)
+    else if (address < 0xE000)
         return memory_read(address);
-    if (address < 0xFF80) {
+    else if (address < 0xFF80)
         return io_read(address);
-    }
-    if (address_in_range(address, 0xFF80, 0xFFFE)) {
+    else if (address_in_range(address, 0xFF80, 0xFFFE))
         return memory_read(address);
-    }
+    else if (address == 0xFFFF)
+        return m_cpu.interrupt_enable().value();
 
     outln("MMU read at address not yet implemented.");
     exit(1);
@@ -33,20 +33,16 @@ void MMU::write(uint16_t const address, uint8_t const value)
     if (address < 0x8000) {
         m_cartridge.write(address, value);
         return;
-    }
-    if (address < 0xE000) {
+    } else if (address < 0xE000) {
         memory_write(address, value);
         return;
-    }
-    if (address < 0xFF80) {
+    } else if (address < 0xFF80) {
         io_write(address, value);
         return;
-    }
-    if (address_in_range(address, 0xFF80, 0xFFFE)) {
+    } else if (address_in_range(address, 0xFF80, 0xFFFE)) {
         memory_write(address, value);
         return;
-    }
-    if (address == 0xFFFF) {
+    } else if (address == 0xFFFF) {
         m_cpu.interrupt_enable().set(value);
         return;
     }
