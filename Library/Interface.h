@@ -38,4 +38,8 @@ private:
     std::unique_ptr<SDL_Window, SDLWindowDeleter> m_sdl_window;
     std::unique_ptr<SDL_Renderer, SDLRendererDeleter> m_sdl_renderer;
     std::unique_ptr<SDL_Texture, SDLTextureDeleter> m_sdl_texture;
+
+    std::unique_ptr<SDL_Window, SDLWindowDeleter> m_sdl_tile_window;
+    std::unique_ptr<SDL_Renderer, SDLRendererDeleter> m_sdl_tile_renderer;
+    std::unique_ptr<SDL_Texture, SDLTextureDeleter> m_sdl_tile_texture;
 };
