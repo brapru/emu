@@ -4,6 +4,7 @@
 #include <Cartridge.h>
 #include <Interface.h>
 #include <MMU.h>
+#include <PPU.h>
 #include <Serial.h>
 #include <Timer.h>
 
@@ -24,6 +25,7 @@ private:
     Cartridge m_cartridge;
     MMU m_mmu;
     CPU m_cpu;
+    PPU m_ppu;
     Timer m_timer;
     Serial m_serial;
 };

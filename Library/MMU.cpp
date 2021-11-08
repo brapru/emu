@@ -1,11 +1,13 @@
 #include <Cartridge.h>
 #include <MMU.h>
+#include <PPU.h>
 #include <Utils/Address.h>
 #include <Utils/Format.h>
 
-MMU::MMU(Cartridge& cartridge, CPU& cpu, Timer& timer, Serial& serial)
+MMU::MMU(Cartridge& cartridge, CPU& cpu, PPU& ppu, Timer& timer, Serial& serial)
     : m_cartridge(cartridge)
     , m_cpu(cpu)
+    , m_ppu(ppu)
     , m_timer(timer)
     , m_serial(serial)
 {
@@ -15,8 +17,12 @@ uint8_t MMU::read(uint16_t const address)
 {
     if (address < 0x8000)
         return m_cartridge.read(address);
+    else if (address < 0xA000)
+        return m_ppu.vram_read(address);
     else if (address < 0xE000)
         return memory_read(address);
+    else if (address < 0xFEA0)
+        return m_ppu.oam_read(address);
     else if (address < 0xFF80)
         return io_read(address);
     else if (address_in_range(address, 0xFF80, 0xFFFE))
@@ -33,8 +39,14 @@ void MMU::write(uint16_t const address, uint8_t const value)
     if (address < 0x8000) {
         m_cartridge.write(address, value);
         return;
+    } else if (address < 0xA000) {
+        m_ppu.vram_write(address, value);
+        return;
     } else if (address < 0xE000) {
         memory_write(address, value);
+        return;
+    } else if (address < 0xFEA) {
+        m_ppu.oam_write(address, value);
         return;
     } else if (address < 0xFF80) {
         io_write(address, value);

@@ -2,6 +2,7 @@ add_library (libemu SHARED
     Gameboy.cpp 
     Cartridge.cpp 
     CPU.cpp 
+    PPU.cpp
     Interface.cpp 
     MMU.cpp 
     Register.cpp 

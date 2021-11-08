@@ -8,11 +8,12 @@
 #include <vector>
 
 class CPU;
+class PPU;
 class Serial;
 
 class MMU {
 public:
-    MMU(Cartridge& cartridge, CPU& cpu, Timer& timer, Serial& serial);
+    MMU(Cartridge& cartridge, CPU& cpu, PPU& ppu, Timer& timer, Serial& serial);
 
     uint8_t read(uint16_t const address);
     void write(uint16_t const address, uint8_t const value);
@@ -28,6 +29,7 @@ private:
 
     Cartridge& m_cartridge;
     CPU& m_cpu;
+    PPU& m_ppu;
     Timer& m_timer;
     Serial& m_serial;
     std::vector<uint8_t> m_memory = std::vector<uint8_t>(0x10000);
