@@ -6,15 +6,18 @@
 #include <memory>
 #include <string>
 
-void usage(void)
+std::unique_ptr<Gameboy> vm;
+
+extern "C" void load()
 {
-    outln("./gbc++ ROM_FILE");
+    std::vector<uint8_t> rom_data = read_rom_into_vector("rom.gb");
+    vm.reset(new Gameboy(rom_data));
 }
 
 int main(int argc, char** argv)
 {
     std::vector<uint8_t> empty;
-    auto vm = std::make_unique<Gameboy>(empty);
+    vm = std::make_unique<Gameboy>(empty);
     if (!vm) {
         outln("Failed to initialize the Gameboy.");
         exit(1);
