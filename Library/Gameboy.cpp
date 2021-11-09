@@ -3,6 +3,9 @@
 #include <Gameboy.h>
 #include <Utils/Format.h>
 
+#include <thread>
+#include <unistd.h>
+
 #ifdef __EMSCRIPTEN__
 #    include <emscripten.h>
 #endif
@@ -30,7 +33,7 @@ void main_cycle_wasm(void* arg)
     if (!static_cast<Gameboy*>(arg)->has_cartridge())
         return;
 
-    static_cast<Gameboy*>(arg)->main_cycle();
+    static_cast<Gameboy*>(arg)->cpu_run();
 }
 
 void Gameboy::run(void)
@@ -42,16 +45,19 @@ void Gameboy::run(void)
 #endif
 
 #ifndef __EMSCRIPTEN__
-    while (true) {
-        main_cycle();
-    }
+    std::thread thread1(&Gameboy::cpu_run, this);
 #endif
+
+    while (true) {
+        usleep(1000);
+        m_interface->event_handler();
+        m_interface->update();
+    };
 }
 
-void Gameboy::main_cycle(void)
+void Gameboy::cpu_run(void)
 {
-    m_cpu.cycle();
-
-    m_interface->event_handler();
-    m_interface->update();
+    while (true) {
+        m_cpu.cycle();
+    }
 }

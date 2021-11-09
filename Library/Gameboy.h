@@ -16,7 +16,7 @@ public:
 
     bool has_cartridge() { return m_cartridge.is_loaded(); }
 
-    void main_cycle();
+    void cpu_run();
     void run();
 
 private:
