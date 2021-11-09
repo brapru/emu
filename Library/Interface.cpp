@@ -111,17 +111,18 @@ void Interface::event_handler()
     }
 }
 
-void Interface::draw_tile(SDL_Surface* surface, uint16_t start, uint16_t tile_number, int x, int y)
+void Interface::render_tile(uint16_t tile_number, int x, int y)
 {
     SDL_Rect rectangle;
 
+    // Each tile occupies 16 bytes, where each line is represented by 2 bytes
     for (int y_tile = 0; y_tile < 16; y_tile += 2) {
-        uint8_t byte1 = m_mmu.read(start + (tile_number * 16) + y_tile);
-        uint8_t byte2 = m_mmu.read(start + (tile_number * 16) + y_tile + 1);
+        uint8_t byte1 = m_mmu.read(TILE_BASE_ADDRESS + (tile_number * 16) + y_tile);
+        uint8_t byte2 = m_mmu.read(TILE_BASE_ADDRESS + (tile_number * 16) + y_tile + 1);
 
         for (int bit = 7; bit >= 0; bit--) {
             uint8_t hi = !!(byte1 & (1 << bit)) << 1;
-            uint8_t lo = !!(byte2 & (1 << bit)) << 1;
+            uint8_t lo = !!(byte2 & (1 << bit));
 
             uint8_t color = hi | lo;
 
@@ -130,7 +131,7 @@ void Interface::draw_tile(SDL_Surface* surface, uint16_t start, uint16_t tile_nu
             rectangle.w = SCREEN_SCALE;
             rectangle.h = SCREEN_SCALE;
 
-            SDL_FillRect(surface, &rectangle, TILE_COLORS[color]);
+            SDL_FillRect(m_sdl_tile_surface.get(), &rectangle, TILE_COLORS[color]);
         }
     }
 }
@@ -146,11 +147,9 @@ void Interface::update_sdl_tile_window()
     rectangle.h = m_sdl_tile_surface->h;
     SDL_FillRect(m_sdl_tile_surface.get(), &rectangle, 0xFF111111);
 
-    uint16_t address;
-
     for (int y = 0; y < 24; y++) {
         for (int x = 0; x < 16; x++) {
-            draw_tile(m_sdl_tile_surface.get(), address, tile_number, x_pos + (x * SCREEN_SCALE), y_pos + (y * SCREEN_SCALE));
+            render_tile(tile_number, x_pos + (x * SCREEN_SCALE), y_pos + (y * SCREEN_SCALE));
             x_pos += (8 * SCREEN_SCALE);
             tile_number++;
         }

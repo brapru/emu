@@ -6,6 +6,8 @@
 
 #include <memory>
 
+constexpr uint16_t TILE_BASE_ADDRESS = 0x8000;
+
 constexpr int SCREEN_WIDTH = 160;
 constexpr int SCREEN_HEIGHT = 144;
 constexpr int SCREEN_SCALE = 2;
@@ -55,5 +57,5 @@ private:
     std::unique_ptr<SDL_Surface> m_sdl_tile_surface;
 
     void update_sdl_tile_window();
-    void draw_tile(SDL_Surface* surface, uint16_t start, uint16_t tile_number, int x, int y);
+    void render_tile(uint16_t tile_number, int x, int y);
 };
