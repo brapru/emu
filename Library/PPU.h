@@ -15,6 +15,4 @@ public:
 private:
     std::vector<uint8_t> m_oam_ram = std::vector<uint8_t>(0xA0);
     std::vector<uint8_t> m_vram = std::vector<uint8_t>(0x2000);
-    // uint8_t m_oam_ram[0xA0];
-    // uint8_t m_vram[0x2000];
 };
