@@ -15,7 +15,7 @@ unsigned long CPU::instruction_di(void)
 unsigned long CPU::instruction_ei(void)
 {
     m_interrupt_master_enable = true;
-    
+
     return 4;
 }
 

@@ -185,12 +185,12 @@ private:
     void instruction_jr(Condition condition);
 
     // CPU Control Instructions - Instructions/Control.cpp
-    void instruction_nop(void);
-    void instruction_di(void);
-    void instruction_ei(void);
-    void instruction_cpl(void);
-    void instruction_scf(void);
-    void instruction_ccf(void);
+    unsigned long instruction_nop(void);
+    unsigned long instruction_di(void);
+    unsigned long instruction_ei(void);
+    unsigned long instruction_cpl(void);
+    unsigned long instruction_scf(void);
+    unsigned long instruction_ccf(void);
 
     // Prefix CB Instructions - Instructions/PrefixCB.cpp
     void instruction_cb();
