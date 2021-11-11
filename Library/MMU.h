@@ -27,6 +27,8 @@ private:
     void io_write(uint16_t const address, uint8_t const value);
     uint8_t io_read(uint16_t const address);
 
+    void m_dma_transfer(uint8_t const value);
+
     Cartridge& m_cartridge;
     CPU& m_cpu;
     PPU& m_ppu;

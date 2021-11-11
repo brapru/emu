@@ -113,10 +113,22 @@ void MMU::io_write(uint16_t const address, uint8_t const value)
     } else if (address == 0xFF0F) {
         m_cpu.interrupt_flag().set(value);
         return;
+    } else if (address == 0xFF46) {
+        m_dma_transfer(value);
+        return;
     } else if (address_in_range(address, 0xFF40, 0xFF4B)) {
         out("LCD write at address 0x:{:2X} not yet implemented ", address);
     } else {
         outln("IO write at address 0x:{:2X} not yet implemented", address);
         exit(1);
+    }
+}
+
+void MMU::m_dma_transfer(uint8_t const value)
+{
+    uint16_t address = value << 8;
+    for (int offset = 0; offset < 0xA0; offset++) {
+        auto value = memory_read(address + offset);
+        m_ppu.oam_write((0xFE00 + offset), value);
     }
 }
