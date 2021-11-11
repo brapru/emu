@@ -44,7 +44,7 @@ class CPU {
 public:
     CPU(MMU& mmu, Serial& m_serial);
 
-    void cycle();
+    unsigned int cycle();
 
     uint8_t fetch_byte();
     uint16_t fetch_word();
@@ -89,35 +89,35 @@ private:
     ByteRegister m_interrupt_enable;
 
     // Opcodes.cpp
-    void execute_instruction(uint8_t opcode);
+    unsigned long m_execute_instruction(uint8_t opcode);
 
     // LD Instructions - Instructions/LD.cpp
-    void instruction_ld(ByteRegister& reg);
-    void instruction_ld(WordRegister& reg);
-    void instruction_ld(WholeRegister& reg);
-    void instruction_ld(WholeRegister& reg, RegisterOperation update);
-    void instruction_ld(ByteRegister& reg, ByteRegister& from_reg);
-    void instruction_ld(ByteRegister& reg, WholeRegister& from_reg);
+    unsigned long instruction_ld(ByteRegister& reg);
+    unsigned long instruction_ld(WordRegister& reg);
+    unsigned long instruction_ld(WholeRegister& reg);
+    unsigned long instruction_ld(WholeRegister& reg, RegisterOperation update);
+    unsigned long instruction_ld(ByteRegister& reg, ByteRegister& from_reg);
+    unsigned long instruction_ld(ByteRegister& reg, WholeRegister& from_reg);
 
-    void instruction_ld_reg_to_addr(ByteRegister& reg);
-    void instruction_ld_reg_to_addr(WholeRegister& reg);
-    void instruction_ld_reg_to_addr(WordRegister& reg);
-    void instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg);
-    void instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg, RegisterOperation update);
+    unsigned long instruction_ld_reg_to_addr(ByteRegister& reg);
+    unsigned long instruction_ld_reg_to_addr(WholeRegister& reg);
+    unsigned long instruction_ld_reg_to_addr(WordRegister& reg);
+    unsigned long instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg);
+    unsigned long instruction_ld_reg_to_addr(WholeRegister& whole_reg, ByteRegister& reg, RegisterOperation update);
 
-    void instruction_ld_addr_to_reg(ByteRegister& reg);
+    unsigned long instruction_ld_addr_to_reg(ByteRegister& reg);
 
-    void instruction_ld_hl();
-    void instruction_ldh_a_to_memory();
-    void instruction_ldh_memory_to_a();
-    void instruction_ld_hl_sp();
-    void instruction_ld_sp_hl();
+    unsigned long instruction_ld_hl();
+    unsigned long instruction_ldh_a_to_memory();
+    unsigned long instruction_ldh_memory_to_a();
+    unsigned long instruction_ld_hl_sp();
+    unsigned long instruction_ld_sp_hl();
 
-    void instruction_ldh_c_to_a();
-    void instruction_ldh_a_to_c();
+    unsigned long instruction_ldh_c_to_a();
+    unsigned long instruction_ldh_a_to_c();
 
-    void instruction_push(WholeRegister& reg);
-    void instruction_pop(WholeRegister& reg);
+    unsigned long instruction_push(WholeRegister& reg);
+    unsigned long instruction_pop(WholeRegister& reg);
 
     // Arithmetic and Logic Instructions - Instructions/ArithmeticLogic.cpp
     void instruction_add(ByteRegister& reg);
