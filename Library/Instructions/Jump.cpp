@@ -1,13 +1,15 @@
 #include <CPU.h>
 
-void CPU::instruction_call(void)
+unsigned long CPU::instruction_call(void)
 {
     auto address = CPU::fetch_word();
     stack_push(m_pc);
     m_pc.set(address);
+
+    return 24;
 }
 
-void CPU::instruction_conditional_call(Condition condition)
+unsigned long CPU::instruction_conditional_call(Condition condition)
 {
     bool should_call;
 
@@ -26,19 +28,24 @@ void CPU::instruction_conditional_call(Condition condition)
         break;
     }
 
-    if (should_call)
+    if (should_call) {
         instruction_call();
-    else
+        return 24;
+    } else {
         CPU::fetch_word();
+        return 12;
+    }
 }
 
-void CPU::instruction_ret(void)
+unsigned long CPU::instruction_ret(void)
 {
     auto address = stack_pop();
     m_pc.set(address);
+
+    return 16;
 }
 
-void CPU::instruction_ret(Condition condition)
+unsigned long CPU::instruction_ret(Condition condition)
 {
     bool should_ret;
 
@@ -57,34 +64,46 @@ void CPU::instruction_ret(Condition condition)
         break;
     }
 
-    if (should_ret)
+    if (should_ret) {
         instruction_ret();
+        return 20;
+    } else {
+        return 8;
+    }
 }
 
-void CPU::instruction_reti()
+unsigned long CPU::instruction_reti()
 {
     instruction_ret();
     instruction_ei();
+
+    return 16;
 }
 
-void CPU::instruction_rst(uint16_t offset)
+unsigned long CPU::instruction_rst(uint16_t offset)
 {
     stack_push(m_pc);
     m_pc.set(offset);
+
+    return 16;
 }
 
-void CPU::instruction_jp(void)
+unsigned long CPU::instruction_jp(void)
 {
     auto address = CPU::fetch_word();
     m_pc.set(address);
+
+    return 16;
 }
 
-void CPU::instruction_jp(WholeRegister& reg)
+unsigned long CPU::instruction_jp(WholeRegister& reg)
 {
     m_pc.set(reg.value());
+
+    return 4;
 }
 
-void CPU::instruction_jp(Condition condition)
+unsigned long CPU::instruction_jp(Condition condition)
 {
     bool should_jp;
 
@@ -103,19 +122,24 @@ void CPU::instruction_jp(Condition condition)
         break;
     }
 
-    if (should_jp)
+    if (should_jp) {
         instruction_jp();
-    else
+        return 16;
+    } else {
         CPU::fetch_word();
+        return 12;
+    }
 }
 
-void CPU::instruction_jr(void)
+unsigned long CPU::instruction_jr(void)
 {
     auto jumps = static_cast<int8_t>(fetch_byte());
     m_pc.set(m_pc.value() + static_cast<uint16_t>(jumps));
+
+    return 12;
 }
 
-void CPU::instruction_jr(Condition condition)
+unsigned long CPU::instruction_jr(Condition condition)
 {
     bool should_jp;
 
@@ -137,7 +161,9 @@ void CPU::instruction_jr(Condition condition)
     if (should_jp) {
         auto jumps = static_cast<int8_t>(fetch_byte());
         m_pc.set(m_pc.value() + static_cast<uint16_t>(jumps));
+        return 12;
     } else {
         CPU::fetch_byte();
+        return 8;
     }
 }

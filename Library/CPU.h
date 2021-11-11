@@ -168,21 +168,21 @@ private:
     void instruction_xor_hl_address();
 
     // Jump Instructions - Instructions/Jump.cpp
-    void instruction_call(void);
-    void instruction_conditional_call(Condition condition);
+    unsigned long instruction_call(void);
+    unsigned long instruction_conditional_call(Condition condition);
 
-    void instruction_ret(void);
-    void instruction_ret(Condition condition);
-    void instruction_reti(void);
+    unsigned long instruction_ret(void);
+    unsigned long instruction_ret(Condition condition);
+    unsigned long instruction_reti(void);
 
-    void instruction_rst(uint16_t offset);
+    unsigned long instruction_rst(uint16_t offset);
 
-    void instruction_jp(void);
-    void instruction_jp(WholeRegister& reg);
-    void instruction_jp(Condition condition);
+    unsigned long instruction_jp(void);
+    unsigned long instruction_jp(WholeRegister& reg);
+    unsigned long instruction_jp(Condition condition);
 
-    void instruction_jr(void);
-    void instruction_jr(Condition condition);
+    unsigned long instruction_jr(void);
+    unsigned long instruction_jr(Condition condition);
 
     // CPU Control Instructions - Instructions/Control.cpp
     unsigned long instruction_nop(void);
