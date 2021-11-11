@@ -22,3 +22,4 @@ cmake-build-debug/
 Build/
 Tools/
 Tests/BGB
+Tests/Roms/tetris.gb
