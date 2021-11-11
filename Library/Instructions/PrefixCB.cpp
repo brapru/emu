@@ -308,6 +308,9 @@ unsigned long CPU::instruction_swap(ByteRegister& reg)
     reg.set(result);
 
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
 
     return 8;
 }
@@ -324,6 +327,9 @@ unsigned long CPU::instruction_swap(WholeRegister& reg)
     m_mmu.write(address, value);
 
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(false);
 
     return 16;
 }
