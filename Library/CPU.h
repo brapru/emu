@@ -193,31 +193,31 @@ private:
     unsigned long instruction_ccf(void);
 
     // Prefix CB Instructions - Instructions/PrefixCB.cpp
-    void instruction_cb();
+    unsigned long instruction_cb();
 
-    void instruction_rr(ByteRegister& byte);
-    void instruction_rr(WholeRegister& byte);
-    void instruction_rra();
-    void instruction_rrc(ByteRegister& reg);
-    void instruction_rrc(WholeRegister& reg);
-    void instruction_rrca();
+    unsigned long instruction_rr(ByteRegister& byte);
+    unsigned long instruction_rr(WholeRegister& byte);
+    unsigned long instruction_rra();
+    unsigned long instruction_rrc(ByteRegister& reg);
+    unsigned long instruction_rrc(WholeRegister& reg);
+    unsigned long instruction_rrca();
 
-    void instruction_rl(ByteRegister& reg);
-    void instruction_rl(WholeRegister& reg);
-    void instruction_rla();
-    void instruction_rlc(ByteRegister& reg);
-    void instruction_rlc(WholeRegister& reg);
-    void instruction_rlca();
+    unsigned long instruction_rl(ByteRegister& reg);
+    unsigned long instruction_rl(WholeRegister& reg);
+    unsigned long instruction_rla();
+    unsigned long instruction_rlc(ByteRegister& reg);
+    unsigned long instruction_rlc(WholeRegister& reg);
+    unsigned long instruction_rlca();
 
-    void instruction_sra(ByteRegister& reg);
-    void instruction_sra(WholeRegister& reg);
+    unsigned long instruction_sra(ByteRegister& reg);
+    unsigned long instruction_sra(WholeRegister& reg);
 
-    void instruction_srl(ByteRegister& reg);
-    void instruction_srl(WholeRegister& reg);
+    unsigned long instruction_srl(ByteRegister& reg);
+    unsigned long instruction_srl(WholeRegister& reg);
 
-    void instruction_sla(ByteRegister& reg);
-    void instruction_sla(WholeRegister& reg);
+    unsigned long instruction_sla(ByteRegister& reg);
+    unsigned long instruction_sla(WholeRegister& reg);
 
-    void instruction_swap(ByteRegister& reg);
-    void instruction_swap(WholeRegister& reg);
+    unsigned long instruction_swap(ByteRegister& reg);
+    unsigned long instruction_swap(WholeRegister& reg);
 };
