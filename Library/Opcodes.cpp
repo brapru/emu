@@ -101,7 +101,7 @@ unsigned long CPU::m_execute_instruction(uint8_t opcode)
     case 0x31:
         return instruction_ld(m_sp);
     case 0x32:
-        return instruction_ld(m_hl, RegisterOperation::Decrement);
+        return instruction_ld_reg_to_addr(m_hl, m_a, RegisterOperation::Decrement);
     case 0x33:
         return instruction_inc(m_sp);
     case 0x34:
