@@ -79,6 +79,21 @@ build() {
     fi
 }
 
+usage() {
+    echo -e "emu: simple command line tool to build, run, and format the emu project\n"
+    echo -e "USAGE:"
+    echo -e "\t./Scripts/emu [ format | build [ toolchain | sdl | wasm ] ]\n"
+    echo -e "ARGUMENT OPTIONS:"
+    echo -e "\t[format] : Calls clang-format on all .cpp and .h files in the repository"
+    echo -e "\t[build toolchain] : Creates the necessary libraries for the build process. This downloads the latest version of emscripten and intsalls in the Tools/ directory. Also builds the fmt library for WASM compatability."
+    echo -e "\t[build sdl] : Builds the project to run with the SDL windows only. Uses g++ for compilation."
+    echo -e "\t[build wasm] : Builds the project to run WASM. Ouputs a wasm, js, and html file. Uses emscripten for compilation."
+}
+
+if [ $# -eq 0 ]; then
+    usage
+fi
+
 while [[ $# -gt 0 ]]; do
     CMD="$1"
 
@@ -92,6 +107,14 @@ while [[ $# -gt 0 ]]; do
             build $2
             shift
             shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            usage
+            exit 1
             ;;
         esac
 done
