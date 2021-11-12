@@ -494,7 +494,7 @@ unsigned long CPU::m_execute_instruction(uint8_t opcode)
     }
 }
 
-void CPU::instruction_cb()
+unsigned long CPU::instruction_cb()
 {
     auto instruction = CPU::fetch_byte();
 

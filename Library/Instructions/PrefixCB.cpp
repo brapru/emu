@@ -87,7 +87,7 @@ unsigned long CPU::instruction_rrc(WholeRegister& reg)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
 
-    retrun 16;
+    return 16;
 }
 
 unsigned long CPU::instruction_rrca()
