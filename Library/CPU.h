@@ -120,52 +120,52 @@ private:
     unsigned long instruction_pop(WholeRegister& reg);
 
     // Arithmetic and Logic Instructions - Instructions/ArithmeticLogic.cpp
-    void instruction_add(ByteRegister& reg);
-    void instruction_add(ByteRegister& reg, ByteRegister& from_reg);
-    void instruction_add(ByteRegister& reg, WholeRegister& from_reg);
+    unsigned long instruction_add(ByteRegister& reg);
+    unsigned long instruction_add(ByteRegister& reg, ByteRegister& from_reg);
+    unsigned long instruction_add(ByteRegister& reg, WholeRegister& from_reg);
 
-    void instruction_add_hl(WholeRegister& reg);
-    void instruction_add_hl(WordRegister& reg);
+    unsigned long instruction_add_hl(WholeRegister& reg);
+    unsigned long instruction_add_hl(WordRegister& reg);
 
-    void instruction_add_sp();
+    unsigned long instruction_add_sp();
 
-    void instruction_adc();
-    void instruction_adc(ByteRegister& reg);
-    void instruction_adc(WholeRegister& reg);
+    unsigned long instruction_adc();
+    unsigned long instruction_adc(ByteRegister& reg);
+    unsigned long instruction_adc(WholeRegister& reg);
 
-    void instruction_sub();
-    void instruction_sub(ByteRegister& reg);
-    void instruction_sub(WholeRegister& reg);
+    unsigned long instruction_sub();
+    unsigned long instruction_sub(ByteRegister& reg);
+    unsigned long instruction_sub(WholeRegister& reg);
 
-    void instruction_sbc();
-    void instruction_sbc(ByteRegister& reg);
-    void instruction_sbc(WholeRegister& reg);
+    unsigned long instruction_sbc();
+    unsigned long instruction_sbc(ByteRegister& reg);
+    unsigned long instruction_sbc(WholeRegister& reg);
 
-    void instruction_and(void);
-    void instruction_and(ByteRegister& reg);
-    void instruction_and(WholeRegister& reg);
+    unsigned long instruction_and(void);
+    unsigned long instruction_and(ByteRegister& reg);
+    unsigned long instruction_and(WholeRegister& reg);
 
-    void instruction_cp();
-    void instruction_cp(ByteRegister& reg);
-    void instruction_cp(WholeRegister& reg);
+    unsigned long instruction_cp();
+    unsigned long instruction_cp(ByteRegister& reg);
+    unsigned long instruction_cp(WholeRegister& reg);
 
-    void instruction_inc(ByteRegister& reg);
-    void instruction_inc(WholeRegister& reg);
-    void instruction_inc(WordRegister& reg);
-    void instruction_inc_hl_address();
+    unsigned long instruction_inc(ByteRegister& reg);
+    unsigned long instruction_inc(WholeRegister& reg);
+    unsigned long instruction_inc(WordRegister& reg);
+    unsigned long instruction_inc_hl_address();
 
-    void instruction_dec(ByteRegister& reg);
-    void instruction_dec(WholeRegister& reg);
-    void instruction_dec(WordRegister& reg);
-    void instruction_dec_hl_address();
+    unsigned long instruction_dec(ByteRegister& reg);
+    unsigned long instruction_dec(WholeRegister& reg);
+    unsigned long instruction_dec(WordRegister& reg);
+    unsigned long instruction_dec_hl_address();
 
-    void instruction_or();
-    void instruction_or(ByteRegister& reg);
-    void instruction_or(WholeRegister& reg);
+    unsigned long instruction_or();
+    unsigned long instruction_or(ByteRegister& reg);
+    unsigned long instruction_or(WholeRegister& reg);
 
-    void instruction_xor();
-    void instruction_xor(ByteRegister& reg);
-    void instruction_xor_hl_address();
+    unsigned long instruction_xor();
+    unsigned long instruction_xor(ByteRegister& reg);
+    unsigned long instruction_xor_hl_address();
 
     // Jump Instructions - Instructions/Jump.cpp
     unsigned long instruction_call(void);

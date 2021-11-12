@@ -1,7 +1,7 @@
 #include <CPU.h>
 
 // Arithmetic Instructions
-void CPU::instruction_add(ByteRegister& reg)
+unsigned long CPU::instruction_add(ByteRegister& reg)
 {
     auto add = fetch_byte();
     auto orig = reg.value();
@@ -13,9 +13,11 @@ void CPU::instruction_add(ByteRegister& reg)
     m_f.set_subtraction_flag(false);
     ((add & 0xF) + (orig & 0xF) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     ((result & 0x100) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_add(ByteRegister& reg, ByteRegister& from_reg)
+unsigned long CPU::instruction_add(ByteRegister& reg, ByteRegister& from_reg)
 {
     auto add = from_reg.value();
     auto orig = reg.value();
@@ -27,9 +29,11 @@ void CPU::instruction_add(ByteRegister& reg, ByteRegister& from_reg)
     m_f.set_subtraction_flag(false);
     ((add & 0xF) + (orig & 0xF) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     ((result & 0x100) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
+unsigned long CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
 {
     auto add = m_mmu.read(from_reg.value());
     auto orig = reg.value();
@@ -41,9 +45,11 @@ void CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
     m_f.set_subtraction_flag(false);
     ((add & 0xF) + (orig & 0xF) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     ((result & 0x100) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_add_hl(WholeRegister& reg)
+unsigned long CPU::instruction_add_hl(WholeRegister& reg)
 {
     auto value = reg.value();
     auto orig = m_hl.value();
@@ -54,9 +60,11 @@ void CPU::instruction_add_hl(WholeRegister& reg)
     m_f.set_subtraction_flag(false);
     ((orig & 0xFFFF) + (value & 0xFFFF) > 0xFFFF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_add_hl(WordRegister& reg)
+unsigned long CPU::instruction_add_hl(WordRegister& reg)
 {
     auto value = reg.value();
     auto orig = m_hl.value();
@@ -67,9 +75,11 @@ void CPU::instruction_add_hl(WordRegister& reg)
     m_f.set_subtraction_flag(false);
     ((orig & 0xFFFF) + (value & 0xFFFF) > 0xFFFF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_add_sp()
+unsigned long CPU::instruction_add_sp()
 {
     auto add = static_cast<int8_t>(fetch_byte());
     auto orig = m_sp.value();
@@ -81,9 +91,11 @@ void CPU::instruction_add_sp()
     m_f.set_subtraction_flag(false);
     (((add ^ orig ^ (result & 0XFFFF)) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((add ^ orig ^ (result & 0XFFFF)) & 0x100) == 0x100) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 16;
 }
 
-void CPU::instruction_adc()
+unsigned long CPU::instruction_adc()
 {
     auto add = fetch_byte();
     auto orig = m_a.value();
@@ -96,9 +108,11 @@ void CPU::instruction_adc()
     m_f.set_subtraction_flag(false);
     (((add & 0xF) + (orig & 0xF) + carry) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_adc(WholeRegister& reg)
+unsigned long CPU::instruction_adc(WholeRegister& reg)
 {
     auto add = m_mmu.read(reg.value());
     auto orig = m_a.value();
@@ -111,9 +125,11 @@ void CPU::instruction_adc(WholeRegister& reg)
     m_f.set_subtraction_flag(false);
     (((add & 0xF) + (orig & 0xF) + carry) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_adc(ByteRegister& reg)
+unsigned long CPU::instruction_adc(ByteRegister& reg)
 {
     auto add = reg.value();
     auto orig = m_a.value();
@@ -126,9 +142,11 @@ void CPU::instruction_adc(ByteRegister& reg)
     m_f.set_subtraction_flag(false);
     (((add & 0xF) + (orig & 0xF) + carry) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_sub()
+unsigned long CPU::instruction_sub()
 {
     auto sub = fetch_byte();
     auto orig = m_a.value();
@@ -139,9 +157,11 @@ void CPU::instruction_sub()
     m_f.set_subtraction_flag(true);
     (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_sub(ByteRegister& reg)
+unsigned long CPU::instruction_sub(ByteRegister& reg)
 {
     auto sub = reg.value();
     auto orig = m_a.value();
@@ -152,9 +172,11 @@ void CPU::instruction_sub(ByteRegister& reg)
     m_f.set_subtraction_flag(true);
     (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_sub(WholeRegister& reg)
+unsigned long CPU::instruction_sub(WholeRegister& reg)
 {
     auto sub = m_mmu.read(reg.value());
     auto orig = m_a.value();
@@ -165,9 +187,11 @@ void CPU::instruction_sub(WholeRegister& reg)
     m_f.set_subtraction_flag(true);
     (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_sbc()
+unsigned long CPU::instruction_sbc()
 {
     auto sub = fetch_byte();
     auto orig = m_a.value();
@@ -180,9 +204,11 @@ void CPU::instruction_sbc()
     m_f.set_subtraction_flag(true);
     (((sub & 0xF) - (orig & 0xF) - carry) < 0) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_sbc(WholeRegister& reg)
+unsigned long CPU::instruction_sbc(WholeRegister& reg)
 {
     auto sub = m_mmu.read(reg.value());
     auto orig = m_a.value();
@@ -195,9 +221,11 @@ void CPU::instruction_sbc(WholeRegister& reg)
     m_f.set_subtraction_flag(true);
     (((sub & 0xF) - (orig & 0xF) - carry) < 0) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_sbc(ByteRegister& reg)
+unsigned long CPU::instruction_sbc(ByteRegister& reg)
 {
     auto sub = reg.value();
     auto orig = m_a.value();
@@ -210,10 +238,12 @@ void CPU::instruction_sbc(ByteRegister& reg)
     m_f.set_subtraction_flag(true);
     (((sub & 0xF) - (orig & 0xF) - carry) < 0) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 4;
 }
 
 // Logic Instructions
-void CPU::instruction_and(void)
+unsigned long CPU::instruction_and(void)
 {
     auto value = fetch_byte();
     auto result = value & m_a.value();
@@ -224,9 +254,11 @@ void CPU::instruction_and(void)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(true);
     m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_and(ByteRegister& reg)
+unsigned long CPU::instruction_and(ByteRegister& reg)
 {
     auto result = reg.value() & m_a.value();
 
@@ -236,9 +268,11 @@ void CPU::instruction_and(ByteRegister& reg)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(true);
     m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_and(WholeRegister& reg)
+unsigned long CPU::instruction_and(WholeRegister& reg)
 {
     auto value = m_mmu.read(reg.value());
     auto and_value = value | m_a.value();
@@ -249,9 +283,11 @@ void CPU::instruction_and(WholeRegister& reg)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(true);
     m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_cp()
+unsigned long CPU::instruction_cp()
 {
     auto sub = fetch_byte();
     auto orig = m_a.value();
@@ -262,9 +298,11 @@ void CPU::instruction_cp()
     m_f.set_subtraction_flag(true);
     (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_cp(ByteRegister& reg)
+unsigned long CPU::instruction_cp(ByteRegister& reg)
 {
     auto sub = reg.value();
     auto orig = m_a.value();
@@ -275,9 +313,11 @@ void CPU::instruction_cp(ByteRegister& reg)
     m_f.set_subtraction_flag(true);
     (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_cp(WholeRegister& reg)
+unsigned long CPU::instruction_cp(WholeRegister& reg)
 {
     auto sub = m_mmu.read(reg.value());
     auto orig = m_a.value();
@@ -288,18 +328,22 @@ void CPU::instruction_cp(WholeRegister& reg)
     m_f.set_subtraction_flag(true);
     (((orig & 0x0F) < (sub & 0x0F))) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
     (((orig & 0xFF) < (sub & 0xFF))) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_inc(ByteRegister& reg)
+unsigned long CPU::instruction_inc(ByteRegister& reg)
 {
     reg.increment();
 
     (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     ((reg.value() & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+
+    return 4;
 }
 
-void CPU::instruction_inc_hl_address()
+unsigned long CPU::instruction_inc_hl_address()
 {
     auto value = m_mmu.read(m_hl.value());
     auto result = static_cast<uint8_t>(value + 1);
@@ -309,28 +353,36 @@ void CPU::instruction_inc_hl_address()
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     ((result & 0x0F) == 0x00) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+
+    return 12;
 }
 
-void CPU::instruction_inc(WholeRegister& reg)
+unsigned long CPU::instruction_inc(WholeRegister& reg)
 {
     reg.increment();
+
+    return 8;
 }
 
-void CPU::instruction_inc(WordRegister& reg)
+unsigned long CPU::instruction_inc(WordRegister& reg)
 {
     reg.increment();
+
+    return 8;
 }
 
-void CPU::instruction_dec(ByteRegister& reg)
+unsigned long CPU::instruction_dec(ByteRegister& reg)
 {
     reg.decrement();
 
     (reg.value() == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
     ((reg.value() & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+
+    return 4;
 }
 
-void CPU::instruction_dec_hl_address()
+unsigned long CPU::instruction_dec_hl_address()
 {
     auto value = m_mmu.read(m_hl.value());
     auto result = static_cast<uint8_t>(value - 1);
@@ -340,19 +392,25 @@ void CPU::instruction_dec_hl_address()
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(true);
     ((result & 0x0F) == 0x0F) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+
+    return 12;
 }
 
-void CPU::instruction_dec(WholeRegister& reg)
+unsigned long CPU::instruction_dec(WholeRegister& reg)
 {
     reg.decrement();
+
+    return 8;
 }
 
-void CPU::instruction_dec(WordRegister& reg)
+unsigned long CPU::instruction_dec(WordRegister& reg)
 {
     reg.decrement();
+
+    return 8;
 }
 
-void CPU::instruction_or()
+unsigned long CPU::instruction_or()
 {
     auto value = fetch_byte();
 
@@ -364,9 +422,11 @@ void CPU::instruction_or()
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_or(ByteRegister& reg)
+unsigned long CPU::instruction_or(ByteRegister& reg)
 {
     auto value = reg.value() | m_a.value();
 
@@ -376,9 +436,11 @@ void CPU::instruction_or(ByteRegister& reg)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_or(WholeRegister& reg)
+unsigned long CPU::instruction_or(WholeRegister& reg)
 {
     auto value = m_mmu.read(reg.value());
     auto or_value = value | m_a.value();
@@ -389,9 +451,11 @@ void CPU::instruction_or(WholeRegister& reg)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_xor()
+unsigned long CPU::instruction_xor()
 {
     auto value = fetch_byte();
     auto result = m_a.value() ^ value;
@@ -402,9 +466,11 @@ void CPU::instruction_xor()
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+
+    return 8;
 }
 
-void CPU::instruction_xor(ByteRegister& reg)
+unsigned long CPU::instruction_xor(ByteRegister& reg)
 {
     auto result = m_a.value() ^ reg.value();
 
@@ -414,9 +480,11 @@ void CPU::instruction_xor(ByteRegister& reg)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+
+    return 4;
 }
 
-void CPU::instruction_xor_hl_address()
+unsigned long CPU::instruction_xor_hl_address()
 {
     auto value = m_mmu.read(m_hl.value());
     auto result = m_a.value() ^ value;
@@ -427,4 +495,6 @@ void CPU::instruction_xor_hl_address()
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
+
+    return 8;
 }
