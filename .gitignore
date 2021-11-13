@@ -7,6 +7,8 @@
 *.cxxflags
 *.autosave
 *.rom
+*.log
+*.txt
 .vscode
 .ccls-cache
 .DS_Store
