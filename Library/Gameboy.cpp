@@ -13,7 +13,7 @@
 Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     : m_cartridge(rom_data)
     , m_mmu(m_cartridge, m_cpu, m_ppu, m_timer, m_serial)
-    , m_cpu(m_mmu, m_serial)
+    , m_cpu(m_mmu, m_serial, m_timer)
     , m_serial(m_mmu)
     , m_timer(m_cpu)
 {
@@ -33,7 +33,7 @@ void main_cycle_wasm(void* arg)
     if (!static_cast<Gameboy*>(arg)->has_cartridge())
         return;
 
-    static_cast<Gameboy*>(arg)->cpu_run();
+    static_cast<Gameboy*>(arg)->main_cycle();
 }
 
 void Gameboy::run(void)
@@ -44,20 +44,24 @@ void Gameboy::run(void)
     emscripten_set_main_loop_arg(&main_cycle_wasm, this, 0, 1);
 #endif
 
-#ifndef __EMSCRIPTEN__
-    std::thread thread1(&Gameboy::cpu_run, this);
-#endif
-
-    while (true) {
-        usleep(1000);
-        m_interface->event_handler();
-        m_interface->update();
-    };
+    main_cycle();
 }
 
-void Gameboy::cpu_run(void)
+void Gameboy::main_cycle(void)
 {
-    while (true) {
-        m_cpu.cycle();
+    while (m_is_running) {
+
+        while (m_elapsed_cycles < CYCLES_PER_FRAME) {
+            m_elapsed_cycles += m_cpu.cycle();
+        };
+
+        m_elapsed_cycles -= CYCLES_PER_FRAME;
+
+        while (SDL_PollEvent(&m_event) > 0) {
+            if (m_event.type == SDL_QUIT)
+                m_is_running = false;
+        }
+
+        m_interface->update();
     }
 }

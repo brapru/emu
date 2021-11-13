@@ -10,18 +10,24 @@
 
 #include <memory>
 
+constexpr unsigned int CYCLES_PER_FRAME = 70224;
+
 class Gameboy {
 public:
     Gameboy(std::vector<uint8_t> rom_data);
 
     bool has_cartridge() { return m_cartridge.is_loaded(); }
 
-    void cpu_run();
+    void main_cycle();
     void run();
 
 private:
-    std::unique_ptr<Interface> m_interface;
+    unsigned int m_elapsed_cycles = 0;
 
+    SDL_Event m_event;
+    bool m_is_running = true;
+
+    std::unique_ptr<Interface> m_interface;
     Cartridge m_cartridge;
     MMU m_mmu;
     CPU m_cpu;
