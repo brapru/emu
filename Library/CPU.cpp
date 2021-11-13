@@ -2,9 +2,10 @@
 #include <Utils/Bitwise.h>
 #include <Utils/Format.h>
 
-CPU::CPU(MMU& mmu, Serial& serial)
+CPU::CPU(MMU& mmu, Serial& serial, Timer& timer)
     : m_mmu(mmu)
     , m_serial(serial)
+    , m_timer(timer)
     , m_af(m_a, m_f)
     , m_bc(m_b, m_c)
     , m_de(m_d, m_e)
@@ -24,11 +25,12 @@ CPU::CPU(MMU& mmu, Serial& serial)
         opcode -> opcode_map_lookup -> execute function
         Instruction class with function pointer and name members
 */
-void CPU::cycle()
+unsigned int CPU::cycle()
 {
+    unsigned long cycles = 0x00;
 
     if (m_is_halted)
-        instruction_nop();
+        cycles = instruction_nop();
 
     auto opcode_pc = m_pc.value();
     auto opcode = fetch_byte();
@@ -45,7 +47,7 @@ void CPU::cycle()
         m_hl.value(),
         m_f.value());
 
-    execute_instruction(opcode);
+    cycles += m_execute_instruction(opcode);
 
     m_serial.update();
     m_serial.print();
@@ -53,6 +55,10 @@ void CPU::cycle()
     if (m_interrupt_master_enable) {
         handle_interrupts();
     }
+
+    m_timer.tick(cycles);
+
+    return cycles;
 }
 
 void CPU::handle_interrupts()

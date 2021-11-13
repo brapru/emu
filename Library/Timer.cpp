@@ -8,34 +8,24 @@ Timer::Timer(CPU& cpu)
 {
 }
 
-void Timer::tick()
+void Timer::tick(unsigned int cycles)
 {
-    uint16_t orig_divider = m_divider.value();
-    m_divider.increment();
+    m_divider_counter += cycles;
 
-    bool timer_update = false;
-
-    switch (m_control.value() & (0b11)) {
-    case 0b00:
-        timer_update = (orig_divider & (1 << 9)) && (!(m_divider.value() & (1 << 9)));
-        break;
-    case 0b01:
-        timer_update = (orig_divider & (1 << 3)) && (!(m_divider.value() & (1 << 3)));
-        break;
-    case 0b10:
-        timer_update = (orig_divider & (1 << 5)) && (!(m_divider.value() & (1 << 5)));
-        break;
-    case 0b11:
-        timer_update = (orig_divider & (1 << 7)) && (!(m_divider.value() & (1 << 7)));
-        break;
+    if (m_divider_counter >= 256) {
+        m_divider_counter = 0;
+        m_divider.increment();
     }
 
-    if (timer_update && checkbit(m_control.value(), 2)) {
+    m_timer_counter -= cycles;
+    while (m_timer_counter <= 0) {
+        m_timer_counter += Frequencies::FrequencyCounts[m_timer_frequency];
         m_counter.increment();
 
-        if (m_counter.value() == 0xFF)
+        if (m_counter.value() == 0x00) {
             m_counter.set(m_modulo.value());
-        m_cpu.request_interrupt(Interrupts::TIMER);
+            m_cpu.request_interrupt(Interrupts::TIMER);
+        }
     }
 }
 
@@ -64,7 +54,7 @@ void Timer::write(uint16_t address, uint8_t value)
 {
     switch (address) {
     case 0xFF04:
-        m_divider.set(value);
+        m_divider.set(0x00);
         break;
     case 0xFF05:
         m_counter.set(value);
@@ -74,6 +64,8 @@ void Timer::write(uint16_t address, uint8_t value)
         break;
     case 0xFF07:
         m_control.set(value);
+        m_timer_frequency = value & 0x03;
+        m_timer_counter = Frequencies::FrequencyCounts[m_timer_frequency];
         break;
     }
 }

@@ -8,6 +8,7 @@
 
 class MMU;
 class Serial;
+class Timer;
 
 enum class RegisterOperation {
     Increment,
@@ -42,7 +43,7 @@ constexpr uint16_t JOYPAD = 0x60;
 
 class CPU {
 public:
-    CPU(MMU& mmu, Serial& m_serial);
+    CPU(MMU& mmu, Serial& serial, Timer& timer);
 
     unsigned int cycle();
 
@@ -51,6 +52,8 @@ public:
 
     ByteRegister interrupt_flag(void) { return m_interrupt_flag; }
     ByteRegister interrupt_enable(void) { return m_interrupt_enable; }
+    void set_interrupt_enable(uint8_t const& value) { m_interrupt_enable.set(value); }
+    void set_interrupt_flag(uint8_t const& value) { m_interrupt_flag.set(value); }
 
     void request_interrupt(uint16_t const& interrupt) { m_interrupt_flag.set(interrupt); }
     void handle_interrupts();
@@ -63,6 +66,7 @@ public:
 private:
     MMU& m_mmu;
     Serial& m_serial;
+    Timer& m_timer;
 
     WordRegister m_pc = WordRegister(0x0100);
     WordRegister m_sp = WordRegister(0xFFFE);

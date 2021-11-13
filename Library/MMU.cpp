@@ -55,7 +55,7 @@ void MMU::write(uint16_t const address, uint8_t const value)
         memory_write(address, value);
         return;
     } else if (address == 0xFFFF) {
-        m_cpu.interrupt_enable().set(value);
+        m_cpu.set_interrupt_enable(value);
         return;
     }
 
@@ -111,7 +111,7 @@ void MMU::io_write(uint16_t const address, uint8_t const value)
     } else if (address_in_range(address, 0xFF24, 0xFF26)) {
         out("Sound Control Register write at address 0x:{:2X} not yet implemented ", address);
     } else if (address == 0xFF0F) {
-        m_cpu.interrupt_flag().set(value);
+        m_cpu.set_interrupt_flag(value);
         return;
     } else if (address == 0xFF46) {
         m_dma_transfer(value);
