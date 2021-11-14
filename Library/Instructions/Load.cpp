@@ -109,8 +109,8 @@ unsigned long CPU::instruction_ld_addr_to_reg(ByteRegister& reg)
 
 unsigned long CPU::instruction_ldh_a_to_memory()
 {
-    auto lo = fetch_byte();
-    auto address = ((uint16_t)0xFF << 8) | lo;
+    uint8_t lo = fetch_byte();
+    uint16_t address = ((uint16_t)0xFF << 8) | lo;
 
     CPU::m_mmu.write(address, m_a.value());
 
@@ -119,10 +119,10 @@ unsigned long CPU::instruction_ldh_a_to_memory()
 
 unsigned long CPU::instruction_ldh_memory_to_a()
 {
-    auto lo = fetch_byte();
-    auto address = ((uint16_t)0xFF << 8) | lo;
+    uint8_t lo = fetch_byte();
+    uint16_t address = ((uint16_t)0xFF << 8) | lo;
 
-    auto value = CPU::m_mmu.read(address);
+    uint8_t value = CPU::m_mmu.read(address);
     m_a.set(value);
 
     return 12;
