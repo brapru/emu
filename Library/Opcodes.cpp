@@ -236,6 +236,8 @@ unsigned long CPU::m_execute_instruction(uint8_t opcode)
         return instruction_ld_reg_to_addr(m_hl, m_h);
     case 0x75:
         return instruction_ld_reg_to_addr(m_hl, m_l);
+    case 0x76:
+        return instruction_halt();
     case 0x77:
         return instruction_ld_reg_to_addr(m_hl, m_a);
     case 0x78:

@@ -190,6 +190,7 @@ private:
 
     // CPU Control Instructions - Instructions/Control.cpp
     unsigned long instruction_nop(void);
+    unsigned long instruction_halt(void);
     unsigned long instruction_di(void);
     unsigned long instruction_ei(void);
     unsigned long instruction_cpl(void);

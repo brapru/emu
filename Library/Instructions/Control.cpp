@@ -5,6 +5,13 @@ unsigned long CPU::instruction_nop(void)
     return 4;
 }
 
+unsigned long CPU::instruction_halt(void)
+{
+    m_is_halted = true;
+
+    return 1;
+}
+
 unsigned long CPU::instruction_di(void)
 {
     m_interrupt_master_enable = false;
