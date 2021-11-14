@@ -28,7 +28,7 @@ uint8_t MMU::read(uint16_t const address)
     else if (address_in_range(address, 0xFF80, 0xFFFE))
         return memory_read(address);
     else if (address == 0xFFFF)
-        return m_cpu.interrupt_enable().value();
+        return m_cpu.interrupt_enable();
 
     outln("MMU read at address not yet implemented.");
     exit(1);
@@ -88,7 +88,7 @@ uint8_t MMU::io_read(uint16_t const address)
         out("LCD read at address 0x:{:2X} not yet implemented ", address);
         return 0x00;
     } else if (address == 0xFF0F) {
-        return m_cpu.interrupt_flag().value();
+        return m_cpu.interrupt_flag();
     } else {
         outln("IO read at address 0x:{:2X} not yet implemented", address);
         exit(1);

@@ -74,31 +74,31 @@ void CPU::handle_interrupts()
 
     if (checkbit(active_interrupt, 0)) {
         m_pc.set(Interrupts::VBLANK);
-        bitclear(active_interrupt, 0);
+        m_interrupt_flag.set_bit(0, false);
         return;
     }
 
     if (checkbit(active_interrupt, 1)) {
         m_pc.set(Interrupts::LCD_STATUS);
-        bitclear(active_interrupt, 1);
+        m_interrupt_flag.set_bit(1, false);
         return;
     }
 
     if (checkbit(active_interrupt, 2)) {
         m_pc.set(Interrupts::TIMER);
-        bitclear(active_interrupt, 2);
+        m_interrupt_flag.set_bit(2, false);
         return;
     }
 
     if (checkbit(active_interrupt, 3)) {
         m_pc.set(Interrupts::SERIAL);
-        bitclear(active_interrupt, 3);
+        m_interrupt_flag.set_bit(3, false);
         return;
     }
 
     if (checkbit(active_interrupt, 4)) {
         m_pc.set(Interrupts::JOYPAD);
-        bitclear(active_interrupt, 4);
+        m_interrupt_flag.set_bit(4, false);
         return;
     }
 }

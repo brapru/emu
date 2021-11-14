@@ -1,6 +1,11 @@
 #include <Register.h>
 #include <Utils/Bitwise.h>
 
+void ByteRegister::set_bit(int bit, bool set)
+{
+    set ? bitset(m_value, bit) : bitclear(m_value, bit);
+}
+
 void FlagRegister::set_zero_flag(bool set)
 {
     set ? bitset(m_value, 7) : bitclear(m_value, 7);

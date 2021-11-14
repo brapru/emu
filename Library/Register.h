@@ -13,6 +13,9 @@ public:
     }
 
     virtual void set(uint8_t value) { m_value = value; }
+
+    void set_bit(int bit, bool set);
+
     void increment() { m_value++; }
     void decrement() { m_value--; }
 

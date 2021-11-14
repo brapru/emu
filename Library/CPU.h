@@ -50,8 +50,8 @@ public:
     uint8_t fetch_byte();
     uint16_t fetch_word();
 
-    ByteRegister interrupt_flag(void) { return m_interrupt_flag; }
-    ByteRegister interrupt_enable(void) { return m_interrupt_enable; }
+    uint8_t interrupt_flag(void) { return m_interrupt_flag.value(); }
+    uint8_t interrupt_enable(void) { return m_interrupt_enable.value(); }
     void set_interrupt_enable(uint8_t const& value) { m_interrupt_enable.set(value); }
     void set_interrupt_flag(uint8_t const& value) { m_interrupt_flag.set(value); }
 
