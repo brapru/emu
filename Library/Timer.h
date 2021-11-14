@@ -34,6 +34,8 @@ private:
     ByteRegister m_modulo;
     ByteRegister m_control;
 
+    bool m_timer_enabled = true;
+
     unsigned int m_divider_counter;
     unsigned int m_timer_frequency = Frequencies::Frequency4096;
     int m_timer_counter = Frequencies::FrequencyCounts[Frequencies::Frequency4096];

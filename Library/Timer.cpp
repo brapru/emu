@@ -17,6 +17,9 @@ void Timer::tick(unsigned int cycles)
         m_divider.increment();
     }
 
+    if (!m_timer_enabled)
+        return;
+
     m_timer_counter -= cycles;
     while (m_timer_counter <= 0) {
         m_timer_counter += Frequencies::FrequencyCounts[m_timer_frequency];
@@ -63,9 +66,12 @@ void Timer::write(uint16_t address, uint8_t value)
         m_modulo.set(value);
         break;
     case 0xFF07:
+        checkbit(value, 2) ? (m_timer_enabled = true) : (m_timer_enabled = false);
+
         m_control.set(value);
         m_timer_frequency = value & 0x03;
         m_timer_counter = Frequencies::FrequencyCounts[m_timer_frequency];
+
         break;
     }
 }
