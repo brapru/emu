@@ -45,7 +45,7 @@ void MMU::write(uint16_t const address, uint8_t const value)
     } else if (address < 0xE000) {
         memory_write(address, value);
         return;
-    } else if (address < 0xFEA) {
+    } else if (address < 0xFEA0) {
         m_ppu.oam_write(address, value);
         return;
     } else if (address < 0xFF80) {
