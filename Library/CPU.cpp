@@ -29,25 +29,30 @@ unsigned int CPU::cycle()
 {
     unsigned long cycles = 0x00;
 
-    if (m_is_halted)
+    if (!m_is_halted) {
+
+        auto opcode_pc = m_pc.value();
+        auto opcode = fetch_byte();
+
+        out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
+            opcode_pc,
+            opcode);
+
+        outln("SP: 0x{:02x}, AF: 0x{:02X}, BC: 0x{:02X}, DE: 0x{:02X}, HL: 0x{:02X}, Flag: {:08B}",
+            m_sp.value(),
+            m_af.value(),
+            m_bc.value(),
+            m_de.value(),
+            m_hl.value(),
+            m_f.value());
+
+        cycles += m_execute_instruction(opcode);
+
+    } else {
         cycles = instruction_nop();
-
-    auto opcode_pc = m_pc.value();
-    auto opcode = fetch_byte();
-
-    out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
-        opcode_pc,
-        opcode);
-
-    outln("SP: 0x{:02x}, AF: 0x{:02X}, BC: 0x{:02X}, DE: 0x{:02X}, HL: 0x{:02X}, Flag: {:08B}",
-        m_sp.value(),
-        m_af.value(),
-        m_bc.value(),
-        m_de.value(),
-        m_hl.value(),
-        m_f.value());
-
-    cycles += m_execute_instruction(opcode);
+        if (has_interrupts())
+            m_is_halted = false;
+    }
 
     m_serial.update();
     m_serial.print();
