@@ -103,6 +103,36 @@ void CPU::handle_interrupts()
     }
 }
 
+void CPU::request_interrupt(uint16_t const& interrupt)
+{
+    if (interrupt == Interrupts::VBLANK) {
+        m_interrupt_flag.set_bit(0, true);
+        return;
+    }
+
+    if (interrupt == Interrupts::LCD_STATUS) {
+        m_interrupt_flag.set_bit(1, true);
+        return;
+    }
+
+    if (interrupt == Interrupts::TIMER) {
+        m_interrupt_flag.set_bit(2, true);
+        return;
+    }
+
+    if (interrupt == Interrupts::SERIAL) {
+        m_interrupt_flag.set_bit(3, true);
+        return;
+    }
+
+    if (interrupt == Interrupts::JOYPAD) {
+        m_interrupt_flag.set_bit(4, true);
+        return;
+    }
+
+    m_is_halted = false;
+}
+
 uint8_t CPU::fetch_byte()
 {
     uint8_t byte = m_mmu.read(m_pc.value());

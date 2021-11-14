@@ -55,7 +55,7 @@ public:
     void set_interrupt_enable(uint8_t const& value) { m_interrupt_enable.set(value); }
     void set_interrupt_flag(uint8_t const& value) { m_interrupt_flag.set(value); }
 
-    void request_interrupt(uint16_t const& interrupt) { m_interrupt_flag.set(interrupt); }
+    void request_interrupt(uint16_t const& interrupt);
     void handle_interrupts();
     uint8_t has_interrupts() { return m_interrupt_flag.value() & m_interrupt_enable.value(); }
 
