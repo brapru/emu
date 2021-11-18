@@ -51,41 +51,41 @@ unsigned long CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
 
 unsigned long CPU::instruction_add_hl(WholeRegister& reg)
 {
-    auto value = reg.value();
-    auto orig = m_hl.value();
-    auto result = orig + value;
+    uint16_t value = reg.value();
+    uint16_t orig = m_hl.value();
+    uint16_t result = orig + value;
 
-    reg.set(result);
+    m_hl.set(static_cast<uint16_t>(result));
 
     m_f.set_subtraction_flag(false);
-    ((orig & 0xFFFF) + (value & 0xFFFF) > 0xFFFF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    (result < orig) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    ((result ^ value ^ orig) & 0x1000) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 
     return 8;
 }
 
 unsigned long CPU::instruction_add_hl(WordRegister& reg)
 {
-    auto value = reg.value();
-    auto orig = m_hl.value();
-    auto result = orig + value;
+    uint16_t value = reg.value();
+    uint16_t orig = m_hl.value();
+    uint16_t result = orig + value;
 
-    reg.set(result);
+    m_hl.set(static_cast<uint16_t>(result));
 
     m_f.set_subtraction_flag(false);
-    ((orig & 0xFFFF) + (value & 0xFFFF) > 0xFFFF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((result & 0x10000) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    (result < orig) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    ((result ^ value ^ orig) & 0x1000) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 
     return 8;
 }
 
 unsigned long CPU::instruction_add_sp()
 {
-    auto add = static_cast<int8_t>(fetch_byte());
-    auto orig = m_sp.value();
-    auto result = add + orig;
+    int8_t add = static_cast<int8_t>(fetch_byte());
+    uint16_t orig = m_sp.value();
+    uint16_t result = add + orig;
 
-    m_sp.set(static_cast<int8_t>(result));
+    m_sp.set(static_cast<uint16_t>(result));
 
     m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
@@ -193,51 +193,63 @@ unsigned long CPU::instruction_sub(WholeRegister& reg)
 
 unsigned long CPU::instruction_sbc()
 {
-    auto sub = fetch_byte();
-    auto orig = m_a.value();
-    auto carry = m_f.flag_carry();
-    auto result = sub - orig - carry;
+    int sub = static_cast<int>(fetch_byte());
+    int orig = static_cast<int>(m_a.value()) & 0xFF;
+    int result = orig - sub;
+
+    if (m_f.flag_carry())
+        result -= 1;
+
+    m_f.set_subtraction_flag(true);
+    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+
+    (((result ^ sub ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 
     m_a.set(static_cast<uint8_t>(result));
-
-    (m_a.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
-    m_f.set_subtraction_flag(true);
-    (((sub & 0xF) - (orig & 0xF) - carry) < 0) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
     return 8;
 }
 
 unsigned long CPU::instruction_sbc(WholeRegister& reg)
 {
-    auto sub = m_mmu.read(reg.value());
-    auto orig = m_a.value();
-    auto carry = m_f.flag_carry();
-    auto result = sub - orig - carry;
+    int sub = static_cast<int>(m_mmu.read(reg.value()));
+    int orig = static_cast<int>(m_a.value()) & 0xFF;
+    int result = orig - sub;
+
+    if (m_f.flag_carry())
+        result -= 1;
+
+    m_f.set_subtraction_flag(true);
+    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+
+    (((result ^ sub ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 
     m_a.set(static_cast<uint8_t>(result));
-
-    (m_a.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
-    m_f.set_subtraction_flag(true);
-    (((sub & 0xF) - (orig & 0xF) - carry) < 0) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
     return 8;
 }
 
 unsigned long CPU::instruction_sbc(ByteRegister& reg)
 {
-    auto sub = reg.value();
-    auto orig = m_a.value();
-    auto carry = m_f.flag_carry();
-    auto result = sub - orig - carry;
+    int sub = static_cast<int>(fetch_byte());
+    int orig = static_cast<int>(m_a.value()) & 0xFF;
+    int result = orig - sub;
+
+    if (m_f.flag_carry())
+        result -= 1;
+
+    m_f.set_subtraction_flag(true);
+    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+
+    (((result ^ sub ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
 
     m_a.set(static_cast<uint8_t>(result));
-
-    (m_a.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
-    m_f.set_subtraction_flag(true);
-    (((sub & 0xF) - (orig & 0xF) - carry) < 0) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
     return 4;
 }
