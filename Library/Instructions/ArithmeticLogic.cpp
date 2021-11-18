@@ -424,11 +424,11 @@ unsigned long CPU::instruction_dec(WordRegister& reg)
 
 unsigned long CPU::instruction_or()
 {
-    auto value = fetch_byte();
+    uint8_t value = fetch_byte();
 
-    auto result = value | m_a.value();
+    uint8_t result = value | m_a.value();
 
-    m_a.set(value);
+    m_a.set(result);
 
     (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
@@ -440,11 +440,11 @@ unsigned long CPU::instruction_or()
 
 unsigned long CPU::instruction_or(ByteRegister& reg)
 {
-    auto value = reg.value() | m_a.value();
+    auto result = reg.value() | m_a.value();
 
-    m_a.set(value);
+    m_a.set(result);
 
-    (value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
@@ -455,11 +455,11 @@ unsigned long CPU::instruction_or(ByteRegister& reg)
 unsigned long CPU::instruction_or(WholeRegister& reg)
 {
     auto value = m_mmu.read(reg.value());
-    auto or_value = value | m_a.value();
+    auto result = value | m_a.value();
 
-    m_a.set(or_value);
+    m_a.set(result);
 
-    (or_value == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(false);
     m_f.set_flag_carry(false);
