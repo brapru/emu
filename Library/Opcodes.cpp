@@ -151,7 +151,7 @@ unsigned long CPU::m_execute_instruction(uint8_t opcode)
     case 0x4A:
         return instruction_ld(m_c, m_d);
     case 0x4B:
-        return instruction_ld(m_c, m_d);
+        return instruction_ld(m_c, m_e);
     case 0x4C:
         return instruction_ld(m_c, m_h);
     case 0x4D:
