@@ -5,7 +5,6 @@
 unsigned long CPU::instruction_add()
 {
     uint8_t add = fetch_byte();
-    out("FETCHED BYTE: {:2X}", add);
     uint8_t orig = m_a.value();
     uint8_t result = add + orig;
 
