@@ -397,7 +397,7 @@ unsigned long CPU::m_execute_instruction(uint8_t opcode)
     case 0xC5:
         return instruction_push(m_bc);
     case 0xC6:
-        return instruction_add(m_a);
+        return instruction_add();
     case 0xC7:
         return instruction_rst(RST::RST0);
     case 0xC8:

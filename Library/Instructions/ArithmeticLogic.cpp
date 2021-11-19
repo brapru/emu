@@ -1,6 +1,24 @@
 #include <CPU.h>
+#include <Utils/Format.h>
 
 // Arithmetic Instructions
+unsigned long CPU::instruction_add()
+{
+    uint8_t add = fetch_byte();
+    out("FETCHED BYTE: {:2X}", add);
+    uint8_t orig = m_a.value();
+    uint8_t result = add + orig;
+
+    m_a.set(static_cast<uint8_t>(result));
+
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    m_f.set_subtraction_flag(false);
+    (((result ^ add ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < orig) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    return 8;
+}
+
 unsigned long CPU::instruction_add(ByteRegister& reg)
 {
     auto add = fetch_byte();
@@ -9,11 +27,10 @@ unsigned long CPU::instruction_add(ByteRegister& reg)
 
     reg.set(static_cast<uint8_t>(result));
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
-    ((add & 0xF) + (orig & 0xF) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((result & 0x100) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
-
+    (((result ^ add ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < orig) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
     return 8;
 }
 
@@ -25,11 +42,10 @@ unsigned long CPU::instruction_add(ByteRegister& reg, ByteRegister& from_reg)
 
     reg.set(static_cast<uint8_t>(result));
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
-    ((add & 0xF) + (orig & 0xF) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((result & 0x100) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
-
+    (((result ^ add ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < orig) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
     return 4;
 }
 
@@ -41,11 +57,10 @@ unsigned long CPU::instruction_add(ByteRegister& reg, WholeRegister& from_reg)
 
     reg.set(static_cast<uint8_t>(result));
 
-    (reg.value() == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
+    (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
-    ((add & 0xF) + (orig & 0xF) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((result & 0x100) != 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
-
+    (((result ^ add ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
+    (result < orig) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
     return 8;
 }
 
@@ -105,7 +120,7 @@ unsigned long CPU::instruction_adc()
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     ((static_cast<int>(add & 0xF) + static_cast<int>(orig & 0xF) + static_cast<int>(carry)) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((static_cast<int>(add & 0xF) + static_cast<int>(orig & 0xF) + static_cast<int>(carry)) > 0xF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    ((static_cast<int>(add & 0xFF) + static_cast<int>(orig & 0xFF) + static_cast<int>(carry)) > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
     m_a.set(result);
 
@@ -122,7 +137,7 @@ unsigned long CPU::instruction_adc(WholeRegister& reg)
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     ((static_cast<int>(add & 0xF) + static_cast<int>(orig & 0xF) + static_cast<int>(carry)) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((static_cast<int>(add & 0xF) + static_cast<int>(orig & 0xF) + static_cast<int>(carry)) > 0xF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    ((static_cast<int>(add & 0xFF) + static_cast<int>(orig & 0xFF) + static_cast<int>(carry)) > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
     m_a.set(result);
 
@@ -139,7 +154,7 @@ unsigned long CPU::instruction_adc(ByteRegister& reg)
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
     ((static_cast<int>(add & 0xF) + static_cast<int>(orig & 0xF) + static_cast<int>(carry)) > 0xF) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
-    ((static_cast<int>(add & 0xF) + static_cast<int>(orig & 0xF) + static_cast<int>(carry)) > 0xF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+    ((static_cast<int>(add & 0xFF) + static_cast<int>(orig & 0xFF) + static_cast<int>(carry)) > 0xFF) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
     m_a.set(result);
 
@@ -193,8 +208,8 @@ unsigned long CPU::instruction_sub(WholeRegister& reg)
 
 unsigned long CPU::instruction_sbc()
 {
-    int sub = static_cast<int>(fetch_byte());
-    int orig = static_cast<int>(m_a.value()) & 0xFF;
+    int sub = static_cast<int>(fetch_byte() & 0xFF);
+    int orig = static_cast<int>(m_a.value() & 0xFF);
     int result = orig - sub;
 
     if (m_f.flag_carry())
@@ -202,6 +217,8 @@ unsigned long CPU::instruction_sbc()
 
     m_f.set_subtraction_flag(true);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    result &= 0xFF;
 
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
 
@@ -224,6 +241,8 @@ unsigned long CPU::instruction_sbc(WholeRegister& reg)
     m_f.set_subtraction_flag(true);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
 
+    result &= 0xFF;
+
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
 
     (((result ^ sub ^ orig) & 0x10) == 0x10) ? m_f.set_half_carry_flag(true) : m_f.set_half_carry_flag(false);
@@ -244,6 +263,8 @@ unsigned long CPU::instruction_sbc(ByteRegister& reg)
 
     m_f.set_subtraction_flag(true);
     (result < 0) ? m_f.set_flag_carry(true) : m_f.set_flag_carry(false);
+
+    result &= 0xFF;
 
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
 

@@ -124,6 +124,7 @@ private:
     unsigned long instruction_pop(WholeRegister& reg);
 
     // Arithmetic and Logic Instructions - Instructions/ArithmeticLogic.cpp
+    unsigned long instruction_add();
     unsigned long instruction_add(ByteRegister& reg);
     unsigned long instruction_add(ByteRegister& reg, ByteRegister& from_reg);
     unsigned long instruction_add(ByteRegister& reg, WholeRegister& from_reg);
