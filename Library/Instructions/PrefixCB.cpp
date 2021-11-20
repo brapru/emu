@@ -268,7 +268,7 @@ unsigned long CPU::instruction_sla(ByteRegister& reg)
 {
     bool flag_carry = checkbit(reg.value(), 7);
 
-    uint8_t result = static_cast<uint8_t>(reg.value() << 1);
+    uint8_t result = (reg.value() << 1);
 
     reg.set(result);
 
@@ -284,9 +284,9 @@ unsigned long CPU::instruction_sla(WholeRegister& reg)
 {
     uint8_t value = m_mmu.read(reg.value());
 
-    bool flag_carry = checkbit(reg.value(), 7);
+    bool flag_carry = checkbit(value, 7);
 
-    uint8_t result = static_cast<uint8_t>(value << 1);
+    uint8_t result = (value << 1);
 
     m_mmu.write(reg.value(), result);
 
