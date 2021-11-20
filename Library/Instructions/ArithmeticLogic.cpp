@@ -2,6 +2,34 @@
 #include <Utils/Format.h>
 
 // Arithmetic Instructions
+unsigned long CPU::instruction_daa()
+{
+    uint8_t correction = 0;
+    uint8_t carry_flag = 0;
+    uint8_t value = m_a.value();
+
+    if (m_f.half_carry_flag() || (!m_f.subtraction_flag() && (m_a.value() & 0xF) > 9))
+        correction = 6;
+
+    if (m_f.flag_carry() || (!m_f.subtraction_flag() && (m_a.value() > 0x99))) {
+        correction |= 0x60;
+        carry_flag = 1;
+    }
+
+    if (m_f.subtraction_flag())
+        value += -correction;
+    else
+        value += correction;
+
+    m_a.set(value);
+
+    m_f.set_zero_flag(value == 0x00);
+    m_f.set_half_carry_flag(false);
+    m_f.set_flag_carry(carry_flag);
+
+    return 4;
+}
+
 unsigned long CPU::instruction_add()
 {
     uint8_t add = fetch_byte();

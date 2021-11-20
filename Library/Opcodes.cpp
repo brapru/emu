@@ -80,6 +80,8 @@ unsigned long CPU::m_execute_instruction(uint8_t opcode)
         return instruction_dec(m_h);
     case 0x26:
         return instruction_ld(m_h);
+    case 0x27:
+        return instruction_daa();
     case 0x28:
         return instruction_jr(Condition::Z);
     case 0x29:
