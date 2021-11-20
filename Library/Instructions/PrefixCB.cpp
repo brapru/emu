@@ -352,5 +352,22 @@ unsigned long CPU::instruction_bit(WholeRegister& reg, int bit)
     m_f.set_subtraction_flag(false);
     m_f.set_half_carry_flag(true);
 
+    return 16;
+}
+
+unsigned long CPU::instruction_res(ByteRegister& reg, int bit)
+{
+    reg.set_bit(bit, false);
+
     return 8;
+}
+
+unsigned long CPU::instruction_res(WholeRegister& reg, int bit)
+{
+    uint8_t value = m_mmu.read(reg.value());
+    bitclear(value, bit);
+
+    m_mmu.write(reg.value(), value);
+
+    return 16;
 }

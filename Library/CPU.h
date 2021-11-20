@@ -229,4 +229,7 @@ private:
 
     unsigned long instruction_bit(ByteRegister& reg, int bit);
     unsigned long instruction_bit(WholeRegister& reg, int bit);
+
+    unsigned long instruction_res(ByteRegister& reg, int bit);
+    unsigned long instruction_res(WholeRegister& reg, int bit);
 };
