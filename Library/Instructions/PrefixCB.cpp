@@ -324,7 +324,7 @@ unsigned long CPU::instruction_swap(WholeRegister& reg)
 
     auto result = (lo << 4) | (hi & 0xF);
 
-    m_mmu.write(address, value);
+    m_mmu.write(address, result);
 
     (result == 0x00) ? m_f.set_zero_flag(true) : m_f.set_zero_flag(false);
     m_f.set_subtraction_flag(false);
