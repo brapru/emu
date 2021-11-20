@@ -226,4 +226,7 @@ private:
 
     unsigned long instruction_swap(ByteRegister& reg);
     unsigned long instruction_swap(WholeRegister& reg);
+
+    unsigned long instruction_bit(ByteRegister& reg, int bit);
+    unsigned long instruction_bit(WholeRegister& reg, int bit);
 };

@@ -629,6 +629,134 @@ unsigned long CPU::instruction_cb()
         return instruction_srl(m_hl);
     case 0x3F:
         return instruction_srl(m_a);
+    case 0x40:
+        return instruction_bit(m_b, 0);
+    case 0x41:
+        return instruction_bit(m_c, 0);
+    case 0x42:
+        return instruction_bit(m_d, 0);
+    case 0x43:
+        return instruction_bit(m_e, 0);
+    case 0x44:
+        return instruction_bit(m_h, 0);
+    case 0x45:
+        return instruction_bit(m_l, 0);
+    case 0x46:
+        return instruction_bit(m_hl, 0);
+    case 0x47:
+        return instruction_bit(m_a, 0);
+    case 0x48:
+        return instruction_bit(m_b, 1);
+    case 0x49:
+        return instruction_bit(m_c, 1);
+    case 0x4A:
+        return instruction_bit(m_d, 1);
+    case 0x4B:
+        return instruction_bit(m_e, 1);
+    case 0x4C:
+        return instruction_bit(m_h, 1);
+    case 0x4D:
+        return instruction_bit(m_l, 1);
+    case 0x4E:
+        return instruction_bit(m_hl, 1);
+    case 0x4F:
+        return instruction_bit(m_a, 1);
+    case 0x50:
+        return instruction_bit(m_b, 2);
+    case 0x51:
+        return instruction_bit(m_c, 2);
+    case 0x52:
+        return instruction_bit(m_d, 2);
+    case 0x53:
+        return instruction_bit(m_e, 2);
+    case 0x54:
+        return instruction_bit(m_h, 2);
+    case 0x55:
+        return instruction_bit(m_l, 2);
+    case 0x56:
+        return instruction_bit(m_hl, 2);
+    case 0x57:
+        return instruction_bit(m_a, 2);
+    case 0x58:
+        return instruction_bit(m_b, 3);
+    case 0x59:
+        return instruction_bit(m_c, 3);
+    case 0x5A:
+        return instruction_bit(m_d, 3);
+    case 0x5B:
+        return instruction_bit(m_e, 3);
+    case 0x5C:
+        return instruction_bit(m_h, 3);
+    case 0x5D:
+        return instruction_bit(m_l, 3);
+    case 0x5E:
+        return instruction_bit(m_hl, 3);
+    case 0x5F:
+        return instruction_bit(m_a, 3);
+    case 0x60:
+        return instruction_bit(m_b, 4);
+    case 0x61:
+        return instruction_bit(m_c, 4);
+    case 0x62:
+        return instruction_bit(m_d, 4);
+    case 0x63:
+        return instruction_bit(m_e, 4);
+    case 0x64:
+        return instruction_bit(m_h, 4);
+    case 0x65:
+        return instruction_bit(m_l, 4);
+    case 0x66:
+        return instruction_bit(m_hl, 4);
+    case 0x67:
+        return instruction_bit(m_a, 4);
+    case 0x68:
+        return instruction_bit(m_b, 5);
+    case 0x69:
+        return instruction_bit(m_c, 5);
+    case 0x6A:
+        return instruction_bit(m_d, 5);
+    case 0x6B:
+        return instruction_bit(m_e, 5);
+    case 0x6C:
+        return instruction_bit(m_h, 5);
+    case 0x6D:
+        return instruction_bit(m_l, 5);
+    case 0x6E:
+        return instruction_bit(m_hl, 5);
+    case 0x6F:
+        return instruction_bit(m_a, 5);
+    case 0x70:
+        return instruction_bit(m_b, 6);
+    case 0x71:
+        return instruction_bit(m_c, 6);
+    case 0x72:
+        return instruction_bit(m_d, 6);
+    case 0x73:
+        return instruction_bit(m_e, 6);
+    case 0x74:
+        return instruction_bit(m_h, 6);
+    case 0x75:
+        return instruction_bit(m_l, 6);
+    case 0x76:
+        return instruction_bit(m_hl, 6);
+    case 0x77:
+        return instruction_bit(m_a, 6);
+    case 0x78:
+        return instruction_bit(m_b, 7);
+    case 0x79:
+        return instruction_bit(m_c, 7);
+    case 0x7A:
+        return instruction_bit(m_d, 7);
+    case 0x7B:
+        return instruction_bit(m_e, 7);
+    case 0x7C:
+        return instruction_bit(m_h, 7);
+    case 0x7D:
+        return instruction_bit(m_l, 7);
+    case 0x7E:
+        return instruction_bit(m_hl, 7);
+    case 0x7F:
+        return instruction_bit(m_a, 7);
     default:
         outln("EXTERNAL OPCODE NOT IMPLEMENTED: 0xCB {:X}", instruction);
         exit(1);
