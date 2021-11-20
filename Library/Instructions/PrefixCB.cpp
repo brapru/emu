@@ -303,7 +303,7 @@ unsigned long CPU::instruction_swap(ByteRegister& reg)
     auto lo = ((reg.value() >> 0) & 0xF);
     auto hi = ((reg.value() >> 4) & 0xF);
 
-    auto result = (hi << 8) | (lo & 0xF);
+    auto result = (lo << 8) | (hi & 0xF);
 
     reg.set(result);
 
@@ -322,7 +322,7 @@ unsigned long CPU::instruction_swap(WholeRegister& reg)
     auto lo = ((value >> 0) & 0xF);
     auto hi = ((value >> 4) & 0xF);
 
-    auto result = (hi << 8) | (lo & 0xF);
+    auto result = (lo << 8) | (hi & 0xF);
 
     m_mmu.write(address, value);
 
