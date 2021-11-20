@@ -371,3 +371,20 @@ unsigned long CPU::instruction_res(WholeRegister& reg, int bit)
 
     return 16;
 }
+
+unsigned long CPU::instruction_set(ByteRegister& reg, int bit)
+{
+    reg.set_bit(bit, true);
+
+    return 8;
+}
+
+unsigned long CPU::instruction_set(WholeRegister& reg, int bit)
+{
+    uint8_t value = m_mmu.read(reg.value());
+    bitset(value, bit);
+
+    m_mmu.write(reg.value(), value);
+
+    return 16;
+}

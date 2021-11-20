@@ -885,6 +885,134 @@ unsigned long CPU::instruction_cb()
         return instruction_res(m_hl, 7);
     case 0xBF:
         return instruction_res(m_a, 7);
+    case 0xC0:
+        return instruction_set(m_b, 0);
+    case 0xC1:
+        return instruction_set(m_c, 0);
+    case 0xC2:
+        return instruction_set(m_d, 0);
+    case 0xC3:
+        return instruction_set(m_e, 0);
+    case 0xC4:
+        return instruction_set(m_h, 0);
+    case 0xC5:
+        return instruction_set(m_l, 0);
+    case 0xC6:
+        return instruction_set(m_hl, 0);
+    case 0xC7:
+        return instruction_set(m_a, 0);
+    case 0xC8:
+        return instruction_set(m_b, 1);
+    case 0xC9:
+        return instruction_set(m_c, 1);
+    case 0xCA:
+        return instruction_set(m_d, 1);
+    case 0xCB:
+        return instruction_set(m_e, 1);
+    case 0xCC:
+        return instruction_set(m_h, 1);
+    case 0xCD:
+        return instruction_set(m_l, 1);
+    case 0xCE:
+        return instruction_set(m_hl, 1);
+    case 0xCF:
+        return instruction_set(m_a, 1);
+    case 0xD0:
+        return instruction_set(m_b, 2);
+    case 0xD1:
+        return instruction_set(m_c, 2);
+    case 0xD2:
+        return instruction_set(m_d, 2);
+    case 0xD3:
+        return instruction_set(m_e, 2);
+    case 0xD4:
+        return instruction_set(m_h, 2);
+    case 0xD5:
+        return instruction_set(m_l, 2);
+    case 0xD6:
+        return instruction_set(m_hl, 2);
+    case 0xD7:
+        return instruction_set(m_a, 2);
+    case 0xD8:
+        return instruction_set(m_b, 3);
+    case 0xD9:
+        return instruction_set(m_c, 3);
+    case 0xDA:
+        return instruction_set(m_d, 3);
+    case 0xDB:
+        return instruction_set(m_e, 3);
+    case 0xDC:
+        return instruction_set(m_h, 3);
+    case 0xDD:
+        return instruction_set(m_l, 3);
+    case 0xDE:
+        return instruction_set(m_hl, 3);
+    case 0xDF:
+        return instruction_set(m_a, 3);
+    case 0xE0:
+        return instruction_set(m_b, 4);
+    case 0xE1:
+        return instruction_set(m_c, 4);
+    case 0xE2:
+        return instruction_set(m_d, 4);
+    case 0xE3:
+        return instruction_set(m_e, 4);
+    case 0xE4:
+        return instruction_set(m_h, 4);
+    case 0xE5:
+        return instruction_set(m_l, 4);
+    case 0xE6:
+        return instruction_set(m_hl, 4);
+    case 0xE7:
+        return instruction_set(m_a, 4);
+    case 0xE8:
+        return instruction_set(m_b, 5);
+    case 0xE9:
+        return instruction_set(m_c, 5);
+    case 0xEA:
+        return instruction_set(m_d, 5);
+    case 0xEB:
+        return instruction_set(m_e, 5);
+    case 0xEC:
+        return instruction_set(m_h, 5);
+    case 0xED:
+        return instruction_set(m_l, 5);
+    case 0xEE:
+        return instruction_set(m_hl, 5);
+    case 0xEF:
+        return instruction_set(m_a, 5);
+    case 0xF0:
+        return instruction_set(m_b, 6);
+    case 0xF1:
+        return instruction_set(m_c, 6);
+    case 0xF2:
+        return instruction_set(m_d, 6);
+    case 0xF3:
+        return instruction_set(m_e, 6);
+    case 0xF4:
+        return instruction_set(m_h, 6);
+    case 0xF5:
+        return instruction_set(m_l, 6);
+    case 0xF6:
+        return instruction_set(m_hl, 6);
+    case 0xF7:
+        return instruction_set(m_a, 6);
+    case 0xF8:
+        return instruction_set(m_b, 7);
+    case 0xF9:
+        return instruction_set(m_c, 7);
+    case 0xFA:
+        return instruction_set(m_d, 7);
+    case 0xFB:
+        return instruction_set(m_e, 7);
+    case 0xFC:
+        return instruction_set(m_h, 7);
+    case 0xFD:
+        return instruction_set(m_l, 7);
+    case 0xFE:
+        return instruction_set(m_hl, 7);
+    case 0xFF:
+        return instruction_set(m_a, 7);
     default:
         outln("EXTERNAL OPCODE NOT IMPLEMENTED: 0xCB {:X}", instruction);
         exit(1);

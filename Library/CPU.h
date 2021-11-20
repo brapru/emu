@@ -232,4 +232,7 @@ private:
 
     unsigned long instruction_res(ByteRegister& reg, int bit);
     unsigned long instruction_res(WholeRegister& reg, int bit);
+
+    unsigned long instruction_set(ByteRegister& reg, int bit);
+    unsigned long instruction_set(WholeRegister& reg, int bit);
 };
