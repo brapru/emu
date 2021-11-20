@@ -564,7 +564,7 @@ unsigned long CPU::instruction_cb()
     case 0x1E:
         return instruction_rr(m_hl);
     case 0x1F:
-        return instruction_rr(m_f);
+        return instruction_rr(m_a);
     case 0x20:
         return instruction_sla(m_b);
     case 0x21:
