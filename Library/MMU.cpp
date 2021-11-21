@@ -65,12 +65,12 @@ void MMU::write(uint16_t const address, uint8_t const value)
 
 uint8_t MMU::memory_read(uint16_t const address)
 {
-    return m_memory.at(address);
+    return m_memory[address];
 }
 
 void MMU::memory_write(uint16_t const address, uint8_t const value)
 {
-    m_memory.at(address) = value;
+    m_memory[address] = value;
 }
 
 uint8_t MMU::io_read(uint16_t const address)
