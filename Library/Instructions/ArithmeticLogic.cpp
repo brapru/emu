@@ -1,5 +1,4 @@
 #include <CPU.h>
-#include <Utils/Format.h>
 
 // Arithmetic Instructions
 unsigned long CPU::instruction_daa()
