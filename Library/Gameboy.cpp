@@ -51,6 +51,8 @@ void Gameboy::main_cycle(void)
 {
     while (m_is_running) {
 
+        usleep(1000);
+
         while (m_elapsed_cycles < CYCLES_PER_FRAME) {
             m_elapsed_cycles += m_cpu.cycle();
         };
