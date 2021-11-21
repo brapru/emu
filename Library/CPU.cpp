@@ -34,6 +34,7 @@ unsigned int CPU::cycle()
         auto opcode_pc = m_pc.value();
         auto opcode = fetch_byte();
 
+#ifdef REGISTER_DEBUG
         out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
             opcode_pc,
             opcode);
@@ -45,6 +46,7 @@ unsigned int CPU::cycle()
             m_de.value(),
             m_hl.value(),
             m_f.value());
+#endif
 
         cycles += m_execute_instruction(opcode);
 
@@ -54,8 +56,10 @@ unsigned int CPU::cycle()
             m_is_halted = false;
     }
 
+#ifdef SERIAL_DEBUG
     m_serial.update();
     m_serial.print();
+#endif
 
     if (m_interrupt_master_enable) {
         handle_interrupts();
