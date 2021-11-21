@@ -82,10 +82,10 @@ uint8_t MMU::io_read(uint16_t const address)
     if (address_in_range(address, 0xFF04, 0xFF07)) {
         return m_timer.read(address);
     } else if (address_in_range(address, 0xFF24, 0xFF26)) {
-        out("Sound Control Register read at address 0x:{:2X} not yet implemented ", address);
+        outln("Sound Control Register read at address 0x:{:2X} not yet implemented ", address);
         return 0x00;
     } else if (address_in_range(address, 0xFF40, 0xFF4B)) {
-        out("LCD read at address 0x:{:2X} not yet implemented ", address);
+        outln("LCD read at address 0x:{:2X} not yet implemented ", address);
         return 0x00;
     } else if (address == 0xFF0F) {
         return m_cpu.interrupt_flag();
@@ -109,7 +109,7 @@ void MMU::io_write(uint16_t const address, uint8_t const value)
         m_timer.write(address, value);
         return;
     } else if (address_in_range(address, 0xFF24, 0xFF26)) {
-        out("Sound Control Register write at address 0x:{:2X} not yet implemented ", address);
+        outln("Sound Control Register write at address 0x:{:2X} not yet implemented ", address);
     } else if (address == 0xFF0F) {
         m_cpu.set_interrupt_flag(value);
         return;
@@ -117,7 +117,7 @@ void MMU::io_write(uint16_t const address, uint8_t const value)
         m_dma_transfer(value);
         return;
     } else if (address_in_range(address, 0xFF40, 0xFF4B)) {
-        out("LCD write at address 0x:{:2X} not yet implemented ", address);
+        outln("LCD write at address 0x:{:2X} not yet implemented ", address);
     } else {
         outln("IO write at address 0x:{:2X} not yet implemented", address);
         exit(1);
