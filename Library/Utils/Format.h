@@ -12,8 +12,6 @@
 
 inline void vout(fmt::string_view format, fmt::format_args args, bool newline = false)
 {
-    //fmt::print("[-] ");
-
     fmt::vprint(format, args);
 
     if (newline)
