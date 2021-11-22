@@ -1,6 +1,7 @@
 #pragma once
 
 #include <MMU.h>
+#include <PPU.h>
 #include <Register.h>
 #include <Serial.h>
 
@@ -9,6 +10,7 @@
 class MMU;
 class Serial;
 class Timer;
+class PPU;
 
 enum class RegisterOperation {
     Increment,
@@ -43,7 +45,7 @@ constexpr uint16_t JOYPAD = 0x60;
 
 class CPU {
 public:
-    CPU(MMU& mmu, Serial& serial, Timer& timer);
+    CPU(MMU& mmu, Serial& serial, Timer& timer, PPU& ppu);
 
     unsigned int cycle();
 
@@ -67,6 +69,7 @@ private:
     MMU& m_mmu;
     Serial& m_serial;
     Timer& m_timer;
+    PPU& m_ppu;
 
     WordRegister m_pc = WordRegister(0x0100);
     WordRegister m_sp = WordRegister(0xFFFE);

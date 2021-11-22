@@ -2,10 +2,11 @@
 #include <Utils/Bitwise.h>
 #include <Utils/Format.h>
 
-CPU::CPU(MMU& mmu, Serial& serial, Timer& timer)
+CPU::CPU(MMU& mmu, Serial& serial, Timer& timer, PPU& ppu)
     : m_mmu(mmu)
     , m_serial(serial)
     , m_timer(timer)
+    , m_ppu(ppu)
     , m_af(m_a, m_f)
     , m_bc(m_b, m_c)
     , m_de(m_d, m_e)
