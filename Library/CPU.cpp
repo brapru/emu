@@ -67,6 +67,7 @@ unsigned int CPU::cycle()
     }
 
     m_timer.tick(cycles);
+    m_ppu.tick(cycles);
 
     return cycles;
 }

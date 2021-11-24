@@ -27,6 +27,8 @@ private:
     SDL_Event m_event;
     bool m_is_running = true;
 
+    uint64_t m_tracked_frame = 0;
+
     std::unique_ptr<Interface> m_interface;
     Cartridge m_cartridge;
     MMU m_mmu;

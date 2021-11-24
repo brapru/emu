@@ -73,5 +73,4 @@ uint8_t Cartridge::read(uint16_t const address)
 void Cartridge::write(uint16_t const address, uint8_t value)
 {
     outln("Cartridge write at address not yet implemented.");
-    exit(1);
 }

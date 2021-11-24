@@ -33,8 +33,8 @@ void Interface::initialize()
             "emu tiles",
             x_pos + (SCREEN_WIDTH * SCREEN_SCALE),
             y_pos,
-            (SCREEN_WIDTH * 4),
-            (SCREEN_HEIGHT * 4),
+            TILE_SCREEN_WIDTH * TILE_SCREEN_SCALE,
+            TILE_SCREEN_HEIGHT * TILE_SCREEN_SCALE,
             SDL_WINDOW_SHOWN));
 
     if (m_sdl_tile_window == nullptr) {
@@ -45,8 +45,8 @@ void Interface::initialize()
     m_sdl_tile_surface = std::unique_ptr<SDL_Surface>(
         SDL_CreateRGBSurface(
             0,
-            SCREEN_WIDTH * 4,
-            SCREEN_HEIGHT * 4,
+            (TILE_SCREEN_WIDTH * TILE_SCREEN_SCALE) + (16 * TILE_SCREEN_SCALE),
+            (TILE_SCREEN_HEIGHT * TILE_SCREEN_SCALE) - (32 * TILE_SCREEN_SCALE),
             32,
             0x00FF0000,
             0x0000FF00,
@@ -93,8 +93,8 @@ void Interface::initialize()
             m_sdl_tile_renderer.get(),
             SDL_PIXELFORMAT_ARGB8888,
             SDL_TEXTUREACCESS_STREAMING,
-            SCREEN_WIDTH * SCREEN_SCALE,
-            SCREEN_HEIGHT * SCREEN_SCALE));
+            (TILE_SCREEN_WIDTH * TILE_SCREEN_SCALE) + (16 * TILE_SCREEN_SCALE),
+            (TILE_SCREEN_HEIGHT * TILE_SCREEN_SCALE) - (32 * TILE_SCREEN_SCALE)));
 
     if (m_sdl_tile_texture == nullptr) {
         outln("Failed to create SDL Texture");

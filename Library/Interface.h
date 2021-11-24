@@ -12,6 +12,10 @@ constexpr int SCREEN_WIDTH = 160;
 constexpr int SCREEN_HEIGHT = 144;
 constexpr int SCREEN_SCALE = 2;
 
+constexpr int TILE_SCREEN_WIDTH = 128;
+constexpr int TILE_SCREEN_HEIGHT = 256;
+constexpr int TILE_SCREEN_SCALE = 2;
+
 constexpr unsigned long TILE_COLORS[4] = { 0xFFFFFFFF, 0xFFAAAAAA, 0xFF555555, 0xFF000000 };
 
 struct SDLWindowDeleter {

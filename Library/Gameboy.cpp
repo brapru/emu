@@ -16,6 +16,7 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     , m_cpu(m_mmu, m_serial, m_timer, m_ppu)
     , m_serial(m_mmu)
     , m_timer(m_cpu)
+    , m_ppu(m_cpu)
 {
     if (!m_cartridge.is_loaded()) {
         outln("No rom data loaded");
@@ -64,6 +65,9 @@ void Gameboy::main_cycle(void)
                 m_is_running = false;
         }
 
-        m_interface->update();
+        if (m_tracked_frame != m_ppu.current_frame()) {
+            m_tracked_frame = m_ppu.current_frame();
+            m_interface->update();
+        }
     }
 }
