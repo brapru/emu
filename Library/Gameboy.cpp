@@ -22,7 +22,7 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
         outln("No rom data loaded");
     }
 
-    m_interface = std::make_unique<Interface>(m_mmu);
+    m_interface = std::make_unique<Interface>(m_mmu, m_ppu);
     if (m_interface == nullptr) {
         outln("Failed to inititalize the interface");
         exit(1);

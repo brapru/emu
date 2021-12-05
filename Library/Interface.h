@@ -41,7 +41,7 @@ struct SDLTextureDeleter {
 
 class Interface {
 public:
-    Interface(MMU& mmu);
+    Interface(MMU& mmu, PPU& ppu);
 
     void initialize();
     void event_handler();
@@ -50,16 +50,19 @@ public:
 
 private:
     MMU& m_mmu;
+    PPU& m_ppu;
 
     std::unique_ptr<SDL_Window, SDLWindowDeleter> m_sdl_window;
     std::unique_ptr<SDL_Renderer, SDLRendererDeleter> m_sdl_renderer;
     std::unique_ptr<SDL_Texture, SDLTextureDeleter> m_sdl_texture;
+    std::unique_ptr<SDL_Surface> m_sdl_surface;
 
     std::unique_ptr<SDL_Window, SDLWindowDeleter> m_sdl_tile_window;
     std::unique_ptr<SDL_Renderer, SDLRendererDeleter> m_sdl_tile_renderer;
     std::unique_ptr<SDL_Texture, SDLTextureDeleter> m_sdl_tile_texture;
     std::unique_ptr<SDL_Surface> m_sdl_tile_surface;
 
+    void update_sdl_window();
     void update_sdl_tile_window();
     void render_tile(uint16_t tile_number, int x, int y);
 };

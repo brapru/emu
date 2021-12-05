@@ -5,6 +5,19 @@
 PPU::PPU(CPU& cpu)
     : m_cpu(cpu)
 {
+    m_lcd_control.set(0x91);
+
+    m_fetcher_divider = 2;
+    m_fetcher_state = FIFO::State::GET_TILE;
+
+    m_pallete_data.set(0xFC);
+    m_position_in_line = 0;
+    m_fetched_x = 0;
+    m_line_x = 0;
+
+    for (int i = 0; i < 4; i++) {
+        m_pallete[i] = DEFAULT_COLORS[i];
+    }
 }
 
 void PPU::tick(uint64_t cycles)
@@ -16,12 +29,20 @@ void PPU::tick(uint64_t cycles)
         if (m_cycles >= LCD::Cycles::OAM) {
             m_cycles -= LCD::Cycles::OAM;
             set_lcd_mode(LCD::Mode::VRAM);
+
+            m_fetcher_state = FIFO::State::GET_TILE;
+            m_position_in_line = 0;
+            m_fetched_x = 0;
+            m_line_x = 0;
         }
         break;
     }
     case LCD::Mode::VRAM: {
-        if (m_cycles >= LCD::Cycles::VRAM) {
-            m_cycles -= LCD::Cycles::VRAM;
+        fetcher_tick();
+
+        if (m_position_in_line >= LCD::DISPLAY_X_RESOLUTION) {
+            reset_pixel_fifo();
+
             set_lcd_mode(LCD::Mode::HBLANK);
 
             if (lcd_hblank_interrupts_enabled())
@@ -51,7 +72,7 @@ void PPU::tick(uint64_t cycles)
 
             increment_ly_coordinate();
 
-            if (m_lcd_y_cord.value() >= LCD::Y_WINDOW_WIDTH) {
+            if (m_lcd_y_cord.value() >= LCD::DISPLAY_Y_RESOLUTION) {
                 set_lcd_mode(LCD::Mode::VBLANK);
 
                 m_cpu.request_interrupt(Interrupts::VBLANK);
@@ -85,6 +106,102 @@ void PPU::increment_ly_coordinate()
     }
 }
 
+void PPU::fetcher_tick()
+{
+    // The fetcher runs at half the speed of the PPU, so we need to handle
+    // the fetcher every 2 clock cycles.
+    if (--m_fetcher_divider == 0) {
+        m_fetcher_divider = 2;
+        advance_fetcher_state_machine();
+    }
+
+    if (m_pixel_fifo.size() > 8) {
+        uint32_t data = m_pixel_fifo.front();
+        m_pixel_fifo.pop();
+
+        if (m_line_x >= (m_lcd_scroll_x.value() % 8)) {
+            int index = m_position_in_line + (m_lcd_y_cord.value() * LCD::DISPLAY_X_RESOLUTION);
+            m_video_buffer[index] = data;
+
+            m_position_in_line++;
+        }
+
+        m_line_x++;
+    }
+}
+
+void PPU::advance_fetcher_state_machine()
+{
+    switch (m_fetcher_state) {
+    case FIFO::State::GET_TILE: {
+        if (lcd_bg_and_window_enabled()) {
+            uint16_t map = lcd_bg_tile_map_area();
+            uint8_t y = (m_lcd_y_cord.value() + m_lcd_scroll_y.value());
+            uint8_t x = (m_fetched_x + m_lcd_scroll_x.value());
+
+            m_current_tile = vram_read(map + (x / 8) + (((y / 8)) * 32));
+
+            if (lcd_bg_window_tile_data_area() == 0x8800) {
+                m_current_tile += 128;
+            }
+        }
+
+        m_fetcher_state = FIFO::State::GET_TILE_DATA_LOW;
+        m_fetched_x += 8;
+        break;
+    }
+
+    case FIFO::State::GET_TILE_DATA_LOW: {
+        uint16_t map = lcd_bg_window_tile_data_area();
+        uint8_t y = ((m_lcd_y_cord.value() + m_lcd_scroll_y.value()) % 8) * 2;
+
+        m_current_tile_data[0] = vram_read(map + (m_current_tile * 16) + y);
+
+        m_fetcher_state = FIFO::State::GET_TILE_DATA_HIGH;
+        break;
+    }
+
+    case FIFO::State::GET_TILE_DATA_HIGH: {
+        uint16_t map = lcd_bg_window_tile_data_area();
+        uint8_t y = ((m_lcd_y_cord.value() + m_lcd_scroll_y.value()) % 8) * 2;
+
+        m_current_tile_data[1] = vram_read(map + (m_current_tile * 16) + y + 1);
+
+        m_fetcher_state = FIFO::State::SLEEP;
+        break;
+    }
+
+    case FIFO::State::SLEEP: {
+        m_fetcher_state = FIFO::State::PUSH;
+        break;
+    }
+
+    case FIFO::State::PUSH: {
+        if (m_pixel_fifo.size() > 8)
+            return;
+
+        for (int i = 0; i < 8; i++) {
+            int bit = 7 - i;
+            uint8_t hi = !!(m_current_tile_data[0] & (1 << bit)) << 1;
+            uint8_t lo = !!(m_current_tile_data[1] & (1 << bit));
+
+            uint32_t color = m_pallete[hi | lo];
+
+            m_pixel_fifo.push(color);
+        }
+
+        m_fetcher_state = FIFO::State::GET_TILE;
+        break;
+    }
+    }
+}
+
+void PPU::reset_pixel_fifo()
+{
+    std::queue<uint32_t> reset;
+    std::swap(m_pixel_fifo, reset);
+}
+
 uint8_t PPU::lcd_read(uint16_t const& address)
 {
     switch (address) {
@@ -100,6 +217,8 @@ uint8_t PPU::lcd_read(uint16_t const& address)
         return m_lcd_y_cord.value();
     case 0xFF45:
         return m_lcd_y_compare.value();
+    case 0xFF47:
+        return m_pallete_data.value();
     case 0xFF4A:
         return m_lcd_window_y.value();
     case 0xFF4B:
@@ -130,6 +249,9 @@ void PPU::lcd_write(uint16_t const address, uint8_t const value)
         return;
     case 0xFF45:
         m_lcd_y_compare.set(value);
+        return;
+    case 0xFF47:
+        update_palette_data(value);
         return;
     case 0xFF4A:
         m_lcd_window_y.set(value);
@@ -172,4 +294,12 @@ void PPU::oam_write(uint16_t const address, uint8_t const value)
     if (address >= 0xFE00 && address <= 0xFE9F)
         m_oam_ram[address - 0xFE00] = value;
     m_oam_ram[address] = value;
+}
+
+void PPU::update_palette_data(uint8_t value)
+{
+    m_pallete[0] = DEFAULT_COLORS[value & 0x03];
+    m_pallete[1] = DEFAULT_COLORS[(value >> 2) & 0x03];
+    m_pallete[2] = DEFAULT_COLORS[(value >> 4) & 0x03];
+    m_pallete[3] = DEFAULT_COLORS[(value >> 6) & 0x03];
 }

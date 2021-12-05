@@ -1,9 +1,11 @@
 #include <Interface.h>
 #include <MMU.h>
+#include <PPU.h>
 #include <Utils/Format.h>
 
-Interface::Interface(MMU& mmu)
+Interface::Interface(MMU& mmu, PPU& ppu)
     : m_mmu(mmu)
+    , m_ppu(ppu)
 {
 }
 
@@ -41,6 +43,17 @@ void Interface::initialize()
         outln("Failed to create SDL window");
         exit(1);
     }
+
+    m_sdl_surface = std::unique_ptr<SDL_Surface>(
+        SDL_CreateRGBSurface(
+            0,
+            SCREEN_WIDTH * SCREEN_SCALE,
+            SCREEN_HEIGHT * SCREEN_SCALE,
+            32,
+            0x00FF0000,
+            0x0000FF00,
+            0x000000FF,
+            0xFF000000));
 
     m_sdl_tile_surface = std::unique_ptr<SDL_Surface>(
         SDL_CreateRGBSurface(
@@ -80,8 +93,8 @@ void Interface::initialize()
             m_sdl_renderer.get(),
             SDL_PIXELFORMAT_RGBA8888,
             SDL_TEXTUREACCESS_STREAMING,
-            SCREEN_WIDTH,
-            SCREEN_HEIGHT));
+            SCREEN_WIDTH * SCREEN_SCALE,
+            SCREEN_HEIGHT * SCREEN_SCALE));
 
     if (m_sdl_texture == nullptr) {
         outln("Failed to create SDL Texture");
@@ -163,7 +176,35 @@ void Interface::update_sdl_tile_window()
     SDL_RenderPresent(m_sdl_tile_renderer.get());
 }
 
+void Interface::update_sdl_window()
+{
+    SDL_Rect rectangle;
+    rectangle.x = 0;
+    rectangle.y = 0;
+    rectangle.w = SCREEN_SCALE;
+    rectangle.h = SCREEN_SCALE;
+
+    uint32_t* display_buffer = m_ppu.display_buffer();
+
+    for (int i = 0; i < LCD::DISPLAY_Y_RESOLUTION; i++) {
+        for (int j = 0; j < LCD::DISPLAY_X_RESOLUTION; j++) {
+            rectangle.x = j * SCREEN_SCALE;
+            rectangle.y = i * SCREEN_SCALE;
+            rectangle.w = SCREEN_SCALE;
+            rectangle.h = SCREEN_SCALE;
+
+            SDL_FillRect(m_sdl_surface.get(), &rectangle, display_buffer[j + (i * LCD::DISPLAY_X_RESOLUTION)]);
+        }
+    }
+
+    SDL_UpdateTexture(m_sdl_texture.get(), NULL, m_sdl_surface->pixels, m_sdl_surface->pitch);
+    SDL_RenderClear(m_sdl_renderer.get());
+    SDL_RenderCopy(m_sdl_renderer.get(), m_sdl_texture.get(), NULL, NULL);
+    SDL_RenderPresent(m_sdl_renderer.get());
+}
+
 void Interface::update()
 {
+    update_sdl_window();
     update_sdl_tile_window();
 }
