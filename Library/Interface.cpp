@@ -91,7 +91,7 @@ void Interface::initialize()
     m_sdl_texture = std::unique_ptr<SDL_Texture, SDLTextureDeleter>(
         SDL_CreateTexture(
             m_sdl_renderer.get(),
-            SDL_PIXELFORMAT_RGBA8888,
+            SDL_PIXELFORMAT_ARGB8888,
             SDL_TEXTUREACCESS_STREAMING,
             SCREEN_WIDTH * SCREEN_SCALE,
             SCREEN_HEIGHT * SCREEN_SCALE));
@@ -184,7 +184,7 @@ void Interface::update_sdl_window()
     rectangle.w = SCREEN_SCALE;
     rectangle.h = SCREEN_SCALE;
 
-    uint32_t* display_buffer = m_ppu.display_buffer();
+    std::vector<uint32_t> display_buffer = m_ppu.display_buffer();
 
     for (int i = 0; i < LCD::DISPLAY_Y_RESOLUTION; i++) {
         for (int j = 0; j < LCD::DISPLAY_X_RESOLUTION; j++) {
