@@ -182,8 +182,8 @@ void PPU::advance_fetcher_state_machine()
 
         for (int i = 0; i < 8; i++) {
             int bit = 7 - i;
-            uint8_t hi = !!(m_current_tile_data[0] & (1 << bit)) << 1;
-            uint8_t lo = !!(m_current_tile_data[1] & (1 << bit));
+            uint8_t hi = !!(m_current_tile_data[0] & (1 << bit));
+            uint8_t lo = !!(m_current_tile_data[1] & (1 << bit)) << 1;
 
             uint32_t color = m_pallete[hi | lo];
 
