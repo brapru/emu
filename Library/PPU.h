@@ -10,7 +10,6 @@
 #include <vector>
 
 constexpr uint64_t DEFAULT_COLORS[4] = { 0xFFFFFFFF, 0xFFAAAAAA, 0xFF555555, 0xFF000000 };
-// constexpr uint8_t DEFAULT_COLORS[4] = { 0xEB, 0xC4, 0x60, 0x00 };
 
 namespace LCD {
 constexpr uint8_t LINES_PER_FRAME = 154;
