@@ -4,12 +4,19 @@
 #include <Register.h>
 #include <Utils/Bitwise.h>
 
+#include <array>
 #include <memory>
 #include <queue>
 #include <stdint.h>
 #include <vector>
 
-constexpr uint64_t DEFAULT_COLORS[4] = { 0xFFFFFFFF, 0xFFAAAAAA, 0xFF555555, 0xFF000000 };
+constexpr std::array<uint32_t, 4> DEFAULT_COLORS = { 0xFFFFFFFF, 0xFFAAAAAA, 0xFF555555, 0xFF000000 };
+
+enum class PaletteUpdate {
+    Background,
+    Primary,
+    Secondary
+};
 
 namespace LCD {
 constexpr uint8_t LINES_PER_FRAME = 154;
@@ -39,13 +46,34 @@ constexpr uint8_t SLEEP = 0x03;
 constexpr uint8_t PUSH = 0x04;
 }
 
+struct Sprite {
+    uint8_t y;
+    uint8_t x;
+    uint8_t tile;
+    uint8_t flags;
+    uint8_t hi;
+    uint8_t lo;
+
+    bool fetched;
+
+    bool palette() { return flags & 0x10; }
+    bool flip_x() { return flags & 0x20; }
+    bool flip_y() { return flags & 0x40; }
+    bool priority() { return flags & 0x80; }
+};
+
+enum class SpriteData {
+    Hi,
+    Lo
+};
+
 class CPU;
 
 class PPU {
 public:
     PPU(CPU& cpu);
 
-    void tick(uint64_t cycles);
+    void tick(uint32_t cycles);
 
     void increment_ly_coordinate();
 
@@ -60,6 +88,8 @@ public:
     bool lcd_ly_stat_interrupts_enabled(void) { return checkbit(m_lcd_status.value(), 6); }
 
     bool lcd_bg_and_window_enabled(void) { return checkbit(m_lcd_control.value(), 0); }
+    bool lcd_obj_enabled(void) { return checkbit(m_lcd_control.value(), 1); }
+    uint8_t lcd_obj_size(void) { return checkbit(m_lcd_control.value(), 2) ? 16 : 8; }
     uint16_t lcd_bg_tile_map_area(void) { return checkbit(m_lcd_control.value(), 3) ? 0x9C00 : 0x9800; }
     uint16_t lcd_bg_window_tile_data_area(void) { return checkbit(m_lcd_control.value(), 4) ? 0x8000 : 0x8800; }
 
@@ -84,31 +114,45 @@ private:
     ByteRegister m_lcd_window_y;
     ByteRegister m_lcd_window_x;
 
-    uint8_t m_lcd_mode = LCD::Mode::OAM;
-
-    std::queue<uint32_t> m_pixel_fifo;
-    uint8_t m_fetcher_state;
-
-    void fetcher_tick();
-    void advance_fetcher_state_machine();
-    void reset_pixel_fifo();
-    uint8_t m_fetcher_divider;
-
     uint64_t m_cycles;
     uint64_t m_current_frame;
+
+    std::vector<uint32_t> m_video_buffer;
+
+    std::vector<uint8_t> m_oam_ram;
+    std::vector<uint8_t> m_vram;
+
+    uint8_t m_lcd_mode;
+
+    // Pixel FIFO
+    std::queue<uint32_t> m_pixel_fifo;
+    void reset_pixel_fifo();
 
     uint8_t m_current_tile;         // Used to track the tile number in the tile map.
     uint8_t m_current_tile_data[2]; // Used to store the pixel data for one row of the fetched tile.
     uint8_t m_position_in_line;     // Used to track the amount of pixels pushed for the current line.
     uint8_t m_fetched_x;
     uint8_t m_line_x;
+    uint8_t m_fifo_x;
 
-    std::vector<uint32_t> m_video_buffer = std::vector<uint32_t>(LCD::DISPLAY_Y_RESOLUTION * LCD::DISPLAY_X_RESOLUTION * sizeof(uint32_t));
+    // Fetcher State Machine
+    void fetcher_tick();
+    void advance_fetcher_state_machine();
+    uint8_t m_fetcher_divider;
+    uint8_t m_fetcher_state;
 
-    void update_palette_data(uint8_t value);
-    uint64_t m_pallete[4];
-    ByteRegister m_pallete_data;
+    // Sprite
+    void overlay_sprite(uint32_t& color, uint8_t const& background_color);
+    void add_sprite_from_index(uint8_t index);
+    void fetch_visible_sprites(SpriteData offset);
+    std::array<Sprite, 10> m_visible_sprites;
+    uint8_t m_total_visible_sprites;
+    uint8_t m_total_fetched_sprites;
 
-    std::vector<uint8_t> m_oam_ram = std::vector<uint8_t>(0xA0);
-    std::vector<uint8_t> m_vram = std::vector<uint8_t>(0x2000);
+    // Palette
+    void update_palette_data(uint8_t value, PaletteUpdate const update);
+    std::array<uint32_t, 4> m_pallete;
+    std::array<uint32_t, 4> m_sprite_palette_primary;
+    std::array<uint32_t, 4> m_sprite_palette_secondary;
+    ByteRegister m_palette_data;
 };
