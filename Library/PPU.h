@@ -128,9 +128,9 @@ private:
     std::queue<uint32_t> m_pixel_fifo;
     void reset_pixel_fifo();
 
-    uint8_t m_current_tile;         // Used to track the tile number in the tile map.
-    uint8_t m_current_tile_data[2]; // Used to store the pixel data for one row of the fetched tile.
-    uint8_t m_position_in_line;     // Used to track the amount of pixels pushed for the current line.
+    uint8_t m_current_tile;                     // Used to track the tile number in the tile map.
+    std::array<uint8_t, 2> m_current_tile_data; // Used to store the pixel data for one row of the fetched tile.
+    uint8_t m_position_in_line;                 // Used to track the amount of pixels pushed for the current line.
     uint8_t m_fetched_x;
     uint8_t m_line_x;
     uint8_t m_fifo_x;
