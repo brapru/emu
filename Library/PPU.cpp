@@ -139,8 +139,8 @@ void PPU::add_sprite_from_index(uint8_t index)
 
     // Sprites need to be sorted for certain games to render properly
     std::sort(m_visible_sprites.begin(), m_visible_sprites.end(),
-        [](Sprite const& a, Sprite const& b) {
-            return a.x > b.x;
+        [&](Sprite const& a, Sprite const& b) -> bool {
+            return a.x > object.x;
         });
 }
 
