@@ -92,6 +92,13 @@ public:
     uint8_t lcd_obj_size(void) { return checkbit(m_lcd_control.value(), 2) ? 16 : 8; }
     uint16_t lcd_bg_tile_map_area(void) { return checkbit(m_lcd_control.value(), 3) ? 0x9C00 : 0x9800; }
     uint16_t lcd_bg_window_tile_data_area(void) { return checkbit(m_lcd_control.value(), 4) ? 0x8000 : 0x8800; }
+    bool lcd_window_enabled(void) { return checkbit(m_lcd_control.value(), 5); }
+    uint16_t lcd_window_tile_map_area(void) { return checkbit(m_lcd_control.value(), 6) ? 0x9C00 : 0x9800; }
+
+    bool is_window_visible()
+    {
+        return lcd_window_enabled() && m_lcd_window_x.value() >= 0 && m_lcd_window_x.value() <= 166 && m_lcd_window_y.value() < LCD::DISPLAY_Y_RESOLUTION;
+    }
 
     uint8_t lcd_read(uint16_t const& address);
     void lcd_write(uint16_t const address, uint8_t const value);
@@ -148,6 +155,10 @@ private:
     std::array<Sprite, 10> m_visible_sprites;
     uint8_t m_total_visible_sprites;
     uint8_t m_total_fetched_sprites;
+
+    // Window
+    uint8_t m_window_line;
+    void fetch_window_tile();
 
     // Palette
     void update_palette_data(uint8_t value, PaletteUpdate const update);

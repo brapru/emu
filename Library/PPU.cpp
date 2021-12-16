@@ -14,6 +14,7 @@ PPU::PPU(CPU& cpu)
     , m_position_in_line(0)
     , m_fetched_x(0)
     , m_line_x(0)
+    , m_window_line(0)
 {
     m_video_buffer = std::vector<uint32_t>(LCD::DISPLAY_Y_RESOLUTION * LCD::DISPLAY_X_RESOLUTION * sizeof(uint32_t));
 
@@ -80,6 +81,7 @@ void PPU::tick(uint32_t cycles)
             if (m_lcd_y_cord.value() >= LCD::LINES_PER_FRAME) {
                 set_lcd_mode(LCD::Mode::OAM);
                 m_lcd_y_cord.set(0);
+                m_window_line = 0;
 
                 if (lcd_oam_interrupts_enabled())
                     m_cpu.request_interrupt(Interrupts::LCD_STATUS);
@@ -140,7 +142,7 @@ void PPU::add_sprite_from_index(uint8_t index)
     // Sprites need to be sorted for certain games to render properly
     std::sort(m_visible_sprites.begin(), m_visible_sprites.end(),
         [&](Sprite const& a, Sprite const& b) -> bool {
-            return a.x > object.x;
+            return a.x >= object.x;
         });
 }
 
@@ -203,12 +205,14 @@ void PPU::overlay_sprite(uint32_t& color, uint8_t const& background_color)
             color = (object.palette()) ? m_sprite_palette_secondary[hi | lo] : m_sprite_palette_primary[hi | lo];
             break;
         }
-        object.fetched = false;
     }
 }
 
 void PPU::increment_ly_coordinate()
 {
+    if (is_window_visible() && m_lcd_y_cord.value() >= m_lcd_window_y.value() && m_lcd_y_cord.value() < m_lcd_window_y.value() + LCD::DISPLAY_Y_RESOLUTION)
+        m_window_line++;
+
     m_lcd_y_cord.increment();
 
     if (m_lcd_y_cord.value() == m_lcd_y_compare.value()) {
@@ -245,6 +249,25 @@ void PPU::fetcher_tick()
     }
 }
 
+void PPU::fetch_window_tile()
+{
+    uint8_t window_y = m_lcd_window_y.value();
+    uint8_t window_x = m_lcd_window_x.value();
+
+    if (m_fetched_x + 7 >= window_x && m_fetched_x + 7 < window_x + LCD::DISPLAY_Y_RESOLUTION + 14) {
+        if (m_lcd_y_cord.value() >= window_y && m_lcd_y_cord.value() < window_y + LCD::DISPLAY_X_RESOLUTION) {
+            uint8_t window_tile_y = m_window_line / 8;
+            uint16_t map = lcd_window_tile_map_area();
+
+            m_current_tile = vram_read(map + ((m_fetched_x + 7 - window_x) / 8) + (window_tile_y * 32));
+
+            if (lcd_bg_window_tile_data_area() == 0x8800) {
+                m_current_tile += 128;
+            }
+        }
+    }
+}
+
 void PPU::advance_fetcher_state_machine()
 {
     switch (m_fetcher_state) {
@@ -259,6 +282,9 @@ void PPU::advance_fetcher_state_machine()
             if (lcd_bg_window_tile_data_area() == 0x8800) {
                 m_current_tile += 128;
             }
+
+            if (is_window_visible())
+                fetch_window_tile();
         }
 
         m_total_fetched_sprites = 0;
