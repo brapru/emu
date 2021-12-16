@@ -152,14 +152,18 @@ void PPU::fetch_visible_sprites(SpriteData offset)
         if (!object.fetched)
             continue;
 
-        uint8_t tile_y = (current_y - object.y) * 2;
+        bool height_16 = (lcd_obj_size() == 16);
+        uint8_t tile_y = (current_y - object.y) & (height_16 ? 0xF : 7);
 
         /* Flip Y */
-        if (object.flip_y()) {
-            tile_y ^= lcd_obj_size() ? 0xF : 7;
-        }
+        if (object.flip_y())
+            tile_y ^= height_16 ? 0xF : 7;
 
-        uint16_t line_address = (lcd_obj_size() ? object.tile : object.tile & 0xFE) * 0x10 + tile_y;
+        uint8_t tile_index = object.tile;
+        if (height_16)
+            tile_index &= 0xFE;
+
+        uint16_t line_address = tile_index * 0x10 + tile_y * 2;
 
         if (offset == SpriteData::Hi)
             object.hi = vram_read(line_address);
