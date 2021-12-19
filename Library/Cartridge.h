@@ -37,7 +37,7 @@ public:
 
 private:
     bool m_is_loaded = false;
-    std::vector<uint8_t> m_data;
+    std::vector<uint8_t> m_rom;
 
     CartridgeHeader m_header;
     std::string m_new_license_code;

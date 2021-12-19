@@ -6,17 +6,17 @@
 #include <Utils/Format.h>
 
 Cartridge::Cartridge(std::vector<uint8_t> rom_data)
-    : m_data(rom_data)
+    : m_rom(rom_data)
 {
     initialize_header();
 }
 
 void Cartridge::initialize_header()
 {
-    if (m_data.empty())
+    if (m_rom.empty())
         return;
 
-    std::memcpy(&m_header, &m_data[0x0100], sizeof(CartridgeHeader));
+    std::memcpy(&m_header, &m_rom[0x0100], sizeof(CartridgeHeader));
 
     switch (m_header.new_license_code) {
     case 0x00:
@@ -47,7 +47,7 @@ void Cartridge::initialize_header()
 
     uint16_t checksum = 0;
     for (uint16_t i = 0x0134; i < 0x014C; i++) {
-        checksum = checksum - m_data[i] - 1;
+        checksum = checksum - m_rom[i] - 1;
     }
 
     if (checksum & 0xFF) {
@@ -67,7 +67,7 @@ void Cartridge::initialize_header()
 
 uint8_t Cartridge::read(uint16_t const address)
 {
-    return m_data[address];
+    return m_rom[address];
 }
 
 void Cartridge::write(uint16_t const address, uint8_t value)
