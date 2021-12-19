@@ -3,6 +3,7 @@
 #include <CPU.h>
 #include <Cartridge.h>
 #include <Interface.h>
+#include <Joypad.h>
 #include <MMU.h>
 #include <PPU.h>
 #include <Serial.h>
@@ -36,4 +37,5 @@ private:
     PPU m_ppu;
     Timer m_timer;
     Serial m_serial;
+    Joypad m_joypad;
 };

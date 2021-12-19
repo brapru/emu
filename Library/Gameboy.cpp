@@ -12,7 +12,7 @@
 
 Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     : m_cartridge(rom_data)
-    , m_mmu(m_cartridge, m_cpu, m_ppu, m_timer, m_serial)
+    , m_mmu(m_cartridge, m_cpu, m_ppu, m_timer, m_serial, m_joypad)
     , m_cpu(m_mmu, m_serial, m_timer, m_ppu)
     , m_serial(m_mmu)
     , m_timer(m_cpu)
@@ -50,6 +50,37 @@ void Gameboy::run(void)
 
 void Gameboy::main_cycle(void)
 {
+    const auto set_input = [&](bool pressed, uint32_t key) {
+        switch (key) {
+        case SDLK_a:
+        case SDLK_SPACE:
+            m_joypad.set_button_state(ActionButtons::A, pressed);
+            break;
+        case SDLK_s:
+        case SDLK_BACKSPACE:
+            m_joypad.set_button_state(ActionButtons::B, pressed);
+            break;
+        case SDLK_RETURN:
+            m_joypad.set_button_state(ActionButtons::Start, pressed);
+            break;
+        case SDLK_ESCAPE:
+            m_joypad.set_button_state(ActionButtons::Select, pressed);
+            break;
+        case SDLK_UP:
+            m_joypad.set_button_state(DirectionButtons::Up, pressed);
+            break;
+        case SDLK_DOWN:
+            m_joypad.set_button_state(DirectionButtons::Down, pressed);
+            break;
+        case SDLK_LEFT:
+            m_joypad.set_button_state(DirectionButtons::Left, pressed);
+            break;
+        case SDLK_RIGHT:
+            m_joypad.set_button_state(DirectionButtons::Right, pressed);
+            break;
+        }
+    };
+
     while (m_is_running) {
 
         usleep(1000);
@@ -63,6 +94,10 @@ void Gameboy::main_cycle(void)
         while (SDL_PollEvent(&m_event) > 0) {
             if (m_event.type == SDL_QUIT)
                 m_is_running = false;
+            if (m_event.type == SDL_KEYDOWN)
+                set_input(true, m_event.key.keysym.sym);
+            if (m_event.type == SDL_KEYUP)
+                set_input(false, m_event.key.keysym.sym);
         }
 
         if (m_tracked_frame != m_ppu.current_frame()) {

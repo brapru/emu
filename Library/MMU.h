@@ -2,6 +2,7 @@
 
 #include <CPU.h>
 #include <Cartridge.h>
+#include <Joypad.h>
 #include <Serial.h>
 #include <Timer.h>
 
@@ -10,10 +11,11 @@
 class CPU;
 class PPU;
 class Serial;
+class Joypad;
 
 class MMU {
 public:
-    MMU(Cartridge& cartridge, CPU& cpu, PPU& ppu, Timer& timer, Serial& serial);
+    MMU(Cartridge& cartridge, CPU& cpu, PPU& ppu, Timer& timer, Serial& serial, Joypad& joypad);
 
     uint8_t read(uint16_t const address);
     void write(uint16_t const address, uint8_t const value);
@@ -31,6 +33,7 @@ private:
 
     Cartridge& m_cartridge;
     CPU& m_cpu;
+    Joypad& m_joypad;
     PPU& m_ppu;
     Timer& m_timer;
     Serial& m_serial;

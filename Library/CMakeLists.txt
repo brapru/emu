@@ -8,7 +8,8 @@ add_library (libemu SHARED
     Register.cpp 
     Opcodes.cpp 
     Timer.cpp 
-    Serial.cpp 
+    Serial.cpp
+    Joypad.cpp 
     Instructions/Load.cpp 
     Instructions/Jump.cpp 
     Instructions/ArithmeticLogic.cpp 
