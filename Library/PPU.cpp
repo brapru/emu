@@ -2,10 +2,14 @@
 #include <Utils/Address.h>
 #include <Utils/Format.h>
 
+#include <SDL2/SDL.h>
+
 PPU::PPU(CPU& cpu)
     : m_cpu(cpu)
     , m_cycles(0)
     , m_current_frame(0)
+    , m_previous_frame_time(0)
+    , m_start_timer(0)
     , m_fetcher_divider(2)
     , m_fetcher_state(FIFO::State::GET_TILE)
     , m_lcd_mode(LCD::Mode::OAM)
@@ -34,6 +38,21 @@ PPU::PPU(CPU& cpu)
 void PPU::tick(uint32_t cycles)
 {
     m_cycles += cycles;
+
+    const auto calculate_fps = [&]() {
+        uint32_t ticks = SDL_GetTicks();
+        uint32_t frame_time = ticks - m_previous_frame_time;
+
+        if (frame_time < FRAME_TIME)
+            SDL_Delay(FRAME_TIME - frame_time);
+
+        if (ticks - m_start_timer >= 1000) {
+            m_start_timer = ticks;
+            m_current_frame = 0;
+        }
+
+        m_previous_frame_time = SDL_GetTicks();
+    };
 
     switch (m_lcd_mode) {
     case LCD::Mode::OAM: {
@@ -103,6 +122,7 @@ void PPU::tick(uint32_t cycles)
                 if (lcd_vblank_interrupts_enabled())
                     m_cpu.request_interrupt(Interrupts::LCD_STATUS);
 
+                calculate_fps();
                 m_current_frame++;
             } else {
                 set_lcd_mode(LCD::Mode::OAM);

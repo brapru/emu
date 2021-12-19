@@ -18,6 +18,8 @@ enum class PaletteUpdate {
     Secondary
 };
 
+constexpr uint32_t FRAME_TIME = 1000 / 60;
+
 namespace LCD {
 constexpr uint8_t LINES_PER_FRAME = 154;
 constexpr uint8_t DISPLAY_X_RESOLUTION = 160;
@@ -123,6 +125,8 @@ private:
 
     uint64_t m_cycles;
     uint64_t m_current_frame;
+    uint32_t m_previous_frame_time;
+    uint32_t m_start_timer;
 
     std::vector<uint32_t> m_video_buffer;
 
