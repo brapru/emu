@@ -30,19 +30,25 @@ public:
 
     std::string title() { return std::string((char*)m_header.title); }
     std::string new_license_code() { return m_new_license_code; }
-    uint8_t rom_size() { return 32 << m_header.rom_size; }
-    std::string ram_size() { return m_ram_size; }
 
     bool is_valid_checksum() { return m_is_valid_checksum; }
 
 private:
     bool m_is_loaded = false;
     std::vector<uint8_t> m_rom;
+    std::vector<uint8_t> m_ram;
+
+    uint8_t m_current_rom_bank;
+    uint8_t m_current_ram_bank;
 
     CartridgeHeader m_header;
     std::string m_new_license_code;
-    std::string m_type;
-    std::string m_ram_size;
+    std::string m_type_name;
+    uint32_t m_ram_size;
+    
+    bool m_battery_enabled;
+    bool m_ram_enabled;
+    bool m_rom_banking;
 
     bool m_is_valid_checksum;
 

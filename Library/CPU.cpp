@@ -35,7 +35,7 @@ unsigned int CPU::cycle()
         auto opcode_pc = m_pc.value();
         auto opcode = fetch_byte();
 
-#ifdef REGISTER_DEBUG
+// #ifdef REGISTER_DEBUG
         out("PC: 0x{:04X}, OP: 0x{:02X} INSTR: ",
             opcode_pc,
             opcode);
@@ -47,11 +47,12 @@ unsigned int CPU::cycle()
             m_de.value(),
             m_hl.value(),
             m_f.value());
-#endif
+// #endif
 
         cycles += m_execute_instruction(opcode);
 
     } else {
+        outln("HERE");
         cycles = instruction_nop();
         if (has_interrupts())
             m_is_halted = false;

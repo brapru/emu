@@ -5,4 +5,6 @@ else()
     add_executable (emu sdl.cpp)
 endif()
 
+set(CMAKE_BUILD_TYPE Debug)
+
 target_link_libraries (emu LINK_PUBLIC libemu)

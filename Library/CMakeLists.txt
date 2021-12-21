@@ -35,5 +35,7 @@ else()
     target_link_libraries (libemu fmt::fmt)
 endif()
 
+set(CMAKE_BUILD_TYPE Debug)
+
 target_include_directories (libemu PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${SDL2_INCLUDE_DIR})
 target_link_libraries (libemu ${SDL2_MAIN} ${SDL2_LIBRARY})
