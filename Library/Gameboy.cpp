@@ -17,17 +17,16 @@ Gameboy::Gameboy(std::vector<uint8_t> rom_data)
     , m_serial(m_mmu)
     , m_timer(m_cpu)
     , m_ppu(m_cpu)
-    , m_interface(m_mmu, m_ppu)
 {
     if (!m_cartridge.is_loaded()) {
         outln("No rom data loaded");
     }
 
-    // m_interface = std::make_unique<Interface>(m_mmu, m_ppu);
-    // if (m_interface == nullptr) {
-    //     outln("Failed to inititalize the interface");
-    //     exit(1);
-    // }
+    m_interface = std::make_unique<Interface>(m_mmu, m_ppu);
+    if (m_interface == nullptr) {
+        outln("Failed to inititalize the interface");
+        exit(1);
+    }
 }
 
 void main_cycle_wasm(void* arg)
@@ -40,7 +39,7 @@ void main_cycle_wasm(void* arg)
 
 void Gameboy::run(void)
 {
-    m_interface.initialize();
+    m_interface->initialize();
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_arg(&main_cycle_wasm, this, 0, 1);
@@ -103,7 +102,7 @@ void Gameboy::main_cycle(void)
 
         if (m_tracked_frame != m_ppu.current_frame()) {
             m_tracked_frame = m_ppu.current_frame();
-            m_interface.update();
+            m_interface->update();
         }
     }
 }

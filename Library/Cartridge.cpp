@@ -83,8 +83,6 @@ void Cartridge::initialize_header()
         if (ram.empty()) {
             outln("Could not find previous ram file.");
             m_ram.reserve(m_ram_size);
-            outln("RAM SIZE: {}", m_ram.capacity());
-            // exit(1);
         } else {
             m_ram = std::move(ram);
         }
@@ -104,26 +102,19 @@ uint8_t Cartridge::read(uint16_t const address)
 {
     if ((address >= 0x4000) && (address <= 0x7FFF)) {
         uint16_t read = address - 0x4000;
-        outln("HERE1");
-        // exit(1);
         return m_rom[read + (m_current_rom_bank * 0x4000)];
     }
 
     if ((address >= 0xA000) && (address <= 0xBFFF)) {
         uint16_t read = address - 0xA000;
-        outln("HERE2");
-        // exit(1);
         return m_ram[read + (m_current_ram_bank * 0x2000)];
     }
 
-    outln("Reading address: 0x{:2X} with value: 0x{:2X}", address, m_rom[address]);
     return m_rom[address];
 }
 
 void Cartridge::write(uint16_t const address, uint8_t value)
 {
-    outln("WRITING");
-    // exit(1);
     if (address < 0x2000) {
         if (m_header.type == 1 || m_header.type == 2 || m_header.type == 3 )  {
             m_ram_enabled = ((value & 0xF) == 0xA);
