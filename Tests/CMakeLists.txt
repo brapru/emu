@@ -16,4 +16,4 @@ add_executable (test-emu TestCartridge.cpp)
 target_link_libraries (test-emu LINK_PUBLIC libemu gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(test-emu)
+gtest_discover_tests(test-emu PROPERTIES TIMEOUT 600)
