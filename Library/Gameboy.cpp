@@ -11,14 +11,14 @@
 #endif
 
 Gameboy::Gameboy(std::vector<uint8_t> rom_data)
-    : m_cartridge(rom_data)
+    : m_cartridge(std::make_shared<Cartridge>(rom_data))
     , m_mmu(m_cartridge, m_cpu, m_ppu, m_timer, m_serial, m_joypad)
     , m_cpu(m_mmu, m_serial, m_timer, m_ppu)
     , m_serial(m_mmu)
     , m_timer(m_cpu)
     , m_ppu(m_cpu)
 {
-    if (!m_cartridge.is_loaded()) {
+    if (!m_cartridge->is_loaded()) {
         outln("No rom data loaded");
     }
 

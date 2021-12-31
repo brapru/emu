@@ -15,12 +15,12 @@ class Joypad;
 
 class MMU {
 public:
-    MMU(Cartridge& cartridge, CPU& cpu, PPU& ppu, Timer& timer, Serial& serial, Joypad& joypad);
+    MMU(std::shared_ptr<Cartridge> cartridge, CPU& cpu, PPU& ppu, Timer& timer, Serial& serial, Joypad& joypad);
 
     uint8_t read(uint16_t const address);
     void write(uint16_t const address, uint8_t const value);
 
-    bool valid_cartridge() { return m_cartridge.is_valid_checksum(); }
+    bool valid_cartridge() { return m_cartridge->is_valid_checksum(); }
 
 private:
     uint8_t memory_read(uint16_t const address);
@@ -31,7 +31,7 @@ private:
 
     void m_dma_transfer(uint8_t const value);
 
-    Cartridge& m_cartridge;
+    std::shared_ptr<Cartridge> m_cartridge;
     CPU& m_cpu;
     Joypad& m_joypad;
     PPU& m_ppu;

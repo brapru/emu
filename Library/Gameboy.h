@@ -17,7 +17,7 @@ class Gameboy {
 public:
     Gameboy(std::vector<uint8_t> rom_data);
 
-    bool has_cartridge() { return m_cartridge.is_loaded(); }
+    bool has_cartridge() { return m_cartridge->is_loaded(); }
 
     void main_cycle();
     void run();
@@ -31,7 +31,7 @@ private:
     uint64_t m_tracked_frame = 0;
 
     std::unique_ptr<Interface> m_interface;
-    Cartridge m_cartridge;
+    std::shared_ptr<Cartridge> m_cartridge;
     MMU m_mmu;
     CPU m_cpu;
     PPU m_ppu;
