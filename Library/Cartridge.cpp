@@ -57,11 +57,11 @@ void Cartridge::initialize_header()
 
     outln("Cartridge Header Information:");
     outln("\t title: {}", m_header.title);
-    outln("\t new_license_code: {} - {}", m_header.new_license_code, new_license_code());
+    outln("\t new_license_code: {} - {}", m_header.new_license_code, m_new_license_code);
     outln("\t flag_sgb: {}", m_header.flag_sgb);
     outln("\t type: {} - {}", m_header.type, m_type);
-    outln("\t rom_size: {} KB", rom_size());
-    outln("\t ram_size: {} - {}", m_header.ram_size, ram_size());
+    outln("\t rom_size: {} KB", m_header.rom_size);
+    outln("\t ram_size: {} - {}", m_header.ram_size, m_ram_size);
     outln("\t checksum: {}", (checksum & 0xFF) ? "PASSED" : "FAILED");
 }
 

@@ -12,5 +12,5 @@ protected:
 TEST_F(CartridgeTest, TestLoadCartridge)
 {
     ASSERT_TRUE(cart_good.is_loaded());
-    EXPECT_EQ("CPU_INSTRS", cart_good.title());
+    EXPECT_EQ("CPU_INSTRS", reinterpret_cast<const char*>(cart_good.header().title));
 }
