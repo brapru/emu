@@ -25,16 +25,18 @@ public:
 
     bool is_loaded() { return m_is_loaded; }
 
-    uint8_t read(uint16_t const address);
-    void write(uint16_t const address, uint8_t value);
+    uint8_t virtual read(uint16_t const address) = 0;
+    void virtual write(uint16_t const address, uint8_t value) = 0;
 
     CartridgeHeader header() { return m_header; }
 
     bool is_valid_checksum() { return m_is_valid_checksum; }
 
+protected:
+    std::vector<uint8_t> m_rom;
+
 private:
     bool m_is_loaded = false;
-    std::vector<uint8_t> m_rom;
 
     CartridgeHeader m_header;
     std::string m_new_license_code;
@@ -44,4 +46,14 @@ private:
     bool m_is_valid_checksum;
 
     void initialize_header();
+};
+
+std::shared_ptr<Cartridge> create_cartridge_instance(std::vector<uint8_t> rom_data);
+
+class NoMBC : public Cartridge {
+public:
+    NoMBC(std::vector<uint8_t> rom_data);
+
+    uint8_t read(uint16_t const address) override;
+    void write(uint16_t const address, uint8_t value) override;
 };
