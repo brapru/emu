@@ -32,14 +32,19 @@ std::shared_ptr<Cartridge> create_cartridge_instance(std::vector<uint8_t> rom_da
     outln("\t rom_size: {} KB", header.rom_size);
     outln("\t ram_size: {}", header.ram_size);
 
-    if (header.type == 0x00)
+    switch (header.type) {
+    case 0x00:
         return std::make_shared<NoMBC>(std::move(rom_data));
-    else if (header.type == 0x01 || header.type == 0x02 || header.type == 0x03)
+        break;
+    case 0x01:
+    case 0x02:
+    case 0x03:
         return std::make_shared<MBC1>(std::move(rom_data));
-
-    else
+        break;
+    default:
         outln("Cartridge type currently not implemented.");
-    exit(1);
+        exit(1);
+    }
 };
 
 NoMBC::NoMBC(std::vector<uint8_t> rom_data)
