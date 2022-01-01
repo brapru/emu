@@ -41,6 +41,11 @@ std::shared_ptr<Cartridge> create_cartridge_instance(std::vector<uint8_t> rom_da
     case 0x03:
         return std::make_shared<MBC1>(std::move(rom_data));
         break;
+    case 0x11:
+    case 0x12:
+    case 0x13:
+        return std::make_shared<MBC3>(std::move(rom_data));
+        break;
     default:
         outln("Cartridge type currently not implemented.");
         exit(1);
@@ -86,6 +91,70 @@ uint8_t MBC1::read(uint16_t const address)
 }
 
 void MBC1::write(uint16_t const address, uint8_t value)
+{
+    if (address < 0x2000) {
+        m_ram_enabled = ((value & 0xF) == 0xA);
+    }
+
+    if ((address >= 0x2000) && (address < 0x4000)) {
+        uint8_t lo = value & 0x1F;
+        m_current_rom_bank &= 0xE0;
+        m_current_rom_bank |= lo;
+        if (m_current_rom_bank == 0)
+            m_current_rom_bank++;
+    }
+
+    if ((address >= 0x4000) && (address < 0x6000)) {
+        if (m_rom_banking) {
+            m_current_rom_bank &= 0x1F;
+            value &= 0xE0;
+            m_current_rom_bank |= value;
+            if (m_current_rom_bank == 0)
+                m_current_rom_bank++;
+        } else {
+            m_current_ram_bank = value & 0x3;
+        }
+    }
+
+    if ((address >= 0x6000) && (address < 0x8000)) {
+        uint8_t new_value = value & 0x1;
+        m_rom_banking = (new_value == 0) ? true : false;
+        if (m_rom_banking)
+            m_current_ram_bank = 0;
+    }
+
+    if ((address >= 0xA000) && (address < 0xC000)) {
+        if (m_ram_enabled) {
+            uint16_t write = address - 0xA000;
+            m_ram[write + (m_current_ram_bank * 0x2000)] = value;
+        }
+    }
+}
+
+MBC3::MBC3(std::vector<uint8_t> rom_data)
+    : Cartridge(std::move(rom_data))
+    , m_battery_enabled(false)
+    , m_current_rom_bank(1)
+    , m_current_ram_bank(0)
+{
+}
+
+uint8_t MBC3::read(uint16_t const address)
+{
+    if ((address >= 0x4000) && (address <= 0x7FFF)) {
+        uint16_t read = address - 0x4000;
+        return m_rom[read + (m_current_rom_bank * 0x4000)];
+    }
+
+    if ((address >= 0xA000) && (address <= 0xBFFF)) {
+        uint16_t read = address - 0xA000;
+        return m_ram[read + (m_current_ram_bank * 0x2000)];
+    }
+
+    return m_rom[address];
+}
+
+void MBC3::write(uint16_t const address, uint8_t value)
 {
     if (address < 0x2000) {
         m_ram_enabled = ((value & 0xF) == 0xA);

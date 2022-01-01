@@ -75,3 +75,21 @@ private:
     bool m_ram_enabled;
     bool m_rom_banking;
 };
+
+class MBC3 : public Cartridge {
+public:
+    MBC3(std::vector<uint8_t> rom_data);
+
+    uint8_t read(uint16_t const address) override;
+    void write(uint16_t const address, uint8_t value) override;
+
+private:
+    std::vector<uint8_t> m_ram;
+
+    uint8_t m_current_rom_bank;
+    uint8_t m_current_ram_bank;
+
+    bool m_battery_enabled;
+    bool m_ram_enabled;
+    bool m_rom_banking;
+};
