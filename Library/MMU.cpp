@@ -84,8 +84,11 @@ uint8_t MMU::io_read(uint16_t const address)
         return m_serial.read_control();
     if (address_in_range(address, 0xFF04, 0xFF07)) {
         return m_timer.read(address);
+    } else if (address_in_range(address, 0xFF11, 0xFF14)) {
+        // TODO: Implement Audio
+        return 0x00;
     } else if (address_in_range(address, 0xFF24, 0xFF26)) {
-        outln("Sound Control Register read at address 0x:{:2X} not yet implemented ", address);
+        // TODO: Implement Audio
         return 0x00;
     } else if (address == 0xFF0F) {
         return m_cpu.interrupt_flag();
@@ -114,8 +117,11 @@ void MMU::io_write(uint16_t const address, uint8_t const value)
     if (address_in_range(address, 0xFF04, 0xFF07)) {
         m_timer.write(address, value);
         return;
+    } else if (address_in_range(address, 0xFF11, 0xFF14)) {
+        // TODO: Implement Audio
+        return;
     } else if (address_in_range(address, 0xFF24, 0xFF26)) {
-        outln("Sound Control Register write at address 0x:{:2X} not yet implemented ", address);
+        // TODO: Implement Audio
         return;
     } else if (address == 0xFF0F) {
         m_cpu.set_interrupt_flag(value);
