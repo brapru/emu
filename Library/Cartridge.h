@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <string>
 #include <vector>
 
@@ -88,6 +89,8 @@ private:
 
     uint8_t m_current_rom_bank;
     uint8_t m_current_ram_bank;
+
+    std::array<uint8_t, 0x05> m_rtc_registers;
 
     bool m_battery_enabled;
     bool m_ram_enabled;

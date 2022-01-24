@@ -137,6 +137,7 @@ MBC3::MBC3(std::vector<uint8_t> rom_data)
     , m_current_rom_bank(1)
     , m_current_ram_bank(0)
 {
+    m_rtc_registers = { 0 };
 }
 
 uint8_t MBC3::read(uint16_t const address)
@@ -147,8 +148,13 @@ uint8_t MBC3::read(uint16_t const address)
     }
 
     if ((address >= 0xA000) && (address <= 0xBFFF)) {
-        uint16_t read = address - 0xA000;
-        return m_ram[read + (m_current_ram_bank * 0x2000)];
+
+        if (m_current_ram_bank <= 0x03) {
+            uint16_t read = address - 0xA000;
+            return m_ram[read + (m_current_ram_bank * 0x2000)];
+        } else if (m_current_ram_bank >= 0x08 && m_current_ram_bank <= 0x0C) {
+            return m_rtc_registers[m_current_ram_bank - 0x08];
+        }
     }
 
     return m_rom[address];
@@ -161,9 +167,7 @@ void MBC3::write(uint16_t const address, uint8_t value)
     }
 
     if ((address >= 0x2000) && (address < 0x4000)) {
-        uint8_t lo = value & 0x1F;
-        m_current_rom_bank &= 0xE0;
-        m_current_rom_bank |= lo;
+        m_current_rom_bank = value & 0x7F;
         if (m_current_rom_bank == 0)
             m_current_rom_bank++;
     }
@@ -176,7 +180,7 @@ void MBC3::write(uint16_t const address, uint8_t value)
             if (m_current_rom_bank == 0)
                 m_current_rom_bank++;
         } else {
-            m_current_ram_bank = value & 0x3;
+            m_current_ram_bank = value;
         }
     }
 
@@ -188,9 +192,11 @@ void MBC3::write(uint16_t const address, uint8_t value)
     }
 
     if ((address >= 0xA000) && (address < 0xC000)) {
-        if (m_ram_enabled) {
+        if (m_current_ram_bank <= 0x03) {
             uint16_t write = address - 0xA000;
             m_ram[write + (m_current_ram_bank * 0x2000)] = value;
+        } else if (m_current_ram_bank >= 0x08 && m_current_ram_bank <= 0x0C) {
+            m_rtc_registers[m_current_ram_bank - 0x08] = value;
         }
     }
 }
